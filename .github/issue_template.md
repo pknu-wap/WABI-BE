@@ -1,9 +1,6 @@
 <!--
 이슈 이름 컨벤션
-[Server] feat: ~~
-[Android] refactor: ~~
-[iOS] fix: ~~
-[AI] feat: ~~
+[Feature] ~~
 -->
 
 ## 💥이슈 설명
