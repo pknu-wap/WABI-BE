@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("plugin.jpa") version "1.9.22"
+    kotlin("kapt") version "1.9.22"
 }
 
 group = "com.wap"
@@ -20,6 +21,14 @@ repositories {
 }
 
 dependencies {
+    //QueryDSL
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    implementation("jakarta.persistence:jakarta.persistence-api")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -39,4 +48,15 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs("src/main/kotlin")
+        }
+        kotlin {
+            srcDirs("src/main/kotlin")
+        }
+    }
 }
