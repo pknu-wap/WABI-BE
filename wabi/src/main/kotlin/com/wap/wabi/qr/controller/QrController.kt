@@ -2,6 +2,7 @@ package com.wap.wabi.qr.controller
 
 import com.wap.wabi.qr.payload.request.CheckInRequest
 import com.wap.wabi.qr.service.QrService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,7 +14,8 @@ class QrController (
     val qrService : QrService
 ){
     @GetMapping("/check-in")
-    fun checkIn(@RequestBody checkInRequest: CheckInRequest){
+    fun checkIn(@RequestBody checkInRequest: CheckInRequest) : ResponseEntity<String>{
         qrService.checkIn(checkInRequest);
+        return ResponseEntity.ok("success check-in")
     }
 }
