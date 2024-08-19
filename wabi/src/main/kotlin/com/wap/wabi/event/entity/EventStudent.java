@@ -20,9 +20,12 @@ public class EventStudent {
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
+    private String group;
+
     @Enumerated(EnumType.STRING)
     private EventStudentStatus status;
     private LocalDateTime updatedAt;
+    private LocalDateTime checkedInAt;
 
     public void checkIn(){
         this.status = EventStudentStatus.CHECK_IN;
@@ -39,6 +42,7 @@ public class EventStudent {
     public Student getStudent() {
         return student;
     }
+    public String getGroup() {return group;}
 
     public EventStudentStatus getStatus() {
         return status;
@@ -47,4 +51,8 @@ public class EventStudent {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+    public LocalDateTime getCheckedInAt() {
+        return checkedInAt;
+    }
+
 }
