@@ -1,9 +1,6 @@
 <!--
 PR 이름 컨벤션
-[Server] feat: ~~(#issueNum)
-[Android] feat: ~~(#issueNum)
-[iOS] fix: ~~(#issueNum)
-[AI] feat: ~~(#issueNum)
+[Feature] ~~~
 -->
 
 ##  📌 관련 이슈
