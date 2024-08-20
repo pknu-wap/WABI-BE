@@ -29,6 +29,9 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+    //openCSV
+    implementation("com.opencsv:opencsv:5.7.1")
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -38,6 +41,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+
 }
 
 kotlin {

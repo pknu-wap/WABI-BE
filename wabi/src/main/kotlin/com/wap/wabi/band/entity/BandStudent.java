@@ -3,7 +3,7 @@ package com.wap.wabi.band.entity;
 import com.wap.wabi.student.entity.Student;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 public class BandStudent {
@@ -20,11 +20,27 @@ public class BandStudent {
 
     private String club;
     private String position;
-    private LocalDateTime joinDate;
+    private LocalDate joinDate;
     private String college;
     private String major;
     private String tel;
     private String academicStatus;
+
+    public BandStudent(Band band, Student student, String club, String position, LocalDate joinDate, String college, String major, String tel, String academicStatus) {
+        this.band = band;
+        this.student = student;
+        this.club = club;
+        this.position = position;
+        this.joinDate = joinDate;
+        this.college = college;
+        this.major = major;
+        this.tel = tel;
+        this.academicStatus = academicStatus;
+    }
+
+    public BandStudent() {
+
+    }
 
     public Long getId() {
         return id;
@@ -46,7 +62,7 @@ public class BandStudent {
         return position;
     }
 
-    public LocalDateTime getJoinDate() {
+    public LocalDate getJoinDate() {
         return joinDate;
     }
 

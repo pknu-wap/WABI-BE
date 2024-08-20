@@ -9,15 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.multipart.MultipartFile
 
 @Controller
 @RequestMapping("/api/bands/")
-///api/groups/
 class BandController(
     private val bandService: BandService
 ) {
     @GetMapping("{bandId}/students")
     fun getBandStudents(@PathVariable bandId: Long) : ResponseEntity<Response>{
         return ResponseEntity(bandService.getBandStudents(bandId = bandId), HttpStatus.OK)
+    }
+
+    @PostMapping("{bandId}/members/enrollments/file")
+    fun enrollByFile(@PathVariable bandId: Long, @RequestParam("file") file : MultipartFile) : ResponseEntity<Response>{
+        return ResponseEntity(bandService.enrollByFile(bandId, file), HttpStatus.OK)
     }
 }

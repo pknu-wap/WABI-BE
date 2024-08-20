@@ -1,6 +1,7 @@
 package com.wap.wabi.band.payload.response
 
 import com.wap.wabi.band.entity.BandStudent
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class BandStudentData(
@@ -8,7 +9,7 @@ data class BandStudentData(
     val name: String,
     val club: String,
     val position: String,
-    val joinDate: LocalDateTime,
+    val joinDate: LocalDate,
     val college: String,
     val major: String,
     val tel: String,
