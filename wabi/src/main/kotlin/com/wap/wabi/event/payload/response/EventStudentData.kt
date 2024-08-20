@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 data class EventStudentData(
     val id : String,
     val name : String,
-    val group : String,
+    val band : String,
     val eventStudentStatus : EventStudentStatus,
     val checkInTime : LocalDateTime
 ){
@@ -21,7 +21,7 @@ data class EventStudentData(
             return EventStudentData(
                 eventStudent.student.id,
                 eventStudent.student.name,
-                eventStudent.studentGroup,
+                "",
                 eventStudent.status,
                 eventStudent.checkedInAt
             )

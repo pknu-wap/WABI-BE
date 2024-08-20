@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/events")
 class EventController (
-    val eventService: EventService
+    private val eventService: EventService
 ){
     @GetMapping("/{eventId}")
     fun getCheckInTable(@PathVariable("eventId")eventId : Long, @RequestParam filter: CheckInTableFilter) : ResponseEntity<Response> {

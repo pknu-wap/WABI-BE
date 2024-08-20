@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class EventService(
-    val eventRepository: EventRepository,
-    val eventStudentRepository: EventStudentRepository,
+    private val eventRepository: EventRepository,
+    private val eventStudentRepository: EventStudentRepository,
 ) {
     fun getCheckInTable (eventId : Long, filter : CheckInTableFilter) : Response{
         val event = eventRepository.findById(eventId).orElseThrow { throw IllegalArgumentException("no event") }

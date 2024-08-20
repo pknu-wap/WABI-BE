@@ -18,7 +18,6 @@ public class EventStudent {
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
-    private String studentGroup;
 
     @Enumerated(EnumType.STRING)
     private EventStudentStatus status;
@@ -40,7 +39,6 @@ public class EventStudent {
     public Student getStudent() {
         return student;
     }
-    public String getStudentGroup() {return studentGroup;}
 
     public EventStudentStatus getStatus() {
         return status;

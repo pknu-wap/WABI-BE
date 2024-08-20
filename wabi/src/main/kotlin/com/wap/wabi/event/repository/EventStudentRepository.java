@@ -3,6 +3,7 @@ package com.wap.wabi.event.repository;
 import com.wap.wabi.event.entity.Event;
 import com.wap.wabi.event.entity.EventStudent;
 import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter;
+import com.wap.wabi.event.payload.response.EventStudentData;
 import com.wap.wabi.student.entity.Student;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;

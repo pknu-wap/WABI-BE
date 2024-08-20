@@ -1,0 +1,68 @@
+package com.wap.wabi.band.entity;
+
+import com.wap.wabi.student.entity.Student;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+public class BandStudent {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Band band;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
+
+    private String club;
+    private String position;
+    private LocalDateTime joinDate;
+    private String college;
+    private String major;
+    private String tel;
+    private String academicStatus;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Band getBand() {
+        return band;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public String getClub() {
+        return club;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public LocalDateTime getJoinDate() {
+        return joinDate;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public String getAcademicStatus() {
+        return academicStatus;
+    }
+}
