@@ -3,12 +3,10 @@ package com.wap.wabi.event.entity;
 import com.wap.wabi.event.entity.Enum.EventStudentStatus;
 import com.wap.wabi.student.entity.Student;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
 public class EventStudent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +18,7 @@ public class EventStudent {
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
-    private String group;
+    private String studentGroup;
 
     @Enumerated(EnumType.STRING)
     private EventStudentStatus status;
@@ -42,7 +40,7 @@ public class EventStudent {
     public Student getStudent() {
         return student;
     }
-    public String getGroup() {return group;}
+    public String getStudentGroup() {return studentGroup;}
 
     public EventStudentStatus getStatus() {
         return status;

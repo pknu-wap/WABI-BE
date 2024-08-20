@@ -10,13 +10,28 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@NoArgsConstructor
 public class Event{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private LocalDateTime startAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
+
     private LocalDateTime endAt;
 }

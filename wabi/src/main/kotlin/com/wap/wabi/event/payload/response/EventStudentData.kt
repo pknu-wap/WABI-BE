@@ -21,7 +21,7 @@ data class EventStudentData(
             return EventStudentData(
                 eventStudent.student.id,
                 eventStudent.student.name,
-                eventStudent.group,
+                eventStudent.studentGroup,
                 eventStudent.status,
                 eventStudent.checkedInAt
             )
