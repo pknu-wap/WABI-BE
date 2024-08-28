@@ -79,15 +79,15 @@ class BandService(
             val bandStudent = BandStudent(
                 band,
                 student,
-                headerMap["직책"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 직책
-                headerMap["직책"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 직책 (여기에 사용된 두 번째 "직책"은 의도된 것인지 확인 필요)
+                headerMap["동아리명"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
+                headerMap["직책"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
                 headerMap["가입일자"]?.let {
                     if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it.trim()) } else null
                 },  // 가입일자
-                headerMap["대학"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 대학
-                headerMap["학부(과)"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 학부(과)
-                headerMap["연락처"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 연락처
-                headerMap["학적상태"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null }   // 학적상태
+                headerMap["대학"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
+                headerMap["학부(과)"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
+                headerMap["연락처"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
+                headerMap["학적상태"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null }
             )
 
 
@@ -110,7 +110,7 @@ class BandService(
         }
 
         for (row in sheet) {
-            if (row.rowNum <= 1) continue // 헤더와 그 위의 행은 건너뜀
+            if (row.rowNum <= 1) continue
 
             val studentId = getCellValueAsString(row.getCell(headerMap["학번"] ?: throw IllegalArgumentException("학번 칼럼이 없습니다.")))
             val studentName = getCellValueAsString(row.getCell(headerMap["성명"] ?: throw IllegalArgumentException("성명 칼럼이 없습니다.")))
@@ -124,25 +124,25 @@ class BandService(
                 student,
                 headerMap["동아리명"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
-                },  // 동아리명
+                },
                 headerMap["직책"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
-                },  // 직책
+                },
                 headerMap["가입일자"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it.trim()) }
-                },  // 가입일자, null이 가능
+                },
                 headerMap["대학"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
-                },  // 대학
+                },
                 headerMap["학부(과)"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
-                },  // 학부(과)
+                },
                 headerMap["연락처"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
-                },  // 연락처
+                },
                 headerMap["학적상태"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
-                }   // 학적상태
+                } 
             )
 
             bandStudents.add(bandStudent)
