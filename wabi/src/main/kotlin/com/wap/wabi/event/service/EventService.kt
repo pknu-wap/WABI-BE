@@ -7,6 +7,8 @@ import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter
 import com.wap.wabi.event.payload.response.EventStudentData
 import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentRepository
+import com.wap.wabi.exception.ErrorCode
+import com.wap.wabi.exception.RestApiException
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,7 +17,7 @@ class EventService(
     private val eventStudentRepository: EventStudentRepository,
 ) {
     fun getCheckInTable (eventId : Long, filter : CheckInTableFilter) : Response{
-        val event = eventRepository.findById(eventId).orElseThrow { throw IllegalArgumentException("no event") }
+        val event = eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
 
         val eventStudentData = when (filter){
             CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
@@ -25,7 +27,7 @@ class EventService(
     }
 
     fun getCheckInStatus(eventId: Long) : Response{
-        val event = eventRepository.findById(eventId).orElseThrow { throw IllegalArgumentException("no event") }
+        val event = eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
 
         val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN.toString())
         val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN.toString())
