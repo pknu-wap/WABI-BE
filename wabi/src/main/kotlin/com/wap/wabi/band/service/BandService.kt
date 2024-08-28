@@ -57,22 +57,40 @@ class BandService(
 
     private fun processCsvFile(file: MultipartFile, band:Band): List<BandStudent> {
         val reader = CSVReader(InputStreamReader(file.inputStream))
+        val headerMap = mutableMapOf<String, Int>()
         val bandStudents = mutableListOf<BandStudent>()
-        var nextLine: Array<String>?
 
+        // 첫 번째 줄을 읽어 헤더를 처리합니다.
+        reader.readNext()
+        val header = reader.readNext()
+        header?.forEachIndexed { index, columnName ->
+            headerMap[columnName] = index
+        }
+
+        var nextLine: Array<String>?
         while (reader.readNext().also { nextLine = it } != null) {
-            val student = getStudent(nextLine!![5], nextLine!![6])
+            val studentId = nextLine!![headerMap["학번"] ?: throw IllegalArgumentException("학번 칼럼이 없습니다.")]
+            val studentName = nextLine!![headerMap["성명"] ?: throw IllegalArgumentException("성명 칼럼이 없습니다.")]
+            if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
+                continue
+            }
+            val student = getStudent(studentId, studentName)
+
             val bandStudent = BandStudent(
                 band,
                 student,
-                nextLine!![1],
-                nextLine!![2],
-                if (nextLine!![3].isBlank()) null else LocalDate.parse(nextLine!![3].trim()),
-                nextLine!![7],
-                nextLine!![8],
-                nextLine!![9],
-                nextLine!![10]
+                headerMap["직책"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 직책
+                headerMap["직책"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 직책 (여기에 사용된 두 번째 "직책"은 의도된 것인지 확인 필요)
+                headerMap["가입일자"]?.let {
+                    if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it.trim()) } else null
+                },  // 가입일자
+                headerMap["대학"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 대학
+                headerMap["학부(과)"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 학부(과)
+                headerMap["연락처"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },  // 연락처
+                headerMap["학적상태"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null }   // 학적상태
             )
+
+
             bandStudents.add(bandStudent)
         }
 
@@ -82,27 +100,51 @@ class BandService(
     private fun processExcelFile(file: MultipartFile, band: Band): List<BandStudent> {
         val workbook: Workbook = WorkbookFactory.create(file.inputStream)
         val sheet = workbook.getSheetAt(0)
+        val headerMap = mutableMapOf<String, Int>()
         val bandStudents = mutableListOf<BandStudent>()
 
-        for (row in sheet) {
-            if (row.rowNum == 0) continue
+        // 첫 번째 행(헤더)을 읽어 컬럼 이름과 인덱스를 매핑합니다.
+        val headerRow = sheet.getRow(1) // 1번째 줄이 헤더인 경우, 1로 지정
+        for (cell in headerRow) {
+            headerMap[cell.stringCellValue] = cell.columnIndex
+        }
 
-            val student = getStudent(
-                getCellValueAsString(row.getCell(5)),
-                getCellValueAsString(row.getCell(6))
-            )
+        for (row in sheet) {
+            if (row.rowNum <= 1) continue // 헤더와 그 위의 행은 건너뜀
+
+            val studentId = getCellValueAsString(row.getCell(headerMap["학번"] ?: throw IllegalArgumentException("학번 칼럼이 없습니다.")))
+            val studentName = getCellValueAsString(row.getCell(headerMap["성명"] ?: throw IllegalArgumentException("성명 칼럼이 없습니다.")))
+            if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
+                continue
+            }
+            val student = getStudent(studentId, studentName)
 
             val bandStudent = BandStudent(
                 band,
                 student,
-                getCellValueAsString(row.getCell(1)),
-                getCellValueAsString(row.getCell(2)),
-                if (getCellValueAsString(row.getCell(3)).isBlank()) null else LocalDate.parse(getCellValueAsString(row.getCell(3)).trim()),
-                getCellValueAsString(row.getCell(7)),
-                getCellValueAsString(row.getCell(8)),
-                getCellValueAsString(row.getCell(9)),
-                getCellValueAsString(row.getCell(10))
+                headerMap["동아리명"]?.let {
+                    getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                },  // 동아리명
+                headerMap["직책"]?.let {
+                    getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                },  // 직책
+                headerMap["가입일자"]?.let {
+                    getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it.trim()) }
+                },  // 가입일자, null이 가능
+                headerMap["대학"]?.let {
+                    getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                },  // 대학
+                headerMap["학부(과)"]?.let {
+                    getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                },  // 학부(과)
+                headerMap["연락처"]?.let {
+                    getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                },  // 연락처
+                headerMap["학적상태"]?.let {
+                    getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                }   // 학적상태
             )
+
             bandStudents.add(bandStudent)
         }
 
