@@ -13,15 +13,11 @@ public class EventStudent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Event event;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
-
     private String group;
-
     @Enumerated(EnumType.STRING)
     private EventStudentStatus status;
     private LocalDateTime updatedAt;
