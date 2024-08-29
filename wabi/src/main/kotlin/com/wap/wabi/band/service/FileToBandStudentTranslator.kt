@@ -1,12 +1,9 @@
 package com.wap.wabi.band.service
 
 import com.opencsv.CSVReader
-import com.wap.wabi.band.entity.Band
-import com.wap.wabi.band.entity.BandStudent
+import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
-import com.wap.wabi.student.entity.Student
-import com.wap.wabi.student.repository.StudentRepository
 import org.apache.poi.ss.usermodel.*
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -15,20 +12,19 @@ import java.time.LocalDate
 
 @Service
 class FileToBandStudentTranslator(
-    private val studentRepository: StudentRepository,
 ) {
-    fun processFile(file: MultipartFile, band: Band): List<BandStudent> {
+    fun translateFileToDto(file: MultipartFile): List<BandStudentDto> {
         return when {
-            file.originalFilename?.endsWith(".csv") == true -> processCsvFile(file, band)
-            file.originalFilename?.endsWith(".xlsx") == true || file.originalFilename?.endsWith(".xls") == true -> processExcelFile(file, band)
+            file.originalFilename?.endsWith(".csv") == true -> processCsvFile(file)
+            file.originalFilename?.endsWith(".xlsx") == true || file.originalFilename?.endsWith(".xls") == true -> processExcelFile(file)
             else -> throw RestApiException(ErrorCode.BAD_REQUEST_FILE_TYPE)
         }
     }
 
-    private fun processCsvFile(file: MultipartFile, band: Band): List<BandStudent> {
+    private fun processCsvFile(file: MultipartFile): List<BandStudentDto> {
         val reader = CSVReader(InputStreamReader(file.inputStream))
         val headerMap = mutableMapOf<String, Int>()
-        val bandStudents = mutableListOf<BandStudent>()
+        val bandStudentDtos = mutableListOf<BandStudentDto>()
 
         // 첫 번째 줄을 읽어 헤더를 처리합니다.
         reader.readNext()
@@ -44,11 +40,17 @@ class FileToBandStudentTranslator(
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
                 continue
             }
-            val student = getStudent(studentId, studentName)
 
-            val bandStudent = BandStudent(
-                band,
-                student,
+            val clubName = headerMap["동아리명"]?.let {
+                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+            }
+            if (clubName.isNullOrBlank()) {
+                continue
+            }
+
+            val bandStudentDto = BandStudentDto(
+                studentId,
+                studentName,
                 headerMap["동아리명"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
                 headerMap["직책"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
                 headerMap["가입일자"]?.let {
@@ -59,17 +61,17 @@ class FileToBandStudentTranslator(
                 headerMap["연락처"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
                 headerMap["학적상태"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null }
             )
-            bandStudents.add(bandStudent)
+            bandStudentDtos.add(bandStudentDto)
         }
 
-        return bandStudents
+        return bandStudentDtos
     }
 
-    private fun processExcelFile(file: MultipartFile, band: Band): List<BandStudent> {
+    private fun processExcelFile(file: MultipartFile): List<BandStudentDto> {
         val workbook: Workbook = WorkbookFactory.create(file.inputStream)
         val sheet = workbook.getSheetAt(0)
         val headerMap = mutableMapOf<String, Int>()
-        val bandStudents = mutableListOf<BandStudent>()
+        val bandStudentDtos = mutableListOf<BandStudentDto>()
 
         // 첫 번째 행(헤더)을 읽어 컬럼 이름과 인덱스를 매핑합니다.
         val headerRow = sheet.getRow(1) // 1번째 줄이 헤더인 경우, 1로 지정
@@ -85,11 +87,16 @@ class FileToBandStudentTranslator(
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
                 continue
             }
-            val student = getStudent(studentId, studentName)
+            val clubName = headerMap["동아리명"]?.let {
+                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+            }
+            if (clubName.isNullOrBlank()) {
+                continue
+            }
 
-            val bandStudent = BandStudent(
-                band,
-                student,
+            val bandStudentDto = BandStudentDto(
+                studentId,
+                studentName,
                 headerMap["동아리명"]?.let {
                     getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
                 },
@@ -113,12 +120,12 @@ class FileToBandStudentTranslator(
                 }
             )
 
-            bandStudents.add(bandStudent)
+            bandStudentDtos.add(bandStudentDto)
         }
 
         workbook.close()
 
-        return bandStudents
+        return bandStudentDtos
     }
 
     private fun getCellValueAsString(cell: Cell?): String {
@@ -134,10 +141,5 @@ class FileToBandStudentTranslator(
             CellType.FORMULA -> cell.cellFormula
             else -> ""
         }
-    }
-
-    fun getStudent(studentId : String, name : String) : Student {
-        val student = studentRepository.findById(studentId)
-        return if (student.isPresent) student.get() else studentRepository.save(Student(studentId, name))
     }
 }
