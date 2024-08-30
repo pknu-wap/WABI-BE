@@ -14,11 +14,11 @@ class EventController (
 ){
     @GetMapping("/{eventId}")
     fun getCheckInTable(@PathVariable("eventId")eventId : Long, @RequestParam filter: CheckInTableFilter) : ResponseEntity<Response> {
-        return ResponseEntity(eventService.getCheckInTable(eventId, filter), HttpStatus.OK)
+        return ResponseEntity(eventService.getCheckInTable(eventId = eventId, filter = filter), HttpStatus.OK)
     }
 
     @GetMapping("/{eventId}/status")
     fun getCheckStatus(@PathVariable("eventId") eventId: Long) : ResponseEntity<Response>{
-        return ResponseEntity(eventService.getCheckInStatus(eventId), HttpStatus.OK)
+        return ResponseEntity(eventService.getCheckInStatus(eventId = eventId), HttpStatus.OK)
     }
 }

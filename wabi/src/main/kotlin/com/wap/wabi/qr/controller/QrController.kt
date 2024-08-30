@@ -19,6 +19,6 @@ class QrController (
 ){
     @GetMapping("/check-in")
     fun checkIn(@RequestBody checkInRequest: CheckInRequest) : ResponseEntity<Response>{
-        return ResponseEntity(qrService.checkIn(checkInRequest), HttpStatus.OK)
+        return ResponseEntity(qrService.checkIn(checkInRequest = checkInRequest), HttpStatus.OK)
     }
 }
