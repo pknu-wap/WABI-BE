@@ -16,11 +16,11 @@ class BandEnrollController (
 ){
     @PostMapping("{bandId}/members/enrollments/file")
     fun enrollByFile(@PathVariable bandId: Long, @RequestParam("file") file : MultipartFile) : ResponseEntity<Response> {
-        return ResponseEntity(bandEnrollService.enrollByFile(bandId, file), HttpStatus.OK)
+        return ResponseEntity(bandEnrollService.enrollByFile(bandId = bandId, file = file), HttpStatus.OK)
     }
 
     @PostMapping("{bandId}/members/enrollments/manual")
     fun enrollByManual(@PathVariable bandId: Long, @RequestBody request : EnrollRequest) : ResponseEntity<Response> {
-        return ResponseEntity(bandEnrollService.enrollBandStudent(bandId, request), HttpStatus.OK)
+        return ResponseEntity(bandEnrollService.enrollBandStudent(bandId = bandId, request = request), HttpStatus.OK)
     }
 }

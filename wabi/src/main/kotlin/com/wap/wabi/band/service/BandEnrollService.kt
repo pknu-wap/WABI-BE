@@ -46,7 +46,7 @@ class BandEnrollService(
                 bandStudentDto.academicStatus
             )
 
-            if(!alreadyHasBandStudent(bandStudentDto.club.toString(), student) && !containsBandStudent(bandStudents, bandStudentDto.club.toString(), student))
+            if(!alreadyHasBandStudent(bandStudentDto.club.toString(), student) && !containsSameStudentIdAndClub(bandStudents, bandStudentDto.club.toString(), student))
                 bandStudents.add(bandStudent)
 
         }
@@ -55,7 +55,7 @@ class BandEnrollService(
         return Response("200", "", "");
     }
 
-    fun containsBandStudent(list: List<BandStudent>, club: String, student: Student): Boolean {
+    fun containsSameStudentIdAndClub(list: List<BandStudent>, club: String, student: Student): Boolean {
         return list.any { it.club == club && it.student == student }
     }
 
