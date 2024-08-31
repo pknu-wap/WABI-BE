@@ -2,7 +2,6 @@ package com.wap.wabi.student.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Getter;
 
 @Entity
 public class Student {
