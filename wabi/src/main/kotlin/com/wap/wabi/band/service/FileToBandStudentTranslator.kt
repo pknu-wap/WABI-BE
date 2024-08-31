@@ -15,10 +15,11 @@ class FileToBandStudentTranslator(
 ) {
     fun translateFileToDto(file: MultipartFile): List<BandStudentDto> {
         return when {
-            file.originalFilename?.endsWith(".csv") == true -> processCsvFile(file)
-            file.originalFilename?.endsWith(".xlsx") == true || file.originalFilename?.endsWith(".xls") == true -> processExcelFile(file)
+            file.originalFilename?.endsWith(".csv") ?: false -> processCsvFile(file)
+            file.originalFilename?.endsWith(".xlsx") ?: false || file.originalFilename?.endsWith(".xls") ?: false -> processExcelFile(file)
             else -> throw RestApiException(ErrorCode.BAD_REQUEST_FILE_TYPE)
         }
+
     }
 
     private fun processCsvFile(file: MultipartFile): List<BandStudentDto> {
