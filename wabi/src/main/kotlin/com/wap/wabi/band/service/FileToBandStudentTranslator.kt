@@ -34,8 +34,7 @@ class FileToBandStudentTranslator(
             headerMap[columnName] = index
         }
 
-        var nextLine: Array<String>?
-        while (reader.readNext().also { nextLine = it } != null) {
+        for (nextLine in reader) {
             val studentId = nextLine!![headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUNM)]
             val studentName = nextLine!![headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUNM)]
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
