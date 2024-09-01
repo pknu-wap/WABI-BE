@@ -18,7 +18,7 @@ enum class ErrorCode (val code: String? = null, val message: String? = null){
     METHOD_NOT_ALLOWED("405", "Not allowed method."),
 
     INTERNAL_SERVER_ERROR("500", "Server error."),
-    
+
     ALREADY_CHECK_IN("600-1","이미 체크인 했습니다."),
 
 }

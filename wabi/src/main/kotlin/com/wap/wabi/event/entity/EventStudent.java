@@ -15,7 +15,7 @@ public class EventStudent {
     private Event event;
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
-    private String group;
+    private String club;
     @Enumerated(EnumType.STRING)
     private EventStudentStatus status;
     private LocalDateTime updatedAt;
