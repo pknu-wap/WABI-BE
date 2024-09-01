@@ -1,5 +1,6 @@
 package com.wap.wabi.qr.service
 
+import com.wap.wabi.common.payload.response.Response
 import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.qr.payload.request.CheckInRequest
@@ -16,7 +17,7 @@ class QrService (
     val eventStudentRepository: EventStudentRepository,
     val studentRepository: StudentRepository
 ){
-    fun checkIn(checkInRequest: CheckInRequest) {
+    fun checkIn(checkInRequest: CheckInRequest) : Response {
         val student = studentRepository.findById(checkInRequest.studentId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_STUDENT) }
 
         val event = eventRepository.findById(checkInRequest.eventId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
@@ -28,5 +29,7 @@ class QrService (
         eventStudent.checkIn()
 
         eventStudentRepository.save(eventStudent)
+
+        return Response("200", "체크인에 성공하였습니다. ", "")
     }
 }

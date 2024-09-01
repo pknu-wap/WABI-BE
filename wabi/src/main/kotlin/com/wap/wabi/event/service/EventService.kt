@@ -34,8 +34,4 @@ class EventService(
 
         return Response("200", "", CheckInStatusCount(checkInCount, notCheckInCount))
     }
-
-
-
-
 }

@@ -4,7 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("plugin.jpa") version "1.9.22"
-    kotlin("kapt") version "1.9.22"
+//    kotlin("kapt") version "1.9.22"
 }
 
 group = "com.wap"
@@ -40,14 +40,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    compileOnly("org.projectlombok:lombok")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     runtimeOnly("com.mysql:mysql-connector-j")
-    implementation("mysql:mysql-connector-java:8.0.26")
 }
 
 kotlin {
