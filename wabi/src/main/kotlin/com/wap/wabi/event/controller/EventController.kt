@@ -30,7 +30,7 @@ class EventController (
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    @GetMapping("/check-in/qr")
+    @GetMapping("/check-in")
     fun checkIn(@RequestBody checkInRequest : CheckInRequest) : ResponseEntity<Response> {
         eventService.checkIn(checkInRequest = checkInRequest)
 
