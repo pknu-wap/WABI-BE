@@ -1,6 +1,5 @@
 package com.wap.wabi.event.service
 
-import com.wap.wabi.common.payload.response.Response
 import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.payload.response.CheckInStatusCount
 import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter
@@ -9,12 +8,15 @@ import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
+import com.wap.wabi.event.payload.request.CheckInRequest
+import com.wap.wabi.student.repository.StudentRepository
 import org.springframework.stereotype.Service
 
 @Service
 class EventService(
 	private val eventRepository : EventRepository,
 	private val eventStudentRepository : EventStudentRepository,
+	private val studentRepository : StudentRepository
 ) {
 	fun getCheckInTable(eventId : Long, filter : CheckInTableFilter) : List<EventStudentData> {
 		val event =
@@ -35,5 +37,19 @@ class EventService(
 		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN.toString())
 
 		return CheckInStatusCount(checkInCount, notCheckInCount)
+	}
+
+	fun checkIn(checkInRequest : CheckInRequest){
+		val student = studentRepository.findById(checkInRequest.studentId)
+			.orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_STUDENT) }
+		val event = eventRepository.findById(checkInRequest.eventId)
+			.orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
+		val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
+			.orElseThrow { throw RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
+
+		check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
+		eventStudent.checkIn()
+
+		eventStudentRepository.save(eventStudent)
 	}
 }

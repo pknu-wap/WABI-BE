@@ -1,4 +1,4 @@
-package com.wap.wabi.qr.payload.request
+package com.wap.wabi.event.payload.request
 
 data class CheckInRequest(
     val studentId : String,
