@@ -20,12 +20,12 @@ class BandEnrollService(
     private val studentRepository: StudentRepository,
     private val fileToBandStudentTranslator: FileToBandStudentTranslator
 ) {
-    fun enrollByFile(bandId: Long, file: MultipartFile): Response {
+    fun enrollByFile(bandId: Long, file: MultipartFile): Long {
         val request = EnrollRequest(fileToBandStudentTranslator.translateFileToDto(file))
         return enrollBandStudent(bandId, request)
     }
 
-    fun enrollBandStudent(bandId: Long, request: EnrollRequest): Response {
+    fun enrollBandStudent(bandId: Long, request: EnrollRequest): Long {
         val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_BAND) }
 
         var bandStudents : MutableList<BandStudent> = mutableListOf()
@@ -52,7 +52,7 @@ class BandEnrollService(
         }
         bandStudentRepository.saveAll(bandStudents)
 
-        return Response("200", "", "");
+        return bandId;
     }
 
     fun containsSameStudentIdAndClub(list: List<BandStudent>, club: String, student: Student): Boolean {

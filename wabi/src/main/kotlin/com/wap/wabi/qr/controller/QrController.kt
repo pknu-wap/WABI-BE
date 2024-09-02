@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/qr")
-class QrController (
-    val qrService : QrService
-){
-    @GetMapping("/check-in")
-    fun checkIn(@RequestBody checkInRequest: CheckInRequest) : ResponseEntity<Response>{
-        return ResponseEntity(qrService.checkIn(checkInRequest = checkInRequest), HttpStatus.OK)
-    }
+class QrController(
+	val qrService : QrService
+) {
+	@GetMapping("/check-in")
+	fun checkIn(@RequestBody checkInRequest : CheckInRequest) : ResponseEntity<Response> {
+		qrService.checkIn(checkInRequest = checkInRequest)
+
+		val response = Response.ok(data = null);
+		return ResponseEntity(response, HttpStatus.OK)
+	}
 }

@@ -14,11 +14,11 @@ class BandService(
     private val bandStudentRepository: BandStudentRepository
 ){
 
-    fun getBandStudents(bandId : Long) : Response{
+    fun getBandStudents(bandId : Long) : List<BandStudentData>{
         val band = bandRepository.findById(bandId).orElseThrow{throw RestApiException(ErrorCode.BAD_REQUEST_BAND)}
 
         val bandStudents = bandStudentRepository.findAllByBand(band)
 
-        return Response("200", "",  BandStudentData.of(bandStudents))
+        return BandStudentData.of(bandStudents)
     }
 }
