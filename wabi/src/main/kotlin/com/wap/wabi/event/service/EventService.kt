@@ -13,25 +13,27 @@ import org.springframework.stereotype.Service
 
 @Service
 class EventService(
-    private val eventRepository: EventRepository,
-    private val eventStudentRepository: EventStudentRepository,
+	private val eventRepository : EventRepository,
+	private val eventStudentRepository : EventStudentRepository,
 ) {
-    fun getCheckInTable (eventId : Long, filter : CheckInTableFilter) : List<EventStudentData>{
-        val event = eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
+	fun getCheckInTable(eventId : Long, filter : CheckInTableFilter) : List<EventStudentData> {
+		val event =
+			eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
 
-        val eventStudentData = when (filter){
-            CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
-            else -> EventStudentData.of(eventStudentRepository.findAllByEventAndStatus(event,filter.toString()))
-        }
-        return eventStudentData
-    }
+		val eventStudentData = when(filter) {
+			CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
+			else -> EventStudentData.of(eventStudentRepository.findAllByEventAndStatus(event, filter.toString()))
+		}
+		return eventStudentData
+	}
 
-    fun getCheckInStatus(eventId: Long) : CheckInStatusCount{
-        val event = eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
+	fun getCheckInStatus(eventId : Long) : CheckInStatusCount {
+		val event = eventRepository.findById(eventId)
+			.orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
 
-        val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN.toString())
-        val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN.toString())
+		val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN.toString())
+		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN.toString())
 
-        return CheckInStatusCount(checkInCount, notCheckInCount)
-    }
+		return CheckInStatusCount(checkInCount, notCheckInCount)
+	}
 }

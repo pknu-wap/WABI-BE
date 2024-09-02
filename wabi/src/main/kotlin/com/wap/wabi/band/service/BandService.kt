@@ -10,15 +10,14 @@ import org.springframework.stereotype.Service
 
 @Service
 class BandService(
-    private val bandRepository: BandRepository,
-    private val bandStudentRepository: BandStudentRepository
-){
+	private val bandRepository : BandRepository, private val bandStudentRepository : BandStudentRepository
+) {
 
-    fun getBandStudents(bandId : Long) : List<BandStudentData>{
-        val band = bandRepository.findById(bandId).orElseThrow{throw RestApiException(ErrorCode.BAD_REQUEST_BAND)}
+	fun getBandStudents(bandId : Long) : List<BandStudentData> {
+		val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_BAND) }
 
-        val bandStudents = bandStudentRepository.findAllByBand(band)
+		val bandStudents = bandStudentRepository.findAllByBand(band)
 
-        return BandStudentData.of(bandStudents)
-    }
+		return BandStudentData.of(bandStudents)
+	}
 }
