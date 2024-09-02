@@ -14,7 +14,7 @@ class BandService(
 ) {
 
 	fun getBandStudents(bandId : Long) : List<BandStudentData> {
-		val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_BAND) }
+		val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
 
 		val bandStudents = bandStudentRepository.findAllByBand(band)
 

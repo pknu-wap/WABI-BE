@@ -20,7 +20,7 @@ class EventService(
 ) {
 	fun getCheckInTable(eventId : Long, filter : CheckInTableFilter) : List<EventStudentData> {
 		val event =
-			eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
+			eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
 		val eventStudentData = when(filter) {
 			CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
@@ -31,7 +31,7 @@ class EventService(
 
 	fun getCheckInStatus(eventId : Long) : CheckInStatusCount {
 		val event = eventRepository.findById(eventId)
-			.orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
+			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
 		val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN.toString())
 		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN.toString())
@@ -41,9 +41,9 @@ class EventService(
 
 	fun checkIn(checkInRequest : CheckInRequest){
 		val student = studentRepository.findById(checkInRequest.studentId)
-			.orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_STUDENT) }
+			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
 		val event = eventRepository.findById(checkInRequest.eventId)
-			.orElseThrow { throw RestApiException(ErrorCode.BAD_REQUEST_EVENT) }
+			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 		val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
 			.orElseThrow { throw RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
 
