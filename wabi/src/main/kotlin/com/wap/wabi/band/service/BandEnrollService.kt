@@ -36,8 +36,8 @@ class BandEnrollService(
 				band, student, bandStudentDto.club, bandStudentDto.position, bandStudentDto.joinDate, bandStudentDto.college, bandStudentDto.major, bandStudentDto.tel, bandStudentDto.academicStatus
 			)
 
-			if(!alreadyHasBandStudent(bandStudentDto.club.toString(), student) && !containsSameStudentIdAndClub(
-					bandStudents, bandStudentDto.club.toString(), student
+			if(!alreadyHasBandStudent(bandStudentDto.club, student) && !containsSameStudentIdAndClub(
+					bandStudents, bandStudentDto.club, student
 				)
 			) bandStudents.add(bandStudent)
 
@@ -47,11 +47,11 @@ class BandEnrollService(
 		return bandId;
 	}
 
-	private fun containsSameStudentIdAndClub(list : List<BandStudent>, club : String, student : Student) : Boolean {
+	private fun containsSameStudentIdAndClub(list : List<BandStudent>, club : String?, student : Student) : Boolean {
 		return list.any { it.club == club && it.student == student }
 	}
 
-	private fun alreadyHasBandStudent(club : String, student : Student) : Boolean {
+	private fun alreadyHasBandStudent(club : String?, student : Student) : Boolean {
 		val bandStudent = bandStudentRepository.findByClubAndStudent(club, student)
 		return bandStudent.isPresent
 	}
