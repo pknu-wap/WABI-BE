@@ -24,6 +24,6 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     private fun handleExceptionInternal(errorCode: ErrorCode): ResponseEntity<Response> {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Response(errorCode.code.toString(), errorCode.message.toString(), ""))
+            .body(Response(errorCode.code, errorCode.message, data = null))
     }
 }

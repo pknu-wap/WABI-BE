@@ -1,5 +1,5 @@
 package com.wap.wabi.exception
-enum class ErrorCode (val code: String? = null, val message: String? = null){
+enum class ErrorCode (val code: String = "", val message: String = ""){
     BAD_REQUEST("400", "Invalid request."),
     BAD_REQUEST_BAND("400-1", "밴드Id를 확인해주세요."),
     BAD_REQUEST_EVENT("400-2", "이벤트Id를 확인해주세요."),
