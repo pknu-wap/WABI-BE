@@ -2,7 +2,14 @@ package com.wap.wabi.event.entity;
 
 import com.wap.wabi.event.entity.Enum.EventStudentStatus;
 import com.wap.wabi.student.entity.Student;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDateTime;
 
