@@ -47,16 +47,16 @@ class BandEnrollService(
 		return bandId;
 	}
 
-	fun containsSameStudentIdAndClub(list : List<BandStudent>, club : String, student : Student) : Boolean {
+	private fun containsSameStudentIdAndClub(list : List<BandStudent>, club : String, student : Student) : Boolean {
 		return list.any { it.club == club && it.student == student }
 	}
 
-	fun alreadyHasBandStudent(club : String, student : Student) : Boolean {
+	private fun alreadyHasBandStudent(club : String, student : Student) : Boolean {
 		val bandStudent = bandStudentRepository.findByClubAndStudent(club, student)
 		return bandStudent.isPresent
 	}
 
-	fun getStudent(studentId : String, name : String) : Student {
+	private fun getStudent(studentId : String, name : String) : Student {
 		val student = studentRepository.findById(studentId)
 		return if(student.isPresent) student.get() else studentRepository.save(Student(studentId, name))
 	}
