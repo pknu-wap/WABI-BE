@@ -26,7 +26,7 @@ class BandEnrollService(
 	fun enrollBandStudent(bandId : Long, request : EnrollRequest) : Long {
 		val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
 
-		var bandStudents : MutableList<BandStudent> = mutableListOf()
+		val bandStudents : MutableList<BandStudent> = mutableListOf()
 		request.bandStudentDtos.map { bandStudentDto ->
 			val studentId = bandStudentDto.studentId
 			val studentName = bandStudentDto.name
