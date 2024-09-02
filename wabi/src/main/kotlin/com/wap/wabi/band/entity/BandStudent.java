@@ -43,7 +43,7 @@ public class BandStudent {
         this.academicStatus = academicStatus;
     }
 
-    public BandStudent() {
+    protected BandStudent() {
 
     }
 
