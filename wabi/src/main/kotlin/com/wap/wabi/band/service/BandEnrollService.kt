@@ -1,11 +1,9 @@
 package com.wap.wabi.band.service
 
-import com.wap.wabi.band.entity.Band
 import com.wap.wabi.band.entity.BandStudent
 import com.wap.wabi.band.payload.request.EnrollRequest
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
-import com.wap.wabi.common.payload.response.Response
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.entity.Student
@@ -35,21 +33,11 @@ class BandEnrollService(
 			val student = getStudent(studentId, studentName)
 
 			val bandStudent = BandStudent(
-				band,
-				student,
-				bandStudentDto.club,
-				bandStudentDto.position,
-				bandStudentDto.joinDate,
-				bandStudentDto.college,
-				bandStudentDto.major,
-				bandStudentDto.tel,
-				bandStudentDto.academicStatus
+				band, student, bandStudentDto.club, bandStudentDto.position, bandStudentDto.joinDate, bandStudentDto.college, bandStudentDto.major, bandStudentDto.tel, bandStudentDto.academicStatus
 			)
 
 			if(!alreadyHasBandStudent(bandStudentDto.club.toString(), student) && !containsSameStudentIdAndClub(
-					bandStudents,
-					bandStudentDto.club.toString(),
-					student
+					bandStudents, bandStudentDto.club.toString(), student
 				)
 			) bandStudents.add(bandStudent)
 

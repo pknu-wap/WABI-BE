@@ -5,7 +5,7 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 data class Response(
     val statusCode : String,
     val message : String,
-    val data : Any?
+    val data : Any? = null
 ){
     companion object {
         private const val OK_STATUS_CODE = "200"
