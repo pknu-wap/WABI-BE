@@ -8,6 +8,7 @@ import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.entity.Student
 import com.wap.wabi.student.repository.StudentRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -18,11 +19,13 @@ class BandEnrollService(
 	private val studentRepository : StudentRepository,
 	private val fileToBandStudentTranslator : FileToBandStudentTranslator
 ) {
+	@Transactional
 	fun enrollByFile(bandId : Long, file : MultipartFile) : Long {
 		val request = EnrollRequest(fileToBandStudentTranslator.translateFileToDto(file))
 		return enrollBandStudent(bandId, request)
 	}
 
+	@Transactional
 	fun enrollBandStudent(bandId : Long, request : EnrollRequest) : Long {
 		val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
 

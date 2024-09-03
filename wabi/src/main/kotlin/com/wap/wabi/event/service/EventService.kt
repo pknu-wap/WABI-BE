@@ -10,6 +10,7 @@ import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.student.repository.StudentRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,6 +19,7 @@ class EventService(
 	private val eventStudentRepository : EventStudentRepository,
 	private val studentRepository : StudentRepository
 ) {
+	@Transactional
 	fun getCheckInTable(eventId : Long, filter : CheckInTableFilter) : List<EventStudentData> {
 		val event =
 			eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
@@ -28,17 +30,18 @@ class EventService(
 		}
 		return eventStudentData
 	}
-
+	@Transactional
 	fun getCheckInStatus(eventId : Long) : CheckInStatusCount {
 		val event = eventRepository.findById(eventId)
 			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-		val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN.toString())
-		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN.toString())
+		val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN)
+		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN)
 
 		return CheckInStatusCount(checkInCount, notCheckInCount)
 	}
 
+	@Transactional
 	fun checkIn(checkInRequest : CheckInRequest){
 		val student = studentRepository.findById(checkInRequest.studentId)
 			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
