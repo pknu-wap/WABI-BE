@@ -16,34 +16,27 @@ public class Event {
     private LocalDateTime startAt;
 
     private Event(builder builder) {
-        this.id = builder.id;
         this.name = builder.name;
         this.startAt = builder.startAt;
         this.endAt = builder.endAt;
     }
 
     public static class builder {
-        private Long id;
         private String name;
         private LocalDateTime startAt;
         private LocalDateTime endAt;
 
-        public builder setId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public builder setName(String name) {
+        public builder name(String name) {
             this.name = name;
             return this;
         }
 
-        public builder setStartAt(LocalDateTime startAt) {
+        public builder startAt(LocalDateTime startAt) {
             this.startAt = startAt;
             return this;
         }
 
-        public builder setEndAt(LocalDateTime endAt) {
+        public builder endAt(LocalDateTime endAt) {
             this.endAt = endAt;
             return this;
         }

@@ -29,7 +29,6 @@ public class EventStudent {
     private LocalDateTime checkedInAt;
 
     private EventStudent(builder builder) {
-        this.id = builder.id;
         this.event = builder.event;
         this.student = builder.student;
         this.club = builder.club;
@@ -39,7 +38,6 @@ public class EventStudent {
     }
 
     public static class builder {
-        private Long id;
         private Event event;
         private Student student;
         private String club;
@@ -47,37 +45,32 @@ public class EventStudent {
         private LocalDateTime updatedAt;
         private LocalDateTime checkedInAt;
 
-        public builder setId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public builder setEvent(Event event) {
+        public builder event(Event event) {
             this.event = event;
             return this;
         }
 
-        public builder setStudent(Student student) {
+        public builder student(Student student) {
             this.student = student;
             return this;
         }
 
-        public builder setClub(String club) {
+        public builder club(String club) {
             this.club = club;
             return this;
         }
 
-        public builder setStatus(EventStudentStatus status) {
+        public builder status(EventStudentStatus status) {
             this.status = status;
             return this;
         }
 
-        public builder setUpdatedAt(LocalDateTime updatedAt) {
+        public builder updatedAt(LocalDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
 
-        public builder setCheckedInAt(LocalDateTime checkedInAt) {
+        public builder checkedInAt(LocalDateTime checkedInAt) {
             this.checkedInAt = checkedInAt;
             return this;
         }
