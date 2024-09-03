@@ -9,12 +9,12 @@ import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.DateUtil
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStreamReader
 import java.time.LocalDate
 
-@Service
+@Component
 class FileToBandStudentTranslator(
 ) {
     fun translateFileToDto(file: MultipartFile): List<BandStudentDto> {
