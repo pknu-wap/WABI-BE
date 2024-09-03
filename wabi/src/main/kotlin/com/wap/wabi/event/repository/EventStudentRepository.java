@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,6 @@ public interface EventStudentRepository extends JpaRepository<EventStudent, Long
 
     List<EventStudent> findAllByEventAndStatus(Event event, String status);
 
-    @Query("SELECT COUNT(*) FROM EventStudent es WHERE es.status=:status AND es.event =:event")
+    @Query("SELECT COUNT(*) FROM EventStudent es WHERE es.status=:status AND es.event=:event")
     int getEventStudentStatusCount(@Param("event") Event event, @Param("status") EventStudentStatus status);
 }

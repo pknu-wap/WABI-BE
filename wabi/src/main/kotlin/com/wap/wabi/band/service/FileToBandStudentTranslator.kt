@@ -41,9 +41,9 @@ class FileToBandStudentTranslator(
 
         for (nextLine in reader) {
             val studentId =
-                nextLine!![headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUNM)]
+                nextLine!![headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUMN)]
             val studentName =
-                nextLine!![headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUNM)]
+                nextLine!![headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)]
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
                 continue
             }
@@ -91,12 +91,12 @@ class FileToBandStudentTranslator(
 
             val studentId = getCellValueAsString(
                 row.getCell(
-                    headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUNM)
+                    headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUMN)
                 )
             )
             val studentName = getCellValueAsString(
                 row.getCell(
-                    headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUNM)
+                    headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)
                 )
             )
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {

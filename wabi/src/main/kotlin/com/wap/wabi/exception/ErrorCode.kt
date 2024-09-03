@@ -8,8 +8,8 @@ enum class ErrorCode(
     val message: String = ""
 ) {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "400", "Invalid request."),
-    BAD_REQUEST_FILE_NAME_COLUNM(HttpStatus.BAD_REQUEST, "400-11", "파일에 '이름' 칼럼을 확인해주세요."),
-    BAD_REQUEST_FILE_STUDENT_ID_COLUNM(HttpStatus.BAD_REQUEST, "400-12", "파일에 '학번' 칼럼을 확인해주세요."),
+    BAD_REQUEST_FILE_NAME_COLUMN(HttpStatus.BAD_REQUEST, "400-11", "파일에 '이름' 칼럼을 확인해주세요."),
+    BAD_REQUEST_FILE_STUDENT_ID_COLUMN(HttpStatus.BAD_REQUEST, "400-12", "파일에 '학번' 칼럼을 확인해주세요."),
     BAD_REQUEST_FILE_TYPE(HttpStatus.BAD_REQUEST, "400-13", "파일 형식이 맞지 않습니다.(엑셀, csv)"),
     BAD_REQUEST_STUDENT_ID(HttpStatus.BAD_REQUEST, "400-2", "학번이 형식에 맞지 않습니다."),
 
