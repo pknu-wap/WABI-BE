@@ -8,6 +8,7 @@ import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.entity.Student
 import com.wap.wabi.student.repository.StudentRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -18,11 +19,13 @@ class BandEnrollService(
 	private val studentRepository : StudentRepository,
 	private val fileToBandStudentTranslator : FileToBandStudentTranslator
 ) {
+	@Transactional
 	fun enrollByFile(bandId : Long, file : MultipartFile) : Long {
 		val request = EnrollRequest(fileToBandStudentTranslator.translateFileToDto(file))
 		return enrollBandStudent(bandId, request)
 	}
 
+	@Transactional
 	fun enrollBandStudent(bandId : Long, request : EnrollRequest) : Long {
 		val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
 
@@ -30,7 +33,8 @@ class BandEnrollService(
 		request.bandStudentDtos.map { bandStudentDto ->
 			val studentId = bandStudentDto.studentId
 			val studentName = bandStudentDto.name
-			val student = getStudent(studentId, studentName)
+			val student = studentRepository.findById(studentId)
+				.orElseGet { studentRepository.save(Student(studentId, studentName)) }
 
 			val bandStudent = BandStudent(
 				band, student, bandStudentDto.club, bandStudentDto.position, bandStudentDto.joinDate, bandStudentDto.college, bandStudentDto.major, bandStudentDto.tel, bandStudentDto.academicStatus
@@ -56,8 +60,4 @@ class BandEnrollService(
 		return bandStudent.isPresent
 	}
 
-	private fun getStudent(studentId : String, name : String) : Student {
-		val student = studentRepository.findById(studentId)
-		return if(student.isPresent) student.get() else studentRepository.save(Student(studentId, name))
-	}
 }
