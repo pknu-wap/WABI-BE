@@ -5,9 +5,8 @@ import com.wap.wabi.band.entity.Band
 object BandFixture {
     fun createBand(id: Long): Band {
         return Band.builder()
-            .setId(id)
-            .setAdminId(1)
-            .setBandName("TestBand")
+            .adminId(1)
+            .bandName("TestBand")
             .build()
     }
 }
