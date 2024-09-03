@@ -27,11 +27,10 @@ class BandServiceTest {
     private lateinit var bandStudentRepository: BandStudentRepository
 
     @Test
-    fun `밴드에 속한 학생들을 조회한다`() {
+    fun 밴드에_속한_학생들을_조회한다() {
         // Given
         val bandId = 1L
-        Band(id)
-        val band = Band(id = bandId, name = "Test Band")
+        val band = Band(bandId, "Test Band")
         val bandStudents = listOf(
             BandStudent(id = 1L, name = "Student 1", band = band),
             BandStudent(id = 2L, name = "Student 2", band = band)
