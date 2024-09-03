@@ -11,6 +11,7 @@ public class Band {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long adminId;
+    private String bandName;
 
     public Long getId() {
         return id;
@@ -18,5 +19,9 @@ public class Band {
 
     public Long getAdminId() {
         return adminId;
+    }
+
+    public String getBandName() {
+        return bandName;
     }
 }
