@@ -16,20 +16,21 @@ import org.springframework.web.multipart.MultipartFile
 @Controller
 @RequestMapping("/api/bands/")
 class BandEnrollController(
-	private val bandEnrollService : BandEnrollService
+    private val bandEnrollService: BandEnrollService
 ) {
-	@PostMapping("{bandId}/members/enrollments/file")
-	fun enrollByFile(
-        @PathVariable bandId : Long,
-        @RequestParam("file") file : MultipartFile
-	) : ResponseEntity<Response> {
-		val response = Response.ok(data = "bandId : " + bandEnrollService.enrollByFile(bandId = bandId, file = file))
-		return ResponseEntity(response, HttpStatus.OK)
-	}
+    @PostMapping("{bandId}/members/enrollments/file")
+    fun enrollByFile(
+        @PathVariable bandId: Long,
+        @RequestParam("file") file: MultipartFile
+    ): ResponseEntity<Response> {
+        val response = Response.ok(data = "bandId : " + bandEnrollService.enrollByFile(bandId = bandId, file = file))
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 
-	@PostMapping("{bandId}/members/enrollments/manual")
-	fun enrollByManual(@PathVariable bandId : Long, @RequestBody request : EnrollRequest) : ResponseEntity<Response> {
-		val response = Response.ok(data = "bandId : " + bandEnrollService.enrollBandStudent(bandId = bandId, request = request))
-		return ResponseEntity(response, HttpStatus.OK)
-	}
+    @PostMapping("{bandId}/members/enrollments/manual")
+    fun enrollByManual(@PathVariable bandId: Long, @RequestBody request: EnrollRequest): ResponseEntity<Response> {
+        val response =
+            Response.ok(data = "bandId : " + bandEnrollService.enrollBandStudent(bandId = bandId, request = request))
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 }
