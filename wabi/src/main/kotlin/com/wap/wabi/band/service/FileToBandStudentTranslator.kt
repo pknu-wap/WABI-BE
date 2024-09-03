@@ -55,18 +55,19 @@ class FileToBandStudentTranslator(
                 continue
             }
 
-            val bandStudentDto = BandStudentDto(studentId,
-                studentName,
-                headerMap["동아리명"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
-                headerMap["직책"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
-                headerMap["가입일자"]?.let {
-                    if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() }
-                        ?.let { LocalDate.parse(it.trim()) } else null
-                },
-                headerMap["대학"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
-                headerMap["학부(과)"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
-                headerMap["연락처"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null },
-                headerMap["학적상태"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null })
+            val bandStudentDto = BandStudentDto(studentId, studentName, headerMap["동아리명"]?.let {
+                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+            }, headerMap["직책"]?.let {
+                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+            }, headerMap["가입일자"]?.let {
+                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it.trim()) } else null
+            }, headerMap["대학"]?.let {
+                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+            }, headerMap["학부(과)"]?.let {
+                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+            }, headerMap["연락처"]?.let {
+                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+            }, headerMap["학적상태"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null })
             bandStudentDtos.add(bandStudentDto)
         }
 
