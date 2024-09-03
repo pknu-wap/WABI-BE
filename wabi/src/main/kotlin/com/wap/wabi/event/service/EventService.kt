@@ -15,44 +15,45 @@ import org.springframework.stereotype.Service
 
 @Service
 class EventService(
-	private val eventRepository : EventRepository,
-	private val eventStudentRepository : EventStudentRepository,
-	private val studentRepository : StudentRepository
+    private val eventRepository: EventRepository,
+    private val eventStudentRepository: EventStudentRepository,
+    private val studentRepository: StudentRepository
 ) {
-	@Transactional
-	fun getCheckInTable(eventId : Long, filter : CheckInTableFilter) : List<EventStudentData> {
-		val event =
-			eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+    @Transactional
+    fun getCheckInTable(eventId: Long, filter: CheckInTableFilter): List<EventStudentData> {
+        val event =
+            eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-		val eventStudentData = when(filter) {
-			CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
-			else -> EventStudentData.of(eventStudentRepository.findAllByEventAndStatus(event, filter.toString()))
-		}
-		return eventStudentData
-	}
-	@Transactional
-	fun getCheckInStatus(eventId : Long) : CheckInStatusCount {
-		val event = eventRepository.findById(eventId)
-			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+        val eventStudentData = when (filter) {
+            CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
+            else -> EventStudentData.of(eventStudentRepository.findAllByEventAndStatus(event, filter.toString()))
+        }
+        return eventStudentData
+    }
 
-		val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN)
-		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN)
+    @Transactional
+    fun getCheckInStatus(eventId: Long): CheckInStatusCount {
+        val event = eventRepository.findById(eventId)
+            .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-		return CheckInStatusCount(checkInCount, notCheckInCount)
-	}
+        val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN)
+        val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN)
 
-	@Transactional
-	fun checkIn(checkInRequest : CheckInRequest){
-		val student = studentRepository.findById(checkInRequest.studentId)
-			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
-		val event = eventRepository.findById(checkInRequest.eventId)
-			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
-		val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
-			.orElseThrow { throw RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
+        return CheckInStatusCount(checkInCount, notCheckInCount)
+    }
 
-		check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
-		eventStudent.checkIn()
+    @Transactional
+    fun checkIn(checkInRequest: CheckInRequest) {
+        val student = studentRepository.findById(checkInRequest.studentId)
+            .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
+        val event = eventRepository.findById(checkInRequest.eventId)
+            .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+        val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
+            .orElseThrow { throw RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
 
-		eventStudentRepository.save(eventStudent)
-	}
+        check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
+        eventStudent.checkIn()
+
+        eventStudentRepository.save(eventStudent)
+    }
 }

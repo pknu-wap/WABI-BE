@@ -28,7 +28,7 @@ public class EventStudent {
     private LocalDateTime updatedAt;
     private LocalDateTime checkedInAt;
 
-    public void checkIn(){
+    public void checkIn() {
         this.status = EventStudentStatus.CHECK_IN;
     }
 
@@ -51,6 +51,7 @@ public class EventStudent {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
     public LocalDateTime getCheckedInAt() {
         return checkedInAt;
     }

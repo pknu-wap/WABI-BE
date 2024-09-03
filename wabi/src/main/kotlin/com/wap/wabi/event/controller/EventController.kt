@@ -15,23 +15,26 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/events")
-class EventController (
+class EventController(
     private val eventService: EventService
-){
+) {
     @GetMapping("/{eventId}")
-    fun getCheckInTable(@PathVariable("eventId")eventId : Long, @RequestParam filter: CheckInTableFilter) : ResponseEntity<Response> {
+    fun getCheckInTable(
+        @PathVariable("eventId") eventId: Long,
+        @RequestParam filter: CheckInTableFilter
+    ): ResponseEntity<Response> {
         val response = Response.ok(data = eventService.getCheckInTable(eventId = eventId, filter = filter))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
     @GetMapping("/{eventId}/status")
-    fun getCheckStatus(@PathVariable("eventId") eventId: Long) : ResponseEntity<Response>{
+    fun getCheckStatus(@PathVariable("eventId") eventId: Long): ResponseEntity<Response> {
         val response = Response.ok(data = eventService.getCheckInStatus(eventId = eventId))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
     @GetMapping("/check-in")
-    fun checkIn(@RequestBody checkInRequest : CheckInRequest) : ResponseEntity<Response> {
+    fun checkIn(@RequestBody checkInRequest: CheckInRequest): ResponseEntity<Response> {
         eventService.checkIn(checkInRequest = checkInRequest)
 
         val response = Response.ok(data = null);

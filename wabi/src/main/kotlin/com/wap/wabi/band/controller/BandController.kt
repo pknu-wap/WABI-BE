@@ -15,7 +15,7 @@ class BandController(
     private val bandService: BandService
 ) {
     @GetMapping("{bandId}/students")
-    fun getBandStudents(@PathVariable bandId: Long) : ResponseEntity<Response>{
+    fun getBandStudents(@PathVariable bandId: Long): ResponseEntity<Response> {
         val response = Response.ok(data = bandService.getBandStudents(bandId = bandId))
         return ResponseEntity(response, HttpStatus.OK)
     }

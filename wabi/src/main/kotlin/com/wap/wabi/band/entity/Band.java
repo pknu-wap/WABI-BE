@@ -7,7 +7,8 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Band {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long adminId;
 
