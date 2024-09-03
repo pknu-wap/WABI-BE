@@ -13,6 +13,40 @@ public class Band {
     private Long adminId;
     private String bandName;
 
+    private Band(builder builder) {
+        this.id = builder.id;
+        this.adminId = builder.adminId;
+        this.bandName = builder.bandName;
+    }
+
+    public static class builder {
+        private Long id;
+        private Long adminId;
+        private String bandName;
+
+        public builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public builder setAdminId(Long adminId) {
+            this.adminId = adminId;
+            return this;
+        }
+
+        public builder setBandName(String bandName) {
+            this.bandName = bandName;
+            return this;
+        }
+
+        public Band build() {
+            return new Band(this);
+        }
+    }
+
+    protected Band() {
+    }
+
     public Long getId() {
         return id;
     }
