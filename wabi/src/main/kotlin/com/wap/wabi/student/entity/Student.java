@@ -39,7 +39,7 @@ public class Student {
         }
     }
 
-    public Student() {
+    protected Student() {
     }
 
     @NotNull
