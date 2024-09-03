@@ -18,12 +18,10 @@ import java.time.LocalDate
 class FileToBandStudentTranslator(
 ) {
     fun translateFileToDto(file: MultipartFile): List<BandStudentDto> {
+        val originalFilename = file.originalFilename ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_TYPE)
         return when {
-            file.originalFilename?.endsWith(".csv") ?: false -> processCsvFile(file)
-            file.originalFilename?.endsWith(".xlsx") ?: false || file.originalFilename?.endsWith(".xls") ?: false -> processExcelFile(
-                file
-            )
-
+            originalFilename.endsWith(".csv") -> processCsvFile(file)
+            originalFilename.endsWith(".xlsx") || originalFilename.endsWith(".xls") -> processExcelFile(file)
             else -> throw RestApiException(ErrorCode.BAD_REQUEST_FILE_TYPE)
         }
 
