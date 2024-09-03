@@ -15,14 +15,34 @@ public class Student {
     private String id;
     private String name;
 
-    public Student(String id, String name) {
-        this.id = id;
-        this.name = name;
+    private Student(builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+    }
+
+    public static class builder {
+        private String id;
+        private String name;
+
+        public builder id(@NotNull String id) {
+            this.id = id;
+            return this;
+        }
+
+        public builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Student build() {
+            return new Student(this);
+        }
     }
 
     public Student() {
     }
 
+    @NotNull
     public String getId() {
         return id;
     }

@@ -31,20 +31,80 @@ public class BandStudent {
     private String tel;
     private String academicStatus;
 
-    public BandStudent(Band band, Student student, String club, String position, LocalDate joinDate, String college, String major, String tel, String academicStatus) {
-        this.band = band;
-        this.student = student;
-        this.club = club;
-        this.position = position;
-        this.joinDate = joinDate;
-        this.college = college;
-        this.major = major;
-        this.tel = tel;
-        this.academicStatus = academicStatus;
+    private BandStudent(builder builder) {
+        this.band = builder.band;
+        this.student = builder.student;
+        this.club = builder.club;
+        this.position = builder.position;
+        this.joinDate = builder.joinDate;
+        this.college = builder.college;
+        this.major = builder.major;
+        this.tel = builder.tel;
+        this.academicStatus = builder.academicStatus;
+    }
+
+    public static class builder {
+        private Band band;
+        private Student student;
+        private String club;
+        private String position;
+        private LocalDate joinDate;
+        private String college;
+        private String major;
+        private String tel;
+        private String academicStatus;
+
+        public builder band(Band band) {
+            this.band = band;
+            return this;
+        }
+
+        public builder student(Student student) {
+            this.student = student;
+            return this;
+        }
+
+        public builder club(String club) {
+            this.club = club;
+            return this;
+        }
+
+        public builder position(String position) {
+            this.position = position;
+            return this;
+        }
+
+        public builder joinDate(LocalDate joinDate) {
+            this.joinDate = joinDate;
+            return this;
+        }
+
+        public builder college(String college) {
+            this.college = college;
+            return this;
+        }
+
+        public builder major(String major) {
+            this.major = major;
+            return this;
+        }
+
+        public builder tel(String tel) {
+            this.tel = tel;
+            return this;
+        }
+
+        public builder academicStatus(String academicStatus) {
+            this.academicStatus = academicStatus;
+            return this;
+        }
+
+        public BandStudent build() {
+            return new BandStudent(this);
+        }
     }
 
     protected BandStudent() {
-
     }
 
     public Long getId() {
@@ -86,4 +146,5 @@ public class BandStudent {
     public String getAcademicStatus() {
         return academicStatus;
     }
+
 }
