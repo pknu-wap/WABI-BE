@@ -73,5 +73,4 @@ class BandEnrollService(
         val bandStudent = bandStudentRepository.findByClubAndStudent(club, student)
         return bandStudent.isPresent
     }
-
 }
