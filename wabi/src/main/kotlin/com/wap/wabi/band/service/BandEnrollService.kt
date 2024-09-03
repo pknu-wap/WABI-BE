@@ -30,7 +30,8 @@ class BandEnrollService(
 		request.bandStudentDtos.map { bandStudentDto ->
 			val studentId = bandStudentDto.studentId
 			val studentName = bandStudentDto.name
-			val student = getStudent(studentId, studentName)
+			val student = studentRepository.findById(studentId)
+				.orElseGet { studentRepository.save(Student(studentId, studentName)) }
 
 			val bandStudent = BandStudent(
 				band, student, bandStudentDto.club, bandStudentDto.position, bandStudentDto.joinDate, bandStudentDto.college, bandStudentDto.major, bandStudentDto.tel, bandStudentDto.academicStatus
@@ -56,8 +57,4 @@ class BandEnrollService(
 		return bandStudent.isPresent
 	}
 
-	private fun getStudent(studentId : String, name : String) : Student {
-		val student = studentRepository.findById(studentId)
-		return if(student.isPresent) student.get() else studentRepository.save(Student(studentId, name))
-	}
 }
