@@ -33,8 +33,8 @@ class EventService(
 		val event = eventRepository.findById(eventId)
 			.orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-		val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN.toString())
-		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN.toString())
+		val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN)
+		val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN)
 
 		return CheckInStatusCount(checkInCount, notCheckInCount)
 	}
