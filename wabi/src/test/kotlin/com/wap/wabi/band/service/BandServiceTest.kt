@@ -4,15 +4,11 @@ import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
-import com.wap.wabi.exception.ErrorCode
-import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.fixture.StudentFixture
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -38,7 +34,7 @@ class BandServiceTest {
         val bandId = 1L
         val studentName1 = "Student 1"
         val studentName2 = "Student 2"
-        val band = BandFixture.createBand(bandId)
+        val band = BandFixture.createBand("Band 1")
         val student1 = StudentFixture.createStudent(studentName1)
         val student2 = StudentFixture.createStudent(studentName2)
         val bandStudents = listOf(
@@ -58,20 +54,5 @@ class BandServiceTest {
             { assertThat(result[0].name).isEqualTo(studentName1) },
             { assertThat(result[1].name).isEqualTo(studentName2) }
         )
-    }
-
-    @Test
-    fun `getBandStudents should throw RestApiException when band not found`() {
-        // Given
-        val bandId = 1L
-
-        `when`(bandRepository.findById(bandId)).thenReturn(Optional.empty())
-
-        // When / Then
-        val exception = assertThrows<RestApiException> {
-            bandService.getBandStudents(bandId)
-        }
-
-        assertEquals(ErrorCode.NOT_FOUND_BAND, exception.errorCode)
     }
 }

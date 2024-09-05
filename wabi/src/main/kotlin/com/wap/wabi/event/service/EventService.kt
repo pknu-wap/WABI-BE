@@ -62,21 +62,21 @@ class EventService(
     }
 
     @Transactional
-    fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest): Any? {
+    fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest): Long {
         val createdEvent = eventCreateRequest.toEventEntity(adminId)
-        eventRepository.save(createdEvent)
+        val savedEvent = eventRepository.save(createdEvent)
 
         val bands = bandRepository.findAllById(eventCreateRequest.bandIds)
         check(bands.size == eventCreateRequest.bandIds.size) { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
 
         val eventBands = bands.map { band ->
             EventBand.builder()
-                .event(createdEvent)
+                .event(savedEvent)
                 .band(band)
                 .build()
         }
         eventBandRepository.saveAll(eventBands)
 
-        return createdEvent.id
+        return savedEvent.id
     }
 }

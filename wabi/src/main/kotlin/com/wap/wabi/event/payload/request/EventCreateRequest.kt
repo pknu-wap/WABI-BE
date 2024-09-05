@@ -4,7 +4,7 @@ import com.wap.wabi.event.entity.Event
 import java.time.LocalDateTime
 
 data class EventCreateRequest(
-    val name: String,
+    val eventName: String,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
     val eventStudentMaxCount: Int,
@@ -13,7 +13,7 @@ data class EventCreateRequest(
     fun toEventEntity(adminId: Long): Event {
         return Event.builder()
             .adminId(adminId)
-            .name(name)
+            .name(eventName)
             .startAt(startAt)
             .endAt(endAt)
             .eventStudentMaxCount(eventStudentMaxCount)
