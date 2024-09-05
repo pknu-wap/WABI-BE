@@ -1,21 +1,15 @@
 package com.wap.wabi.band.service
 
-import com.wap.wabi.band.entity.BandStudent
 import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.band.payload.request.EnrollRequest
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
-import com.wap.wabi.event.fixture.EventFixture
 import com.wap.wabi.student.fixture.StudentFixture
 import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.anyList
-import org.mockito.ArgumentMatchers.argThat
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -32,9 +26,6 @@ class BandEnrollServiceTest {
 
     @MockBean
     private lateinit var bandRepository: BandRepository
-
-    @MockBean
-    private lateinit var bandStudentRepository: BandStudentRepository
 
     @MockBean
     private lateinit var studentRepository: StudentRepository
