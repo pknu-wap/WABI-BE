@@ -48,9 +48,9 @@ class EventController(
         @RequestParam adminId: Long,
         @RequestBody request: EventCreateRequest
     ): ResponseEntity<Response> {
-        val eventId = eventService.createEvent(adminId = adminId, eventCreateRequest = request)
+        eventService.createEvent(adminId = adminId, eventCreateRequest = request)
 
-        val response = Response.ok(data = eventId)
+        val response = Response.ok(message = "success create event")
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
