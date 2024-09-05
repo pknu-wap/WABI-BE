@@ -19,7 +19,7 @@ enum class ErrorCode(
     FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "403", "Forbidden."),
 
     NOT_FOUND(HttpStatus.NOT_FOUND, "404", "Not found."),
-    NOT_FOUND_BAND(HttpStatus.NOT_FOUND, "404-1", "밴드Id를SA 확인해주세요."),
+    NOT_FOUND_BAND(HttpStatus.NOT_FOUND, "404-1", "밴드Id를 확인해주세요."),
     NOT_FOUND_EVENT(HttpStatus.NOT_FOUND, "404-2", "이벤트Id를 확인해주세요."),
     NOT_FOUND_STUDENT(HttpStatus.NOT_FOUND, "404-3", "학번을 확인해주세요."),
 
