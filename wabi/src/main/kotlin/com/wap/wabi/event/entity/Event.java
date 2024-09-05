@@ -12,11 +12,14 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long adminId;
     private String name;
     private LocalDateTime startAt;
+    private LocalDateTime endAt;
     private int eventStudentMaxCount;
 
     private Event(builder builder) {
+        this.adminId = builder.adminId;
         this.name = builder.name;
         this.startAt = builder.startAt;
         this.endAt = builder.endAt;
@@ -24,10 +27,16 @@ public class Event {
     }
 
     public static class builder {
+        private Long adminId;
         private String name;
         private LocalDateTime startAt;
         private LocalDateTime endAt;
         private int eventStudentMaxCount;
+
+        public builder adminId(Long adminId) {
+            this.adminId = adminId;
+            return this;
+        }
 
         public builder name(String name) {
             this.name = name;
@@ -72,6 +81,4 @@ public class Event {
     public LocalDateTime getEndAt() {
         return endAt;
     }
-
-    private LocalDateTime endAt;
 }
