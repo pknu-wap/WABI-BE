@@ -10,8 +10,9 @@ data class EventCreateRequest(
     val eventStudentMaxCount: Int,
     val bandIds: List<Long>
 ) {
-    fun toEventEntity(): Event {
+    fun toEventEntity(adminId: Long): Event {
         return Event.builder()
+            .adminId(adminId)
             .name(name)
             .startAt(startAt)
             .endAt(endAt)
