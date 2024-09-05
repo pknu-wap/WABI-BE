@@ -39,7 +39,7 @@ class EventController(
     fun checkIn(@RequestBody checkInRequest: CheckInRequest): ResponseEntity<Response> {
         eventService.checkIn(checkInRequest = checkInRequest)
 
-        val response = Response.ok(data = null);
+        val response = Response.ok()
         return ResponseEntity(response, HttpStatus.OK)
     }
 
@@ -48,9 +48,9 @@ class EventController(
         @RequestParam adminId: Long,
         @RequestBody request: EventCreateRequest
     ): ResponseEntity<Response> {
-        val result = eventService.createEvent(adminId = adminId, eventCreateRequest = request)
+        val eventId = eventService.createEvent(adminId = adminId, eventCreateRequest = request)
 
-        val response = Response.ok(data = result);
+        val response = Response.ok(data = eventId)
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
