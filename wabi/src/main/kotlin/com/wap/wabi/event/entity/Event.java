@@ -14,17 +14,20 @@ public class Event {
     private Long id;
     private String name;
     private LocalDateTime startAt;
+    private int eventStudentMaxCount;
 
     private Event(builder builder) {
         this.name = builder.name;
         this.startAt = builder.startAt;
         this.endAt = builder.endAt;
+        this.eventStudentMaxCount = builder.eventStudentMaxCount;
     }
 
     public static class builder {
         private String name;
         private LocalDateTime startAt;
         private LocalDateTime endAt;
+        private int eventStudentMaxCount;
 
         public builder name(String name) {
             this.name = name;
@@ -38,6 +41,11 @@ public class Event {
 
         public builder endAt(LocalDateTime endAt) {
             this.endAt = endAt;
+            return this;
+        }
+
+        public builder eventStudentMaxCount(int eventStudentMaxCount) {
+            this.eventStudentMaxCount = eventStudentMaxCount;
             return this;
         }
 
