@@ -3,10 +3,10 @@ package com.wap.wabi.band.fixture
 import com.wap.wabi.band.entity.Band
 
 object BandFixture {
-    fun createBand(id: Long): Band {
+    fun createBand(name: String): Band {
         return Band.builder()
             .adminId(1)
-            .bandName("TestBand")
+            .bandName(name)
             .build()
     }
 }
