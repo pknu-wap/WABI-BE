@@ -2,6 +2,7 @@ package com.wap.wabi.band.service
 
 import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.fixture.BandStudentFixture
+import com.wap.wabi.band.payload.request.BandCreateRequest
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.exception.ErrorCode
@@ -9,9 +10,11 @@ import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.fixture.StudentFixture
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -73,5 +76,42 @@ class BandServiceTest {
 
         // Then
         assertThat(exception.errorCode).isEqualTo(ErrorCode.NOT_FOUND_BAND)
+    }
+
+    @Test
+    fun 밴드를_생성한다() {
+        //Given
+        val adminId = 1L
+        val bandName = "band 1"
+        val bandCreateRequest = BandCreateRequest(
+            bandName = bandName,
+        )
+
+        val savedBand = BandFixture.createBand(id = 1, name = bandName)
+
+        `when`(bandRepository.save(ArgumentMatchers.any())).thenReturn(savedBand)
+
+        //When & Then
+        Assertions.assertDoesNotThrow {
+            bandService.createBand(adminId = adminId, bandCreateRequest = bandCreateRequest)
+        }
+    }
+
+    @Test
+    fun 유효하지_않은_adminId_값을_입력하면_UNAUTHORIZED_REQUEST_예외를_반환한다() {
+        // Given
+        val invalidAdminId = 2L
+        val bandName = "band 1"
+        val bandCreateRequest = BandCreateRequest(
+            bandName = bandName,
+        )
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.createBand(adminId = invalidAdminId, bandCreateRequest = bandCreateRequest)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_REQUEST)
     }
 }
