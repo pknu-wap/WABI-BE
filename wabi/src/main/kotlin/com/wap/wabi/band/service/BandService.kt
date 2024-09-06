@@ -24,9 +24,13 @@ class BandService(
 
     @Transactional
     fun createBand(adminId: Long, bandCreateRequest: BandCreateRequest) {
-        if(adminId != TEMPORARY_ADMIN_ID){
+        if (adminId != TEMPORARY_ADMIN_ID) {
             throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
         }
+
+        val createBand = bandCreateRequest.toBand(adminId)
+
+        bandRepository.save(createBand)
     }
 
     companion object {
