@@ -49,7 +49,7 @@ class EventService(
         val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
             .orElseThrow { throw RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
 
-        check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
+        check(eventStudent.status == EventStudentStatus.NOT_CHECK_IN) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
         eventStudent.checkIn()
     }
 }
