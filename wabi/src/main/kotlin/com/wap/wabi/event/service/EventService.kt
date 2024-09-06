@@ -121,6 +121,15 @@ class EventService(
 
         return eventDatas
     }
+    
+    fun deleteEvent(adminId: Long, eventId: Long) {
+        val event =
+            eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+
+        validateEventOwner(adminId, event)
+
+        eventRepository.delete(event)
+    }
 
     fun validateEventOwner(adminId: Long, event: Event) {
         if (!event.isOwner(adminId)) throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)

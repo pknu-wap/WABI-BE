@@ -8,6 +8,7 @@ import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter
 import com.wap.wabi.event.service.EventService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -85,6 +86,17 @@ class EventController(
         val result = eventService.getEvents(adminId = adminId)
 
         val response = Response.ok(data = result)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @DeleteMapping("/{eventId}")
+    fun deleteEvent(
+        @PathVariable("eventId") eventId: Long,
+        @RequestParam adminId: Long
+    ): ResponseEntity<Response> {
+        eventService.deleteEvent(adminId = adminId, eventId = eventId)
+
+        val response = Response.ok(message = "success delete event")
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

@@ -15,6 +15,8 @@ import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -162,5 +164,20 @@ class EventServiceTest {
 
         //Then
         assertThat(result).isEqualTo(listOf(eventData1, eventData2))
+    }
+
+    @Test
+    fun 이벤트를_삭제한다() {
+        //Given
+        val adminId = 1L
+        val event = EventFixture.createEvent(id = 1L, name = "Event 1")
+
+        `when`(eventRepository.findById(any())).thenReturn(Optional.of(event))
+
+        //When
+        eventService.deleteEvent(adminId = adminId, eventId = event.id)
+
+        //Then
+        verify(eventRepository, times(1)).delete(event)
     }
 }
