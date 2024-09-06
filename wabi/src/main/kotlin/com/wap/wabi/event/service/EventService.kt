@@ -1,6 +1,7 @@
 package com.wap.wabi.event.service
 
 import com.wap.wabi.event.entity.Enum.EventStudentStatus
+import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.response.CheckInStatusCount
 import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter
 import com.wap.wabi.event.payload.response.EventStudentData
@@ -8,7 +9,6 @@ import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
-import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
