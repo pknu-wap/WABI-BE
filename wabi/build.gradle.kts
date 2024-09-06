@@ -29,6 +29,9 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+    //swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+
     //openCSV
     implementation("com.opencsv:opencsv:5.7.1")
 
@@ -42,8 +45,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
