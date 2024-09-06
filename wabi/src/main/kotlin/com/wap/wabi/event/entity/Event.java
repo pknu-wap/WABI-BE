@@ -76,8 +76,17 @@ public class Event {
         return id;
     }
 
+    @NotNull
+    public Long getAdminId() {
+        return adminId;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public int getEventStudentMaxCount() {
+        return eventStudentMaxCount;
     }
 
     public LocalDateTime getStartAt() {
