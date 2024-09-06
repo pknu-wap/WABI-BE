@@ -96,4 +96,22 @@ class BandServiceTest {
             bandService.createBand(adminId = adminId, bandCreateRequest = bandCreateRequest)
         }
     }
+
+    @Test
+    fun 유효하지_않은_adminId_값을_입력하면_UNAUTHORIZED_REQUEST_예외를_반환한다() {
+        // Given
+        val invalidAdminId = 2L
+        val bandName = "band 1"
+        val bandCreateRequest = BandCreateRequest(
+            bandName = bandName,
+        )
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.createBand(adminId = invalidAdminId, bandCreateRequest = bandCreateRequest)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_REQUEST)
+    }
 }
