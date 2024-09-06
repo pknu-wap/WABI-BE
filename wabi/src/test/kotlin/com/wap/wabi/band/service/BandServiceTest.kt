@@ -3,6 +3,7 @@ package com.wap.wabi.band.service
 import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.payload.request.BandCreateRequest
+import com.wap.wabi.band.payload.response.BandsData
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.exception.ErrorCode
@@ -194,5 +195,27 @@ class BandServiceTest {
 
         // Then
         assertThat(exception.errorCode).isEqualTo(ErrorCode.ALREADY_ADD_STUDENT)
+    }
+
+    @Test
+    fun 내가_관리하는_밴드_목록을_조회한다() {
+        // Given
+        val adminId = 1L
+        val band1Id = 1L
+        val band2Id = 2L
+        val band1 = BandFixture.createBand("Band 1", 1)
+        val band2 = BandFixture.createBand("Band 2", 2)
+
+        val bandsResponse : MutableList<BandsData> = mutableListOf()
+        bandsResponse.add(BandsData(bandId = band1Id, bandName = "Band 1"))
+        bandsResponse.add(BandsData(bandId = band2Id, bandName = "Band 2"))
+
+        `when`(bandRepository.findAllByAdminId(adminId)).thenReturn(listOf(band1, band2))
+
+        // When
+        val result = bandService.getBands(adminId)
+
+        // Then
+        assertThat(result).isEqualTo(bandsResponse)
     }
 }

@@ -48,6 +48,11 @@ class BandService(
         bandRepository.delete(band)
     }
 
+    @Transactional
+    fun getBands(adminId: Long) {
+
+    }
+
     companion object {
         private const val TEMPORARY_ADMIN_ID = 1L
     }
