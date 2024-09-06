@@ -152,6 +152,24 @@ class BandServiceTest {
     }
 
     @Test
+    fun 밴드_삭제_시_자신이_생성한_밴드가_아니면_UNAUTHORIZED_BAND_예외를_반환한다() {
+        // Given
+        val adminId = 1L
+        val bandId = 1L
+        val savedBand = BandFixture.createAnotherUserBand(id = 1, name = "bandName")
+
+        `when`(bandRepository.findById(bandId)).thenReturn(Optional.of(savedBand))
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.deleteBand(adminId = adminId, bandId = adminId)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_BAND)
+    }
+
+    @Test
     fun 밴드_삭제_시_유효하지_않은_adminId_값을_입력하면_UNAUTHORIZED_REQUEST_예외를_반환한다() {
         // Given
         val invalidAdminId = 2L
