@@ -13,7 +13,6 @@ import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.`when`
@@ -71,10 +70,11 @@ class EventServiceTest {
         `when`(eventRepository.save(any())).thenReturn(savedEvent)
         `when`(bandRepository.findAllById(eventCreateRequest.bandIds)).thenReturn(listOf(band1, band2, band3))
 
-        //When & Then
-        assertDoesNotThrow {
-            eventService.createEvent(adminId = adminId, eventCreateRequest = eventCreateRequest)
-        }
+        //When
+        val result = eventService.createEvent(adminId = adminId, eventCreateRequest = eventCreateRequest)
+
+        //Then
+        assertThat(result.id).isEqualTo(savedEvent.id)
     }
 
     @Test
@@ -127,7 +127,7 @@ class EventServiceTest {
         `when`(eventBandRepository.findAllByEvent(any())).thenReturn(eventBands)
 
         val expected = EventData.of(event, eventBands)
-        
+
         //When
         val result = eventService.getEvent(adminId = adminId, eventId = eventId)
 

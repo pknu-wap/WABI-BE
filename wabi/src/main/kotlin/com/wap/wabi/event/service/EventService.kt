@@ -65,7 +65,7 @@ class EventService(
     }
 
     @Transactional
-    fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest) {
+    fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest): Event {
         val createdEvent = eventCreateRequest.toEventEntity(adminId)
         val savedEvent = eventRepository.save(createdEvent)
 
@@ -79,12 +79,16 @@ class EventService(
                 .build()
         }
         eventBandRepository.saveAll(eventBands)
+
+        return savedEvent
     }
 
     @Transactional
     fun updateEvent(adminId: Long, eventUpdateRequest: EventUpdateRequest): Event {
         val event = eventRepository.findById(eventUpdateRequest.eventId)
             .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+
+        validateEventOwner(adminId, event)
 
         try {
             event.update(eventUpdateRequest)
@@ -99,14 +103,14 @@ class EventService(
         val event =
             eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-        try {
-            event.isOwner(adminId)
-        } catch (e: IllegalAccessException) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
-        }
+        validateEventOwner(adminId, event)
 
         val eventBands = eventBandRepository.findAllByEvent(event)
 
         return EventData.of(event, eventBands)
+    }
+
+    fun validateEventOwner(adminId: Long, event: Event) {
+        if (!event.isOwner(adminId)) throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
     }
 }
