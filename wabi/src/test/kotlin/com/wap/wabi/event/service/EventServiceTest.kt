@@ -134,4 +134,33 @@ class EventServiceTest {
         //Then
         assertThat(result).isEqualTo(expected)
     }
+
+    @Test
+    fun 이벤트를_목록으로_조회_한다() {
+        //Given
+        val adminId = 1L
+        val event1 = EventFixture.createEvent(id = 1, name = "Event 1")
+        val event2 = EventFixture.createEvent(id = 2, name = "Event 2")
+        val band1 = BandFixture.createBand(id = 1, name = "Band 1")
+        val band2 = BandFixture.createBand(id = 2, name = "Band 2")
+        val band3 = BandFixture.createBand(id = 3, name = "Band 3")
+
+        val eventBand1 = EventBandFixture.createEventBnd(event1, band1)
+        val eventBand2 = EventBandFixture.createEventBnd(event1, band2)
+        val eventBand3 = EventBandFixture.createEventBnd(event2, band2)
+        val eventBand4 = EventBandFixture.createEventBnd(event2, band3)
+
+        val eventData1 = EventData.of(event1, listOf(eventBand1, eventBand2))
+        val eventData2 = EventData.of(event2, listOf(eventBand3, eventBand4))
+
+        `when`(eventRepository.findAllByAdminId(any())).thenReturn(listOf(event1, event2))
+        `when`(eventBandRepository.findAllByEvent(event1)).thenReturn(listOf(eventBand1, eventBand2))
+        `when`(eventBandRepository.findAllByEvent(event2)).thenReturn(listOf(eventBand3, eventBand4))
+
+        //When
+        val result = eventService.getEvents(adminId)
+
+        //Then
+        assertThat(result).isEqualTo(listOf(eventData1, eventData2))
+    }
 }
