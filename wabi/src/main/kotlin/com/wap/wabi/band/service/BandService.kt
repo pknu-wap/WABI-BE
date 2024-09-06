@@ -81,6 +81,8 @@ class BandService(
         if (band.adminId != adminId) {
             throw RestApiException(ErrorCode.UNAUTHORIZED_BAND)
         }
+
+        band.update(bandUpdateRequest)
     }
 
     companion object {
