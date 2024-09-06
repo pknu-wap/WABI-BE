@@ -40,6 +40,12 @@ class BandService(
         if (adminId != TEMPORARY_ADMIN_ID) {
             throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
         }
+
+        if (bandStudentRepository.findAllByBand(band).isNotEmpty()) {
+            throw RestApiException(ErrorCode.ALREADY_ADD_STUDENT)
+        }
+
+        bandRepository.delete(band)
     }
 
     companion object {
