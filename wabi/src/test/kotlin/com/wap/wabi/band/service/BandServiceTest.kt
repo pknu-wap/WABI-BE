@@ -288,10 +288,32 @@ class BandServiceTest {
 
         // When
         val exception = assertThrows<RestApiException> {
-            bandService.updateBands(adminId = invalidAdminId, bandUpdateRequest = bandUpdateRequest)
+            bandService.updateBand(adminId = invalidAdminId, bandUpdateRequest = bandUpdateRequest)
         }
 
         // Then
         assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_REQUEST)
+    }
+
+    @Test
+    fun 밴드_수정_시_자신이_생성한_밴드가_아니면_UNAUTHORIZED_BAND_예외를_반환한다() {
+        // Given
+        val adminId = 1L
+        val bandId = 1L
+        val bandUpdateRequest = BandUpdateRequest(
+            bandId = bandId,
+            bandName = "new band name",
+        )
+        val savedBand = BandFixture.createAnotherUserBand(id = 1, name = "bandName")
+
+        `when`(bandRepository.findById(bandId)).thenReturn(Optional.of(savedBand))
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.updateBand(adminId = adminId, bandUpdateRequest = bandUpdateRequest)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_BAND)
     }
 }

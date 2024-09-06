@@ -71,7 +71,7 @@ class BandService(
     }
 
     @Transactional
-    fun updateBands(adminId: Long, bandUpdateRequest: BandUpdateRequest) {
+    fun updateBand(adminId: Long, bandUpdateRequest: BandUpdateRequest) {
     }
 
     companion object {
