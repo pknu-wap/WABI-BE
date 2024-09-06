@@ -4,11 +4,13 @@ import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.event.fixture.EventFixture
 import com.wap.wabi.event.payload.request.EventCreateRequest
+import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import java.time.LocalDateTime
+import java.util.Optional
 
 @Transactional
 @SpringBootTest
@@ -70,5 +73,35 @@ class EventServiceTest {
         assertDoesNotThrow {
             eventService.createEvent(adminId = adminId, eventCreateRequest = eventCreateRequest)
         }
+    }
+
+    @Test
+    fun 이벤트를_수정한다() {
+        //Given
+        val adminId: Long = 1L
+        val eventId: Long = 1L
+        val originalEventName = "Event 1"
+        val newEventName = "Event 2"
+        val startAt = LocalDateTime.now()
+        val endAt = LocalDateTime.now().plusDays(1)
+        val eventStudentMaxCount = 80
+        val eventUpdateRequest = EventUpdateRequest(
+            eventId = eventId,
+            eventName = newEventName,
+            startAt = startAt,
+            endAt = endAt,
+            eventStudentMaxCount = eventStudentMaxCount,
+        )
+
+        val savedEvent = EventFixture.createEvent(id = 1L, name = originalEventName)
+        val updatedEvent = EventFixture.createEvent(id = 1L, name = newEventName)
+
+        `when`(eventRepository.findById(any())).thenReturn(Optional.of(savedEvent))
+
+        //When
+        val result = eventService.updateEvent(adminId = adminId, eventUpdateRequest = eventUpdateRequest)
+
+        //Then
+        assertThat(result.name).isEqualTo(updatedEvent.name)
     }
 }
