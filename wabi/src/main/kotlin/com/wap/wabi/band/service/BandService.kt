@@ -1,5 +1,6 @@
 package com.wap.wabi.band.service
 
+import com.wap.wabi.band.payload.request.BandCreateRequest
 import com.wap.wabi.band.payload.response.BandStudentData
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
@@ -19,5 +20,10 @@ class BandService(
         val bandStudents = bandStudentRepository.findAllByBand(band)
 
         return BandStudentData.of(bandStudents)
+    }
+
+    @Transactional
+    fun createBand(adminId : Long,bandCreateRequest: BandCreateRequest) {
+
     }
 }
