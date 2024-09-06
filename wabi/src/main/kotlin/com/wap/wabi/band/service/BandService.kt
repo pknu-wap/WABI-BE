@@ -1,7 +1,9 @@
 package com.wap.wabi.band.service
 
+import com.wap.wabi.band.entity.Band
 import com.wap.wabi.band.payload.request.BandCreateRequest
 import com.wap.wabi.band.payload.response.BandStudentData
+import com.wap.wabi.band.payload.response.BandsData
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.exception.ErrorCode
@@ -49,10 +51,18 @@ class BandService(
     }
 
     @Transactional
-    fun getBands(adminId: Long) {
+    fun getBands(adminId: Long): List<BandsData> {
         if (adminId != TEMPORARY_ADMIN_ID) {
             throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
         }
+
+        val bands: List<Band> = bandRepository.findAllByAdminId(adminId)
+        val bandsDatas: MutableList<BandsData> = mutableListOf()
+        bands.forEach { band ->
+            bandsDatas.add(BandsData(bandId = band.id, bandName = band.bandName))
+        }
+
+        return bandsDatas
     }
 
     companion object {
