@@ -86,6 +86,8 @@ class EventService(
         val event = eventRepository.findById(eventUpdateRequest.eventId)
             .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
+        validateEventOwner(adminId, event)
+
         try {
             event.update(eventUpdateRequest)
         } catch (e: IllegalArgumentException) {
@@ -99,14 +101,14 @@ class EventService(
         val event =
             eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-        try {
-            event.isOwner(adminId)
-        } catch (e: IllegalAccessException) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
-        }
+        validateEventOwner(adminId, event)
 
         val eventBands = eventBandRepository.findAllByEvent(event)
 
         return EventData.of(event, eventBands)
+    }
+
+    fun validateEventOwner(adminId: Long, event: Event) {
+        if (!event.isOwner(adminId)) throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
     }
 }
