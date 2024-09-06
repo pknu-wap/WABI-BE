@@ -77,6 +77,10 @@ class BandService(
         if (adminId != TEMPORARY_ADMIN_ID) {
             throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
         }
+
+        if (band.adminId != adminId) {
+            throw RestApiException(ErrorCode.UNAUTHORIZED_BAND)
+        }
     }
 
     companion object {
