@@ -307,6 +307,9 @@ class BandServiceTest {
             bandName = "new band name",
         )
 
+        val savedBand = BandFixture.createBand("Band 1", 1)
+        `when`(bandRepository.findById(bandId)).thenReturn(Optional.of(savedBand))
+
         // When
         val exception = assertThrows<RestApiException> {
             bandService.updateBand(adminId = invalidAdminId, bandUpdateRequest = bandUpdateRequest)
