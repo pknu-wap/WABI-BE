@@ -65,7 +65,7 @@ class EventService(
     }
 
     @Transactional
-    fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest) {
+    fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest): Event {
         val createdEvent = eventCreateRequest.toEventEntity(adminId)
         val savedEvent = eventRepository.save(createdEvent)
 
@@ -79,6 +79,8 @@ class EventService(
                 .build()
         }
         eventBandRepository.saveAll(eventBands)
+
+        return savedEvent
     }
 
     @Transactional
