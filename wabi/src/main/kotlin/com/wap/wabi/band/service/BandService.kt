@@ -48,6 +48,10 @@ class BandService(
             throw RestApiException(ErrorCode.ALREADY_ADD_STUDENT)
         }
 
+        if (band.adminId != adminId) {
+            throw RestApiException(ErrorCode.UNAUTHORIZED_BAND)
+        }
+
         bandRepository.delete(band)
     }
 
