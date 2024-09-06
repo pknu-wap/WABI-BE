@@ -133,6 +133,23 @@ class BandServiceTest {
     }
 
     @Test
+    fun 밴드_삭제_시_유효하지_않은_bandId_값을_입력하면_NOT_FOUND_BAND_예외를_반환한다() {
+        // Given
+        val adminId = 1L
+        val invalidBandId = 2L
+
+        `when`(bandRepository.findById(invalidBandId)).thenReturn(Optional.empty())
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.deleteBand(adminId = adminId, bandId = adminId)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.NOT_FOUND_BAND)
+    }
+
+    @Test
     fun 밴드_삭제_시_유효하지_않은_adminId_값을_입력하면_UNAUTHORIZED_REQUEST_예외를_반환한다() {
         // Given
         val invalidAdminId = 2L
