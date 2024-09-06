@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 class EventController(
     private val eventService: EventService
 ) {
-    @GetMapping("/{eventId}")
+    @GetMapping("/check-in/{eventId}")
     fun getCheckInTable(
         @PathVariable("eventId") eventId: Long,
         @RequestParam filter: CheckInTableFilter
@@ -37,7 +37,7 @@ class EventController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    @GetMapping("/check-in")
+    @PostMapping("/check-in")
     fun checkIn(@RequestBody checkInRequest: CheckInRequest): ResponseEntity<Response> {
         eventService.checkIn(checkInRequest = checkInRequest)
 
@@ -64,6 +64,17 @@ class EventController(
         eventService.updateEvent(adminId = adminId, eventUpdateRequest = request)
 
         val response = Response.ok(message = "success update event")
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @GetMapping("/{eventId}")
+    fun getEvent(
+        @PathVariable("eventId") eventId: Long,
+        @RequestParam adminId: Long
+    ): ResponseEntity<Response> {
+        val result = eventService.getEvent(adminId = adminId, eventId = eventId)
+
+        val response = Response.ok(data = result)
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

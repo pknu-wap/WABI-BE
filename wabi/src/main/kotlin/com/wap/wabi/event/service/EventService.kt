@@ -9,6 +9,7 @@ import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.response.CheckInStatusCount
 import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter
+import com.wap.wabi.event.payload.response.EventData
 import com.wap.wabi.event.payload.response.EventStudentData
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
@@ -92,5 +93,14 @@ class EventService(
         }
 
         return event
+    }
+
+    fun getEvent(adminId: Long, eventId: Long): EventData {
+        val event =
+            eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+
+        val eventBands = eventBandRepository.findAllByEvent(event)
+
+        return EventData.of(event, eventBands)
     }
 }
