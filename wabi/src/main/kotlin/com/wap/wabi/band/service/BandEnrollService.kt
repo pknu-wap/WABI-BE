@@ -27,7 +27,7 @@ class BandEnrollService(
 
     @Transactional
     fun enrollBandStudent(bandId: Long, request: EnrollRequest): Long {
-        val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
+        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
 
         val bandStudents: MutableList<BandStudent> = mutableListOf()
         request.bandStudentDtos.forEach { bandStudentDto ->
