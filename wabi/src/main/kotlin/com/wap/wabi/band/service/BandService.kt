@@ -50,7 +50,9 @@ class BandService(
 
     @Transactional
     fun getBands(adminId: Long) {
-
+        if (adminId != TEMPORARY_ADMIN_ID) {
+            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+        }
     }
 
     companion object {
