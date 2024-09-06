@@ -2,9 +2,11 @@ package com.wap.wabi.event.service
 
 import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.repository.BandRepository
+import com.wap.wabi.event.fixture.EventBandFixture
 import com.wap.wabi.event.fixture.EventFixture
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
+import com.wap.wabi.event.payload.response.EventData
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentRepository
@@ -103,5 +105,33 @@ class EventServiceTest {
 
         //Then
         assertThat(result.name).isEqualTo(updatedEvent.name)
+    }
+
+    @Test
+    fun 이벤트를_단일조회_한다() {
+        //Given
+        val adminId = 1L
+        val eventId = 1L
+        val eventName = "Event 1"
+        val event = EventFixture.createEvent(id = eventId, name = eventName)
+        val band1 = BandFixture.createBand(id = 1, name = "Band 1")
+        val band2 = BandFixture.createBand(id = 2, name = "Band 2")
+        val band3 = BandFixture.createBand(id = 3, name = "Band 3")
+
+        val eventBand1 = EventBandFixture.createEventBnd(event, band1)
+        val eventBand2 = EventBandFixture.createEventBnd(event, band2)
+        val eventBand3 = EventBandFixture.createEventBnd(event, band3)
+        val eventBands = listOf(eventBand1, eventBand2, eventBand3)
+
+        `when`(eventRepository.findById(any())).thenReturn(Optional.of(event))
+        `when`(eventBandRepository.findAllByEvent(any())).thenReturn(eventBands)
+
+        val expected = EventData.of(event, eventBands)
+        
+        //When
+        val result = eventService.getEvent(adminId = adminId, eventId = eventId)
+
+        //Then
+        assertThat(result).isEqualTo(expected)
     }
 }
