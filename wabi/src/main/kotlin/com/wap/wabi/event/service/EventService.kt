@@ -85,7 +85,11 @@ class EventService(
         val event = eventRepository.findById(eventUpdateRequest.eventId)
             .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-        event.update(eventUpdateRequest)
+        try {
+            event.update(eventUpdateRequest)
+        } catch (e: IllegalArgumentException) {
+            throw RestApiException(ErrorCode.FORBIDDEN_ACCESS_EVENT_UPDATE)
+        }
 
         return event
     }

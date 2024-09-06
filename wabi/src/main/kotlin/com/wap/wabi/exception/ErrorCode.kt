@@ -17,6 +17,7 @@ enum class ErrorCode(
     UNAUTHORIZED_CHECK_IN(HttpStatus.UNAUTHORIZED, "401-1", "이벤트에 참여할 수 없는 학생입니다."),
 
     FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "403", "Forbidden."),
+    FORBIDDEN_ACCESS_EVENT_UPDATE(HttpStatus.FORBIDDEN, "403-1", "이벤트 ID가 동일하지 않아 수정할 수 없습니다"),
 
     NOT_FOUND(HttpStatus.NOT_FOUND, "404", "Not found."),
     NOT_FOUND_BAND(HttpStatus.NOT_FOUND, "404-1", "밴드Id를 확인해주세요."),
@@ -28,5 +29,5 @@ enum class ErrorCode(
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500", "Server error."),
 
     //EVENT관련
-    ALREADY_CHECK_IN(HttpStatus.valueOf(600), "600-1", "이미 체크인 했습니다."),
+    ALREADY_CHECK_IN(HttpStatus.BAD_REQUEST, "600-1", "이미 체크인 했습니다."),
 }
