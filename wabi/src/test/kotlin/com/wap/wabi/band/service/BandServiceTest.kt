@@ -4,11 +4,14 @@ import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
+import com.wap.wabi.exception.ErrorCode
+import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.fixture.StudentFixture
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -54,5 +57,21 @@ class BandServiceTest {
             { assertThat(result[0].name).isEqualTo(studentName1) },
             { assertThat(result[1].name).isEqualTo(studentName2) }
         )
+    }
+
+    @Test
+    fun 유효하지_않은_밴드Id_값을_입력하면_NOT_FOUND_BAND_예외를_반환한다() {
+        // Given
+        val invalidBandId = 2L
+
+        `when`(bandRepository.findById(invalidBandId)).thenReturn(Optional.empty())
+
+        // When & Then
+        val exception = assertThrows<RestApiException> {
+            bandService.getBandStudents(invalidBandId)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.NOT_FOUND_BAND)
     }
 }
