@@ -35,7 +35,7 @@ class BandService(
 
     @Transactional
     fun deleteBand(adminId: Long, bandId: Long) {
-
+        val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
     }
 
     companion object {
