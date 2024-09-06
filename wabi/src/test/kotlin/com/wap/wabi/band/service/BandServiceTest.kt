@@ -162,7 +162,7 @@ class BandServiceTest {
 
         // When
         val exception = assertThrows<RestApiException> {
-            bandService.deleteBand(adminId = adminId, bandId = adminId)
+            bandService.deleteBand(adminId = adminId, bandId = bandId)
         }
 
         // Then
@@ -274,6 +274,27 @@ class BandServiceTest {
         Assertions.assertDoesNotThrow {
             bandService.updateBand(adminId = adminId, bandUpdateRequest = bandUpdateRequest)
         }
+    }
+
+    @Test
+    fun 밴드_수정_시_유효하지_않은_bandId_값을_입력하면_NOT_FOUND_BAND_예외를_반환한다() {
+        // Given
+        val adminId = 1L
+        val invalidBandId = 2L
+        val bandUpdateRequest = BandUpdateRequest(
+            bandId = invalidBandId,
+            bandName = "new band name",
+        )
+
+        `when`(bandRepository.findById(invalidBandId)).thenReturn(Optional.empty())
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.updateBand(adminId = adminId, bandUpdateRequest = bandUpdateRequest)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.NOT_FOUND_BAND)
     }
 
     @Test
