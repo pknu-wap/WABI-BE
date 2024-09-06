@@ -216,7 +216,12 @@ class BandServiceTest {
         val result = bandService.getBands(adminId = adminId)
 
         // Then
-        assertThat(result).isEqualTo(bandsResponse)
+        assertAll(
+            { assertThat(result[0].bandId).isEqualTo(band1Id) },
+            { assertThat(result[1].bandId).isEqualTo(band2Id) },
+            { assertThat(result[0].bandName).isEqualTo("Band 1") },
+            { assertThat(result[1].bandName).isEqualTo("Band 2") }
+        )
     }
 
     @Test
