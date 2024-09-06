@@ -23,7 +23,13 @@ class BandService(
     }
 
     @Transactional
-    fun createBand(adminId : Long,bandCreateRequest: BandCreateRequest) {
+    fun createBand(adminId: Long, bandCreateRequest: BandCreateRequest) {
+        if(adminId != TEMPORARY_ADMIN_ID){
+            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+        }
+    }
 
+    companion object {
+        private const val TEMPORARY_ADMIN_ID = 1L
     }
 }
