@@ -3,6 +3,7 @@ package com.wap.wabi.event.controller
 import com.wap.wabi.common.payload.response.Response
 import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
+import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter
 import com.wap.wabi.event.service.EventService
 import org.springframework.http.HttpStatus
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -51,6 +53,17 @@ class EventController(
         eventService.createEvent(adminId = adminId, eventCreateRequest = request)
 
         val response = Response.ok(message = "success create event")
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @PutMapping("")
+    fun updateEvent(
+        @RequestParam adminId: Long,
+        @RequestBody request: EventUpdateRequest
+    ): ResponseEntity<Response> {
+        eventService.updateEvent(adminId = adminId, eventUpdateRequest = request)
+
+        val response = Response.ok(message = "success update event")
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
