@@ -2,9 +2,11 @@ package com.wap.wabi.event.service
 
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.event.entity.Enum.EventStudentStatus
+import com.wap.wabi.event.entity.Event
 import com.wap.wabi.event.entity.EventBand
 import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
+import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.response.CheckInStatusCount
 import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter
 import com.wap.wabi.event.payload.response.EventStudentData
@@ -76,5 +78,15 @@ class EventService(
                 .build()
         }
         eventBandRepository.saveAll(eventBands)
+    }
+
+    @Transactional
+    fun updateEvent(adminId: Long, eventUpdateRequest: EventUpdateRequest): Event {
+        val event = eventRepository.findById(eventUpdateRequest.eventId)
+            .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+
+        event.update(eventUpdateRequest)
+
+        return event
     }
 }
