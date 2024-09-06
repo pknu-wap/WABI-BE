@@ -110,6 +110,18 @@ class EventService(
         return EventData.of(event, eventBands)
     }
 
+    fun getEvents(adminId: Long): List<EventData> {
+        val events = eventRepository.findAllByAdminId(adminId)
+
+        val eventDatas: MutableList<EventData> = ArrayList()
+        events.forEach { event ->
+            val eventBands = eventBandRepository.findAllByEvent(event)
+            eventDatas.add(EventData.of(event, eventBands))
+        }
+
+        return eventDatas
+    }
+
     fun validateEventOwner(adminId: Long, event: Event) {
         if (!event.isOwner(adminId)) throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
     }

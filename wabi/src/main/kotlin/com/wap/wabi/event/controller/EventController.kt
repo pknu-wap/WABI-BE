@@ -77,4 +77,14 @@ class EventController(
         val response = Response.ok(data = result)
         return ResponseEntity(response, HttpStatus.OK)
     }
+
+    @GetMapping("/list")
+    fun getEvents(
+        @RequestParam adminId: Long
+    ): ResponseEntity<Response> {
+        val result = eventService.getEvents(adminId = adminId)
+
+        val response = Response.ok(data = result)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 }
