@@ -60,8 +60,6 @@ class EventService(
 
         check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
         eventStudent.checkIn()
-
-        eventStudentRepository.save(eventStudent)
     }
 
     @Transactional
@@ -121,7 +119,7 @@ class EventService(
 
         return eventDatas
     }
-    
+
     fun deleteEvent(adminId: Long, eventId: Long) {
         val event =
             eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
