@@ -1,5 +1,6 @@
 package com.wap.wabi.event.entity;
 
+import com.wap.wabi.event.payload.request.EventUpdateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -80,5 +81,19 @@ public class Event {
 
     public LocalDateTime getEndAt() {
         return endAt;
+    }
+
+    public void update(EventUpdateRequest request) throws IllegalAccessException {
+        validateId(request.getEventId());
+        this.name = request.getEventName();
+        this.startAt = request.getStartAt();
+        this.endAt = request.getEndAt();
+        this.eventStudentMaxCount = request.getEventStudentMaxCount();
+    }
+
+    private void validateId(Long id) throws IllegalAccessException {
+        if (this.id != id) {
+            throw new IllegalAccessException("Event ID does not match.");
+        }
     }
 }
