@@ -28,5 +28,5 @@ enum class ErrorCode(
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500", "Server error."),
 
     //EVENT관련
-    ALREADY_CHECK_IN(HttpStatus.INTERNAL_SERVER_ERROR, "600-1", "이미 체크인 했습니다."),
+    ALREADY_CHECK_IN(HttpStatus.valueOf(600), "600-1", "이미 체크인 했습니다."),
 }
