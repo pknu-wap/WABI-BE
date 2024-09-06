@@ -206,7 +206,7 @@ class BandServiceTest {
         val band1 = BandFixture.createBand("Band 1", 1)
         val band2 = BandFixture.createBand("Band 2", 2)
 
-        val bandsResponse : MutableList<BandsData> = mutableListOf()
+        val bandsResponse: MutableList<BandsData> = mutableListOf()
         bandsResponse.add(BandsData(bandId = band1Id, bandName = "Band 1"))
         bandsResponse.add(BandsData(bandId = band2Id, bandName = "Band 2"))
 
