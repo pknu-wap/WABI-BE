@@ -40,4 +40,10 @@ class BandController(
         val response = Response.ok(message = "success delete band")
         return ResponseEntity(response, HttpStatus.OK)
     }
+
+    @GetMapping("list")
+    fun getBands(@RequestParam adminId: Long): ResponseEntity<Response> {
+        val response = Response.ok(data = bandService.getBands(adminId = adminId))
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 }
