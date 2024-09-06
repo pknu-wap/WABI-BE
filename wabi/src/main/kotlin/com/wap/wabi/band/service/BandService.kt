@@ -36,6 +36,10 @@ class BandService(
     @Transactional
     fun deleteBand(adminId: Long, bandId: Long) {
         val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
+
+        if (adminId != TEMPORARY_ADMIN_ID) {
+            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+        }
     }
 
     companion object {

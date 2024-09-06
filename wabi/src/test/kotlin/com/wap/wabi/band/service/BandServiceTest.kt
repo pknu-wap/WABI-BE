@@ -154,6 +154,11 @@ class BandServiceTest {
         // Given
         val invalidAdminId = 2L
         val bandId = 1L
+        val bandName = "band 1"
+
+        val savedBand = BandFixture.createBand(id = 1, name = bandName)
+
+        `when`(bandRepository.findById(bandId)).thenReturn(Optional.of(savedBand))
 
         // When
         val exception = assertThrows<RestApiException> {
