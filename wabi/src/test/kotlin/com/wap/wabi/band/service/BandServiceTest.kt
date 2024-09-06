@@ -213,9 +213,23 @@ class BandServiceTest {
         `when`(bandRepository.findAllByAdminId(adminId)).thenReturn(listOf(band1, band2))
 
         // When
-        val result = bandService.getBands(adminId)
+        val result = bandService.getBands(adminId = adminId)
 
         // Then
         assertThat(result).isEqualTo(bandsResponse)
+    }
+
+    @Test
+    fun 밴드_목록_조회_시_유효하지_않은_adminId_값을_입력하면_UNAUTHORIZED_REQUEST_예외를_반환한다() {
+        // Given
+        val invalidAdminId = 2L
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.getBands(adminId = invalidAdminId)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_REQUEST)
     }
 }
