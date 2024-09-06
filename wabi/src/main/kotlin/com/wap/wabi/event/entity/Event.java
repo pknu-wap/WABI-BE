@@ -97,6 +97,11 @@ public class Event {
         return endAt;
     }
 
+    public void isOwner(long adminId) throws IllegalAccessException {
+        if (adminId != this.adminId)
+            throw new IllegalAccessException();
+    }
+
     public void update(EventUpdateRequest request) throws IllegalAccessException {
         validateId(request.getEventId());
         this.name = request.getEventName();

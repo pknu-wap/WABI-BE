@@ -99,6 +99,12 @@ class EventService(
         val event =
             eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
+        try {
+            event.isOwner(adminId)
+        } catch (e: IllegalAccessException) {
+            throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
+        }
+
         val eventBands = eventBandRepository.findAllByEvent(event)
 
         return EventData.of(event, eventBands)

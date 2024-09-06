@@ -15,6 +15,7 @@ enum class ErrorCode(
 
     UNAUTHORIZED_REQUEST(HttpStatus.UNAUTHORIZED, "401", "Unauthorized."),
     UNAUTHORIZED_CHECK_IN(HttpStatus.UNAUTHORIZED, "401-1", "이벤트에 참여할 수 없는 학생입니다."),
+    UNAUTHORIZED_EVENT(HttpStatus.UNAUTHORIZED, "401-2", "이벤트에 대한 권한이 없습니다."),
 
     FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "403", "Forbidden."),
     FORBIDDEN_ACCESS_EVENT_UPDATE(HttpStatus.FORBIDDEN, "403-1", "이벤트 ID가 동일하지 않아 수정할 수 없습니다"),
