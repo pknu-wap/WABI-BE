@@ -72,6 +72,11 @@ class BandService(
 
     @Transactional
     fun updateBand(adminId: Long, bandUpdateRequest: BandUpdateRequest) {
+        val band = bandRepository.findById(bandUpdateRequest.bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
+
+        if (adminId != TEMPORARY_ADMIN_ID) {
+            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+        }
     }
 
     companion object {
