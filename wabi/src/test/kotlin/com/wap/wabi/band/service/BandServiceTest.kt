@@ -272,7 +272,7 @@ class BandServiceTest {
 
         //When & Then
         Assertions.assertDoesNotThrow {
-            bandService.updateBands(adminId = adminId, bandUpdateRequest = bandUpdateRequest)
+            bandService.updateBand(adminId = adminId, bandUpdateRequest = bandUpdateRequest)
         }
     }
 
