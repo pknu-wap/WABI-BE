@@ -66,7 +66,7 @@ class BandServiceTest {
 
         `when`(bandRepository.findById(invalidBandId)).thenReturn(Optional.empty())
 
-        // When & Then
+        // When
         val exception = assertThrows<RestApiException> {
             bandService.getBandStudents(invalidBandId)
         }
