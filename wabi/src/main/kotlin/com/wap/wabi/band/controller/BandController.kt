@@ -6,6 +6,7 @@ import com.wap.wabi.common.payload.response.Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,6 +30,14 @@ class BandController(
         bandService.createBand(adminId = adminId, bandCreateRequest = request)
 
         val response = Response.ok(message = "success create band")
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @DeleteMapping("{bandId}")
+    fun deleteBand(@RequestParam adminId: Long, @PathVariable bandId: Long): ResponseEntity<Response> {
+        bandService.deleteBand(adminId = adminId, bandId = bandId)
+
+        val response = Response.ok(message = "success delete band")
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
