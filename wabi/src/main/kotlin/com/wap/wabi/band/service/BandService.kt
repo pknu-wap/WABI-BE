@@ -2,6 +2,7 @@ package com.wap.wabi.band.service
 
 import com.wap.wabi.band.entity.Band
 import com.wap.wabi.band.payload.request.BandCreateRequest
+import com.wap.wabi.band.payload.request.BandUpdateRequest
 import com.wap.wabi.band.payload.response.BandStudentData
 import com.wap.wabi.band.payload.response.BandsData
 import com.wap.wabi.band.repository.BandRepository
@@ -63,6 +64,10 @@ class BandService(
         }
 
         return bandsDatas
+    }
+
+    @Transactional
+    fun updateBands(adminId: Long, bandUpdateRequest: BandUpdateRequest) {
     }
 
     companion object {

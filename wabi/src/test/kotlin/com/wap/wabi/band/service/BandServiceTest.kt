@@ -3,6 +3,7 @@ package com.wap.wabi.band.service
 import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.payload.request.BandCreateRequest
+import com.wap.wabi.band.payload.request.BandUpdateRequest
 import com.wap.wabi.band.payload.response.BandsData
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
@@ -236,5 +237,24 @@ class BandServiceTest {
 
         // Then
         assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_REQUEST)
+    }
+
+    @Test
+    fun 밴드를_수정한다() {
+        // Given
+        val adminId = 1L
+        val bandId = 1L
+        val savedBand = BandFixture.createBand("Band 1", 1)
+        val bandUpdateRequest = BandUpdateRequest(
+            bandId = bandId,
+            bandName = "new band name",
+        )
+
+        `when`(bandRepository.findById(bandId)).thenReturn(Optional.of(savedBand))
+
+        //When & Then
+        Assertions.assertDoesNotThrow {
+            bandService.updateBands(adminId = adminId, bandUpdateRequest = bandUpdateRequest)
+        }
     }
 }
