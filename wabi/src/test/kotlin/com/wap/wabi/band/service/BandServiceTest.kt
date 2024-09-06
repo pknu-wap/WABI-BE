@@ -163,4 +163,31 @@ class BandServiceTest {
         // Then
         assertThat(exception.errorCode).isEqualTo(ErrorCode.UNAUTHORIZED_REQUEST)
     }
+
+    @Test
+    fun 밴드_삭제_시_학생명단이_추가된_밴드를_삭제_하려고_하면_ALREADY_ADD_STUDENT_예외를_반환한다() {
+        // Given
+        val adminId = 1L
+        val bandId = 1L
+        val studentName1 = "Student 1"
+        val studentName2 = "Student 2"
+        val band = BandFixture.createBand("Band 1")
+        val student1 = StudentFixture.createStudent(studentName1)
+        val student2 = StudentFixture.createStudent(studentName2)
+        val bandStudents = listOf(
+            BandStudentFixture.createBandStudent(student1, band),
+            BandStudentFixture.createBandStudent(student2, band)
+        )
+
+        `when`(bandRepository.findById(bandId)).thenReturn(Optional.of(band))
+        `when`(bandStudentRepository.findAllByBand(band)).thenReturn(bandStudents)
+
+        // When
+        val exception = assertThrows<RestApiException> {
+            bandService.deleteBand(adminId = adminId, bandId = bandId)
+        }
+
+        // Then
+        assertThat(exception.errorCode).isEqualTo(ErrorCode.ALREADY_ADD_STUDENT)
+    }
 }

@@ -31,4 +31,7 @@ enum class ErrorCode(
 
     //EVENT관련
     ALREADY_CHECK_IN(HttpStatus.BAD_REQUEST, "600-1", "이미 체크인 했습니다."),
+
+    //BANT관련
+    ALREADY_ADD_STUDENT(HttpStatus.BAD_REQUEST, "700-1", "해당 밴드에 이미 학생들이 존재합니다."),
 }
