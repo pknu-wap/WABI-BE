@@ -15,4 +15,16 @@ object BandFixture {
         val band = createBand(name)
         return Reflection.makeIdChangedClone(Band::class.java, band, id)
     }
+
+    fun createAnotherUserBand(name: String): Band {
+        return Band.builder()
+            .adminId(2)
+            .bandName(name)
+            .build()
+    }
+
+    fun createAnotherUserBand(name: String, id: Long): Band {
+        val band = createAnotherUserBand(name)
+        return Reflection.makeIdChangedClone(Band::class.java, band, id)
+    }
 }
