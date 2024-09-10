@@ -2,6 +2,7 @@ package com.wap.wabi.band.controller
 
 import com.wap.wabi.band.payload.request.BandCreateRequest
 import com.wap.wabi.band.payload.request.BandUpdateRequest
+import com.wap.wabi.band.payload.response.BandStudentsData
 import com.wap.wabi.band.service.BandService
 import com.wap.wabi.common.payload.response.Response
 import org.springframework.http.HttpStatus
@@ -23,7 +24,7 @@ class BandController(
 ) {
     @GetMapping("{bandId}/students")
     fun getBandStudents(@PathVariable bandId: Long): ResponseEntity<Response> {
-        val response = Response.ok(data = bandService.getBandStudents(bandId = bandId))
+        val response = Response.ok(data = BandStudentsData(bandService.getBandStudents(bandId = bandId)))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
