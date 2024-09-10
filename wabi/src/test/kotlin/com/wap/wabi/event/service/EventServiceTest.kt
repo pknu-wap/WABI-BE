@@ -9,8 +9,6 @@ import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.response.EventData
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
-import com.wap.wabi.event.repository.EventStudentRepository
-import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -33,12 +31,6 @@ class EventServiceTest {
 
     @MockBean
     private lateinit var eventRepository: EventRepository
-
-    @MockBean
-    private lateinit var eventStudentRepository: EventStudentRepository
-
-    @MockBean
-    private lateinit var studentRepository: StudentRepository
 
     @MockBean
     private lateinit var eventBandRepository: EventBandRepository
