@@ -9,7 +9,7 @@ data class EventStudentData(
     val name: String,
     val band: String,
     val eventStudentStatus: EventStudentStatus,
-    val checkInTime: LocalDateTime
+    val checkInTime: LocalDateTime?
 ) {
     companion object {
         fun of(eventStudents: List<EventStudent>): List<EventStudentData> {
