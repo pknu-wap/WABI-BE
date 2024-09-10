@@ -92,6 +92,7 @@ public class EventStudent {
 
     public void checkIn() {
         this.status = EventStudentStatus.CHECK_IN;
+        this.checkedInAt = LocalDateTime.now();
     }
 
     public Long getId() {
