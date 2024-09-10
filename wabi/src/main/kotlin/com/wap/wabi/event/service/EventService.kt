@@ -1,5 +1,6 @@
 package com.wap.wabi.event.service
 
+import com.wap.wabi.band.entity.Band
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.event.entity.Enum.EventStudentStatus
@@ -82,17 +83,24 @@ class EventService(
         eventBandRepository.saveAll(eventBands)
 
         bands.forEach { band ->
-            val eventStudents = bandStudentRepository.findAllByBand(band).map { bandStudent ->
-                EventStudent.builder()
-                    .event(savedEvent)
-                    .student(bandStudent.student)
-                    .band(band)
-                    .club(bandStudent.club)
-                    .build()
-            }
-            eventStudentRepository.saveAll(eventStudents)
+            saveEventStudentsFromBand(savedEvent, band)
         }
         return savedEvent
+    }
+
+    @Transactional
+    fun saveEventStudentsFromBand(event: Event, band: Band): Int {
+        val eventStudents = bandStudentRepository.findAllByBand(band).map { bandStudent ->
+            EventStudent.builder()
+                .event(event)
+                .student(bandStudent.student)
+                .band(band)
+                .club(bandStudent.club)
+                .build()
+        }
+        eventStudentRepository.saveAll(eventStudents)
+
+        return eventStudents.size
     }
 
     @Transactional

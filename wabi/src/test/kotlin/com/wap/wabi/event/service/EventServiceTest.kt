@@ -1,7 +1,9 @@
 package com.wap.wabi.event.service
 
 import com.wap.wabi.band.fixture.BandFixture
+import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.repository.BandRepository
+import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.event.fixture.EventBandFixture
 import com.wap.wabi.event.fixture.EventFixture
 import com.wap.wabi.event.payload.request.EventCreateRequest
@@ -9,6 +11,7 @@ import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.response.EventData
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
+import com.wap.wabi.student.fixture.StudentFixture
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -37,6 +40,9 @@ class EventServiceTest {
 
     @MockBean
     private lateinit var bandRepository: BandRepository
+
+    @MockBean
+    private lateinit var bandStudentRepository: BandStudentRepository
 
     @Test
     fun 이벤트를_생성한다() {
@@ -69,6 +75,27 @@ class EventServiceTest {
 
         //Then
         assertThat(result.id).isEqualTo(savedEvent.id)
+    }
+
+    @Test
+    fun 특정_밴드에_속한_학생들을_이벤트에_참여시킨다() {
+        //Given
+        val event1 = EventFixture.createEvent("Event1")
+        val band1 = BandFixture.createBand("Band1")
+        val student1 = StudentFixture.createStudent("Student1")
+        val student2 = StudentFixture.createStudent("Student2")
+        val bandStudent1 = BandStudentFixture.createBandStudent(student = student1, band = band1)
+        val bandStudent2 = BandStudentFixture.createBandStudent(student = student2, band = band1)
+
+        `when`(bandStudentRepository.findAllByBand(any())).thenReturn(listOf(bandStudent1, bandStudent2))
+
+        val expected = 2
+
+        //When
+        val result = eventService.saveEventStudentsFromBand(event = event1, band = band1)
+
+        //Then
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
