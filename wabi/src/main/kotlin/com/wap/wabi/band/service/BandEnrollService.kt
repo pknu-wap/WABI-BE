@@ -19,6 +19,11 @@ class BandEnrollService(
     private val studentRepository: StudentRepository,
     private val fileToBandStudentTranslator: FileToBandStudentTranslator
 ) {
+    fun enrollByFile(bandId: Long, file: MultipartFile): Long {
+        val bandStudentDtos = fileToBandStudentTranslator.translateFileToDto(file)
+        return enrollByDto(bandId, bandStudentDtos)
+    }
+
     @Transactional
     fun enrollByDto(bandId: Long, bandStudentDtos: List<BandStudentDto>): Long {
         val request = EnrollRequest(bandStudentDtos)
