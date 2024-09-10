@@ -1,9 +1,11 @@
 package com.wap.wabi.event.service
 
 import com.wap.wabi.band.repository.BandRepository
+import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.entity.Event
 import com.wap.wabi.event.entity.EventBand
+import com.wap.wabi.event.entity.EventStudent
 import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
@@ -19,6 +21,7 @@ import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class EventService(
@@ -26,7 +29,8 @@ class EventService(
     private val eventStudentRepository: EventStudentRepository,
     private val studentRepository: StudentRepository,
     private val eventBandRepository: EventBandRepository,
-    private val bandRepository: BandRepository
+    private val bandRepository: BandRepository,
+    private val bandStudentRepository: BandStudentRepository
 ) {
     @Transactional
     fun getCheckInTable(eventId: Long, filter: CheckInTableFilter): List<EventStudentData> {
@@ -77,6 +81,21 @@ class EventService(
                 .event(savedEvent)
                 .band(band)
                 .build()
+        }
+
+        bands.map { band ->
+            val eventStudents = bandStudentRepository.findAllByBand(band).map { bandStudent ->
+                EventStudent.builder()
+                    .event(savedEvent)
+                    .student(bandStudent.student)
+                    .club(bandStudent.club)
+                    .status(EventStudentStatus.NOT_CHECK_IN)
+                    .checkedInAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build()
+            }
+            eventStudentRepository.saveAll(eventStudents)
+
         }
         eventBandRepository.saveAll(eventBands)
 
