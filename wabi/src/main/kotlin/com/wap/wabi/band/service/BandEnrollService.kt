@@ -1,6 +1,7 @@
 package com.wap.wabi.band.service
 
 import com.wap.wabi.band.entity.BandStudent
+import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.band.payload.request.EnrollRequest
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
