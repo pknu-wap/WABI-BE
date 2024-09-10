@@ -1,5 +1,7 @@
 package com.wap.wabi.band.entity;
 
+import com.wap.wabi.band.payload.request.BandUpdateRequest;
+import com.wap.wabi.event.payload.request.EventUpdateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -50,5 +52,9 @@ public class Band {
 
     public String getBandName() {
         return bandName;
+    }
+
+    public void update(BandUpdateRequest request) {
+        this.bandName = request.getBandName();
     }
 }
