@@ -39,9 +39,9 @@ public class EventStudent {
         private Student student;
         private Band band;
         private String club;
-        private EventStudentStatus status;
-        private LocalDateTime updatedAt;
-        private LocalDateTime checkedInAt;
+        private EventStudentStatus status = EventStudentStatus.NOT_CHECK_IN;
+        private LocalDateTime updatedAt = LocalDateTime.now();
+        private LocalDateTime checkedInAt = null;
 
         public builder event(Event event) {
             this.event = event;

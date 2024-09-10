@@ -21,7 +21,6 @@ import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class EventService(
@@ -80,23 +79,19 @@ class EventService(
                 .band(band)
                 .build()
         }
+        eventBandRepository.saveAll(eventBands)
 
-        bands.map { band ->
+        bands.forEach { band ->
             val eventStudents = bandStudentRepository.findAllByBand(band).map { bandStudent ->
                 EventStudent.builder()
                     .event(savedEvent)
                     .student(bandStudent.student)
+                    .band(band)
                     .club(bandStudent.club)
-                    .status(EventStudentStatus.NOT_CHECK_IN)
-                    .checkedInAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
                     .build()
             }
             eventStudentRepository.saveAll(eventStudents)
-
         }
-        eventBandRepository.saveAll(eventBands)
-
         return savedEvent
     }
 
