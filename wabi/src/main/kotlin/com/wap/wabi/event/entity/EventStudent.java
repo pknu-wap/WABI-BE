@@ -4,10 +4,13 @@ import com.wap.wabi.band.entity.Band;
 import com.wap.wabi.event.entity.Enum.EventStudentStatus;
 import com.wap.wabi.student.entity.Student;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class EventStudent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,7 @@ public class EventStudent {
     private String club;
     @Enumerated(EnumType.STRING)
     private EventStudentStatus status;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
     private LocalDateTime checkedInAt;
 
