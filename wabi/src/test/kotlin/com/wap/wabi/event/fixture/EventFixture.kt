@@ -1,13 +1,14 @@
 package com.wap.wabi.event.fixture
 
 import com.wap.wabi.common.Reflection
+import com.wap.wabi.common.TestConstants
 import com.wap.wabi.event.entity.Event
 import java.time.LocalDateTime
 
 object EventFixture {
     fun createEvent(name: String): Event {
         return Event.builder()
-            .adminId(1)
+            .adminId(TestConstants.ADMIN_ID)
             .name(name)
             .startAt(LocalDateTime.now())
             .endAt(LocalDateTime.now().plusDays(1))

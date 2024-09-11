@@ -4,14 +4,20 @@ import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
+import com.wap.wabi.common.TestConstants
+import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.fixture.EventBandFixture
 import com.wap.wabi.event.fixture.EventFixture
+import com.wap.wabi.event.fixture.EventStudentFixture
+import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.response.EventData
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
+import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.student.fixture.StudentFixture
+import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -33,6 +39,12 @@ class EventServiceTest {
     private lateinit var eventService: EventService
 
     @MockBean
+    private lateinit var studentRepository: StudentRepository
+
+    @MockBean
+    private lateinit var eventStudentRepository: EventStudentRepository
+
+    @MockBean
     private lateinit var eventRepository: EventRepository
 
     @MockBean
@@ -47,7 +59,6 @@ class EventServiceTest {
     @Test
     fun 이벤트를_생성한다() {
         //Given
-        val adminId: Long = 1L
         val eventName = "Event 1"
         val startAt = LocalDateTime.now()
         val endAt = LocalDateTime.now().plusDays(1)
@@ -71,7 +82,7 @@ class EventServiceTest {
         `when`(bandRepository.findAllById(eventCreateRequest.bandIds)).thenReturn(listOf(band1, band2, band3))
 
         //When
-        val result = eventService.createEvent(adminId = adminId, eventCreateRequest = eventCreateRequest)
+        val result = eventService.createEvent(adminId = TestConstants.ADMIN_ID, eventCreateRequest = eventCreateRequest)
 
         //Then
         assertThat(result.id).isEqualTo(savedEvent.id)
@@ -91,7 +102,7 @@ class EventServiceTest {
 
         val expected = 2
 
-        //When
+        //When //TODO admin 추가 필요
         val result = eventService.saveEventStudentsFromBand(event = event1, band = band1)
 
         //Then
@@ -101,8 +112,7 @@ class EventServiceTest {
     @Test
     fun 이벤트를_수정한다() {
         //Given
-        val adminId: Long = 1L
-        val eventId: Long = 1L
+        val eventId: Long = 1
         val originalEventName = "Event 1"
         val newEventName = "Event 2"
         val startAt = LocalDateTime.now()
@@ -116,13 +126,13 @@ class EventServiceTest {
             eventStudentMaxCount = eventStudentMaxCount,
         )
 
-        val savedEvent = EventFixture.createEvent(id = 1L, name = originalEventName)
-        val updatedEvent = EventFixture.createEvent(id = 1L, name = newEventName)
+        val savedEvent = EventFixture.createEvent(id = eventId, name = originalEventName)
+        val updatedEvent = EventFixture.createEvent(id = eventId, name = newEventName)
 
         `when`(eventRepository.findById(any())).thenReturn(Optional.of(savedEvent))
 
         //When
-        val result = eventService.updateEvent(adminId = adminId, eventUpdateRequest = eventUpdateRequest)
+        val result = eventService.updateEvent(adminId = TestConstants.ADMIN_ID, eventUpdateRequest = eventUpdateRequest)
 
         //Then
         assertThat(result.name).isEqualTo(updatedEvent.name)
@@ -131,10 +141,8 @@ class EventServiceTest {
     @Test
     fun 이벤트를_단일조회_한다() {
         //Given
-        val adminId = 1L
         val eventId = 1L
-        val eventName = "Event 1"
-        val event = EventFixture.createEvent(id = eventId, name = eventName)
+        val event = EventFixture.createEvent(id = eventId, name = "Event1")
         val band1 = BandFixture.createBand(id = 1, name = "Band 1")
         val band2 = BandFixture.createBand(id = 2, name = "Band 2")
         val band3 = BandFixture.createBand(id = 3, name = "Band 3")
@@ -150,7 +158,7 @@ class EventServiceTest {
         val expected = EventData.of(event, eventBands)
 
         //When
-        val result = eventService.getEvent(adminId = adminId, eventId = eventId)
+        val result = eventService.getEvent(adminId = TestConstants.ADMIN_ID, eventId = eventId)
 
         //Then
         assertThat(result).isEqualTo(expected)
@@ -159,7 +167,6 @@ class EventServiceTest {
     @Test
     fun 이벤트를_목록으로_조회_한다() {
         //Given
-        val adminId = 1L
         val event1 = EventFixture.createEvent(id = 1, name = "Event 1")
         val event2 = EventFixture.createEvent(id = 2, name = "Event 2")
         val band1 = BandFixture.createBand(id = 1, name = "Band 1")
@@ -179,7 +186,7 @@ class EventServiceTest {
         `when`(eventBandRepository.findAllByEvent(event2)).thenReturn(listOf(eventBand3, eventBand4))
 
         //When
-        val result = eventService.getEvents(adminId)
+        val result = eventService.getEvents(TestConstants.ADMIN_ID)
 
         //Then
         assertThat(result).isEqualTo(listOf(eventData1, eventData2))
@@ -188,15 +195,53 @@ class EventServiceTest {
     @Test
     fun 이벤트를_삭제한다() {
         //Given
-        val adminId = 1L
-        val event = EventFixture.createEvent(id = 1L, name = "Event 1")
+        val eventId = 1L
+        val event = EventFixture.createEvent(id = eventId, name = "Event 1")
 
         `when`(eventRepository.findById(any())).thenReturn(Optional.of(event))
 
         //When
-        eventService.deleteEvent(adminId = adminId, eventId = event.id)
+        eventService.deleteEvent(adminId = TestConstants.ADMIN_ID, eventId = eventId)
 
         //Then
         verify(eventRepository, times(1)).delete(event)
     }
+
+    @Test
+    fun 이벤트에_체크인_한다() {
+        //Given
+        val checkInRequest = CheckInRequest(
+            studentId = "201912050",
+            eventId = 1
+        )
+
+        val event = EventFixture.createEvent(id = 1, name = "Event 1")
+        val band = BandFixture.createBand(id = 1, name = "Band 1")
+        val student = StudentFixture.createStudent(id = "201912050", name = "Student1")
+        val eventStudent = EventStudentFixture.createEventStudent(id = 1, event = event, student = student, band = band)
+
+        `when`(studentRepository.findById(any())).thenReturn(Optional.of(student))
+        `when`(eventRepository.findById(any())).thenReturn(Optional.of(event))
+        `when`(eventStudentRepository.findByStudentAndEvent(any(), any())).thenReturn(Optional.of(eventStudent))
+
+        //When
+        val result = eventService.checkIn(checkInRequest)
+
+        //Then
+        assertThat(result).isEqualTo(EventStudentStatus.CHECK_IN)
+    }
+
+    @Test
+    fun 이벤트의_주최자인지_판단한다() {
+        //Given
+        val event1 = EventFixture.createEvent(id = 1, name = "Event1")
+
+        //When
+        val result = eventService.validateEventOwner(adminId = TestConstants.ADMIN_ID, event = event1)
+
+        //Then
+        assertThat(result).isTrue()
+    }
+
+
 }

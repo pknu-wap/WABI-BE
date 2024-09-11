@@ -90,9 +90,10 @@ public class EventStudent {
     public EventStudent() {
     }
 
-    public void checkIn() {
+    public EventStudentStatus checkIn() {
         this.status = EventStudentStatus.CHECK_IN;
         this.checkedInAt = LocalDateTime.now();
+        return this.status;
     }
 
     public Long getId() {

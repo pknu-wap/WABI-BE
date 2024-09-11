@@ -54,7 +54,7 @@ class EventService(
     }
 
     @Transactional
-    fun checkIn(checkInRequest: CheckInRequest) {
+    fun checkIn(checkInRequest: CheckInRequest): EventStudentStatus {
         val student = studentRepository.findById(checkInRequest.studentId)
             .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
         val event = eventRepository.findById(checkInRequest.eventId)
@@ -63,7 +63,8 @@ class EventService(
             .orElseThrow { throw RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
 
         check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
-        eventStudent.checkIn()
+        return eventStudent.checkIn()
+
     }
 
     @Transactional
