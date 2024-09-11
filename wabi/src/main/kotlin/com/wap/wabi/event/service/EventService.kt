@@ -38,7 +38,7 @@ class EventService(
 
         val eventStudentData = when (filter) {
             CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
-            else -> EventStudentData.of(eventStudentRepository.findAllByEventAndStatus(event, filter.toString()))
+            else -> EventStudentData.of(eventStudentRepository.findAllByEventAndStatus(event, filter))
         }
         return eventStudentData
     }
@@ -151,7 +151,8 @@ class EventService(
         eventRepository.delete(event)
     }
 
-    fun validateEventOwner(adminId: Long, event: Event) {
+    fun validateEventOwner(adminId: Long, event: Event): Boolean {
         if (!event.isOwner(adminId)) throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
+        return true
     }
 }
