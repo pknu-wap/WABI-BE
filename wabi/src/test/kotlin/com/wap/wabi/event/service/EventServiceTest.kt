@@ -102,7 +102,7 @@ class EventServiceTest {
 
         val expected = 2
 
-        //When //TODO admin 추가 필요
+        //When
         val result = eventService.saveEventStudentsFromBand(event = event1, band = band1)
 
         //Then
