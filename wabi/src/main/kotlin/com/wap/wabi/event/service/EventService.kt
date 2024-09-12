@@ -38,7 +38,12 @@ class EventService(
 
         val eventStudentData = when (filter) {
             CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
-            else -> EventStudentData.of(eventStudentRepository.findAllByEventAndStatus(event, filter))
+            else -> EventStudentData.of(
+                eventStudentRepository.findAllByEventAndStatus(
+                    event,
+                    EventStudentStatus.valueOf(filter.toString())
+                )
+            )
         }
         return eventStudentData
     }

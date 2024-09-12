@@ -3,7 +3,6 @@ package com.wap.wabi.event.repository;
 import com.wap.wabi.event.entity.Enum.EventStudentStatus;
 import com.wap.wabi.event.entity.Event;
 import com.wap.wabi.event.entity.EventStudent;
-import com.wap.wabi.event.payload.response.Enum.CheckInTableFilter;
 import com.wap.wabi.student.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +18,7 @@ public interface EventStudentRepository extends JpaRepository<EventStudent, Long
 
     List<EventStudent> findAllByEvent(Event event);
 
-    List<EventStudent> findAllByEventAndStatus(Event event, CheckInTableFilter status);
+    List<EventStudent> findAllByEventAndStatus(Event event, EventStudentStatus status);
 
     @Query("SELECT COUNT(*) FROM EventStudent es WHERE es.status=:status AND es.event=:event")
     int getEventStudentStatusCount(@Param("event") Event event, @Param("status") EventStudentStatus status);
