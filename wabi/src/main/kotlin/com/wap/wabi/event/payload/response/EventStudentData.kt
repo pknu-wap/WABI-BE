@@ -22,7 +22,7 @@ data class EventStudentData(
             return EventStudentData(
                 eventStudent.student.id,
                 eventStudent.student.name,
-                "",
+                eventStudent.band.bandName,
                 eventStudent.status,
                 eventStudent.checkedInAt
             )

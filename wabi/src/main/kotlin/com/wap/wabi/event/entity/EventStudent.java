@@ -100,6 +100,10 @@ public class EventStudent {
         return id;
     }
 
+    public Band getBand() {
+        return band;
+    }
+
     public Event getEvent() {
         return event;
     }
