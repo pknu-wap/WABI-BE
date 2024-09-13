@@ -16,7 +16,8 @@ import java.util.Optional;
 public interface EventStudentRepository extends JpaRepository<EventStudent, Long> {
     Optional<EventStudent> findByStudentAndEvent(Student student, Event event);
 
-    List<EventStudent> findAllByEvent(Event event);
+    @Query("SELECT es FROM EventStudent es WHERE es.event=:event ORDER BY es.checkedInAt DESC")
+    List<EventStudent> findAllByEvent(@Param("event") Event event);
 
     List<EventStudent> findAllByEventAndStatus(Event event, EventStudentStatus status);
 
