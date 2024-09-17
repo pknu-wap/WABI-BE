@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
-    @Query("select a from Admin a where a.id = :id and a.password = :password")
-    Optional<Admin> findAdminByIdAndPassword(@Param("id") String id, @Param("password") String password);
+    @Query("select a from Admin a where a.id = :id")
+    Optional<Admin> findAdminByIdAndPassword(@Param("id") String id);
 }
