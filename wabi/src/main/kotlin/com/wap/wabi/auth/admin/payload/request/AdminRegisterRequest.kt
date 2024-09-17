@@ -1,7 +1,7 @@
-package com.wap.wabi.admin.payload.request
+package com.wap.wabi.auth.admin.payload.request
 
-import com.wap.wabi.admin.entity.Admin
-import com.wap.wabi.admin.entity.Enum.AdminStatus
+import com.wap.wabi.auth.admin.entity.Admin
+import com.wap.wabi.auth.admin.entity.Enum.AdminStatus
 
 data class AdminRegisterRequest(
     val id: String,

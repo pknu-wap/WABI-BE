@@ -1,6 +1,6 @@
-package com.wap.wabi.admin.entity;
+package com.wap.wabi.auth.admin.entity;
 
-import com.wap.wabi.admin.entity.Enum.AdminStatus;
+import com.wap.wabi.auth.admin.entity.Enum.AdminStatus;
 import com.wap.wabi.common.utils.StringUtils;
 import com.wap.wabi.exception.ErrorCode;
 import com.wap.wabi.exception.RestApiException;

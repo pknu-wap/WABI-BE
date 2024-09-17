@@ -1,7 +1,7 @@
-package com.wap.wabi.admin.service
+package com.wap.wabi.auth.admin.service
 
-import com.wap.wabi.admin.payload.request.AdminRegisterRequest
-import com.wap.wabi.admin.repository.AdminRepository
+import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
+import com.wap.wabi.auth.admin.repository.AdminRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

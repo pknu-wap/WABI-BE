@@ -1,7 +1,7 @@
-package com.wap.wabi.admin.controller
+package com.wap.wabi.auth.admin.controller
 
-import com.wap.wabi.admin.payload.request.AdminRegisterRequest
-import com.wap.wabi.admin.service.AdminService
+import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
+import com.wap.wabi.auth.admin.service.AdminService
 import com.wap.wabi.common.payload.response.Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

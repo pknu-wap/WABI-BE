@@ -1,6 +1,6 @@
-package com.wap.wabi.admin.repository;
+package com.wap.wabi.auth.admin.repository;
 
-import com.wap.wabi.admin.entity.Admin;
+import com.wap.wabi.auth.admin.entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
