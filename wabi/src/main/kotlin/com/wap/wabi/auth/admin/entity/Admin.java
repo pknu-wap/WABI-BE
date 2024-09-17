@@ -11,35 +11,27 @@ import jakarta.validation.constraints.NotNull;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminNumber;
-    @NotNull
-    private String id;
-    @NotNull
-    private String password;
+    private Long id;
     @NotNull
     private String name;
+    @NotNull
+    private String password;
+
     private AdminStatus status;
 
     public Admin() {
     }
 
     private Admin(builder builder) {
-        this.id = builder.id;
-        this.password = builder.password;
         this.name = builder.name;
+        this.password = builder.password;
         this.status = builder.status;
     }
 
     public static class builder {
-        private String id;
-        private String password;
         private String name;
+        private String password;
         private AdminStatus status;
-
-        public builder id(String id) {
-            this.id = id;
-            return this;
-        }
 
         public builder password(String password) {
             this.password = password;
@@ -64,26 +56,20 @@ public class Admin {
     @PrePersist
     @PreUpdate
     private void validate() {
-        if (!isCorrectId() || !isCorrectPassword() || !isCorrectName()) {
+        if (!isCorrectName() || !isCorrectPassword()) {
             throw new RestApiException(ErrorCode.BAD_REQUEST_ADMIN);
         }
     }
 
-    private boolean isCorrectId() {
-        return !id.isBlank() &&
-                StringUtils.checkLength(id, 4, 10) &&
-                StringUtils.hasOnlySmallLetterOrNumber(id);
+    private boolean isCorrectName() {
+        return !name.isBlank() &&
+                StringUtils.checkLength(name, 4, 10) &&
+                StringUtils.hasOnlySmallLetterOrNumber(name);
     }
 
     private boolean isCorrectPassword() {
         return !password.isBlank() &&
                 StringUtils.checkLength(password, 8, 15) &&
                 StringUtils.hasOnlyAllowedSpecialCharacters(password, "~!@#");
-    }
-
-    private boolean isCorrectName() {
-        return !name.isBlank() &&
-                StringUtils.checkLength(name, 2, 10) &&
-                StringUtils.hasOnlyAlphabetOrNumber(name);
     }
 }

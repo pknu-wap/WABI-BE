@@ -13,7 +13,7 @@ class AdminService(
 ) {
     @Transactional
     fun registerAdmin(adminRegisterRequest: AdminRegisterRequest){
-        if (adminRepository.findAdminByIdAndPassword(adminRegisterRequest.id).isPresent){
+        if (adminRepository.findAdminByName(adminRegisterRequest.name).isPresent){
             throw RestApiException(ErrorCode.EXIST_ADMIN)
         }
         adminRepository.save(adminRegisterRequest.toAdmin())
