@@ -1,6 +1,7 @@
 package com.wap.wabi.admin.service
 
-import com.wap.wabi.admin.payload.request.AdminRegisterRequest
+import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
+import com.wap.wabi.auth.admin.service.AdminService
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import org.junit.jupiter.api.Assertions
@@ -77,6 +78,16 @@ class AdminServiceTest {
                 }
                 //Then
                 assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+            }
+
+            @Test
+            fun `이미 있는 아이디는 가입할 수 없다`(){
+                val adminRegisterRequest = AdminRegisterRequest(CORRECT_ID, CORRECT_PASSWORD, CORRECT_NAME)
+                adminService.registerAdmin(adminRegisterRequest)
+                val exception = assertThrows<RestApiException> {
+                    adminService.registerAdmin(adminRegisterRequest)
+                }
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.EXIST_ADMIN)
             }
         }
 
