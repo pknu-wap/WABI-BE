@@ -16,6 +16,8 @@ public class Admin {
     private String name;
     @NotNull
     private String password;
+    @NotNull
+    private String email;
 
     private AdminStatus status;
 
@@ -25,12 +27,14 @@ public class Admin {
     private Admin(builder builder) {
         this.name = builder.name;
         this.password = builder.password;
+        this.email = builder.email;
         this.status = builder.status;
     }
 
     public static class builder {
         private String name;
         private String password;
+        private String email;
         private AdminStatus status;
 
         public builder password(String password) {
@@ -45,6 +49,10 @@ public class Admin {
 
         public builder name(String name) {
             this.name = name;
+            return this;
+        }
+        public builder email(String email) {
+            this.email = email;
             return this;
         }
 
