@@ -24,13 +24,11 @@ import org.springframework.stereotype.Service
 class EventService(
     private val eventRepository: EventRepository,
     private val eventStudentRepository: EventStudentRepository,
-    private val studentRepository: StudentRepository,
-    private val eventBandRepository: EventBandRepository,
-    private val bandRepository: BandRepository
+    private val studentRepository: StudentRepository
 ) {
     @Transactional
     fun getCheckInTable(eventId: Long, filter: CheckInTableFilter): List<EventStudentData> {
-        val event = eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+        val event = eventRepository.findById(eventId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
         val eventStudentData = when (filter) {
             CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
@@ -41,7 +39,7 @@ class EventService(
 
     @Transactional
     fun getCheckInStatus(eventId: Long): CheckInStatusCount {
-        val event = eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+        val event = eventRepository.findById(eventId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
         val checkInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.CHECK_IN)
         val notCheckInCount = eventStudentRepository.getEventStudentStatusCount(event, EventStudentStatus.NOT_CHECK_IN)
@@ -52,86 +50,13 @@ class EventService(
     @Transactional
     fun checkIn(checkInRequest: CheckInRequest) {
         val student = studentRepository.findById(checkInRequest.studentId)
-            .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
+            .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
         val event = eventRepository.findById(checkInRequest.eventId)
-            .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
+            .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_EVENT) }
         val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
-            .orElseThrow { throw RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
+            .orElseThrow { RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
 
-        check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { throw RestApiException(ErrorCode.ALREADY_CHECK_IN) }
+        check(eventStudent.status == EventStudentStatus.NOT_CHECK_IN) { RestApiException(ErrorCode.ALREADY_CHECK_IN) }
         eventStudent.checkIn()
-
-        eventStudentRepository.save(eventStudent)
-    }
-
-    @Transactional
-    fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest): Event {
-        val createdEvent = eventCreateRequest.toEventEntity(adminId)
-        val savedEvent = eventRepository.save(createdEvent)
-
-        val bands = bandRepository.findAllById(eventCreateRequest.bandIds)
-        check(bands.size == eventCreateRequest.bandIds.size) { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
-
-        val eventBands = bands.map { band ->
-            EventBand.builder()
-                .event(savedEvent)
-                .band(band)
-                .build()
-        }
-        eventBandRepository.saveAll(eventBands)
-
-        return savedEvent
-    }
-
-    @Transactional
-    fun updateEvent(adminId: Long, eventUpdateRequest: EventUpdateRequest): Event {
-        val event = eventRepository.findById(eventUpdateRequest.eventId)
-            .orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
-
-        validateEventOwner(adminId, event)
-
-        try {
-            event.update(eventUpdateRequest)
-        } catch (e: IllegalArgumentException) {
-            throw RestApiException(ErrorCode.FORBIDDEN_ACCESS_EVENT_UPDATE)
-        }
-
-        return event
-    }
-
-    fun getEvent(adminId: Long, eventId: Long): EventData {
-        val event =
-            eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
-
-        validateEventOwner(adminId, event)
-
-        val eventBands = eventBandRepository.findAllByEvent(event)
-
-        return EventData.of(event, eventBands)
-    }
-
-    fun getEvents(adminId: Long): List<EventData> {
-        val events = eventRepository.findAllByAdminId(adminId)
-
-        val eventDatas: MutableList<EventData> = ArrayList()
-        events.forEach { event ->
-            val eventBands = eventBandRepository.findAllByEvent(event)
-            eventDatas.add(EventData.of(event, eventBands))
-        }
-
-        return eventDatas
-    }
-    
-    fun deleteEvent(adminId: Long, eventId: Long) {
-        val event =
-            eventRepository.findById(eventId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_EVENT) }
-
-        validateEventOwner(adminId, event)
-
-        eventRepository.delete(event)
-    }
-
-    fun validateEventOwner(adminId: Long, event: Event) {
-        if (!event.isOwner(adminId)) throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
     }
 }

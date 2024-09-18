@@ -1,6 +1,7 @@
 package com.wap.wabi.band.service
 
 import com.wap.wabi.band.entity.BandStudent
+import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.band.payload.request.EnrollRequest
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
@@ -19,15 +20,20 @@ class BandEnrollService(
     private val studentRepository: StudentRepository,
     private val fileToBandStudentTranslator: FileToBandStudentTranslator
 ) {
-    @Transactional
     fun enrollByFile(bandId: Long, file: MultipartFile): Long {
-        val request = EnrollRequest(fileToBandStudentTranslator.translateFileToDto(file))
+        val bandStudentDtos = fileToBandStudentTranslator.translateFileToDto(file)
+        return enrollByDto(bandId, bandStudentDtos)
+    }
+
+    @Transactional
+    fun enrollByDto(bandId: Long, bandStudentDtos: List<BandStudentDto>): Long {
+        val request = EnrollRequest(bandStudentDtos)
         return enrollBandStudent(bandId, request)
     }
 
     @Transactional
     fun enrollBandStudent(bandId: Long, request: EnrollRequest): Long {
-        val band = bandRepository.findById(bandId).orElseThrow { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
+        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
 
         val bandStudents: MutableList<BandStudent> = mutableListOf()
         request.bandStudentDtos.forEach { bandStudentDto ->
