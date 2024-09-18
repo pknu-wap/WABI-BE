@@ -1,5 +1,6 @@
 package com.wap.wabi.auth.admin.util
 
+import com.wap.wabi.auth.admin.payload.request.AdminLoginRequest
 import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
 import com.wap.wabi.common.utils.StringUtils
 import com.wap.wabi.exception.ErrorCode
@@ -7,9 +8,15 @@ import com.wap.wabi.exception.RestApiException
 import org.springframework.stereotype.Component
 
 @Component
-class AdminRegisterValidator {
+class AdminValidator {
     fun validate(adminRegisterRequest: AdminRegisterRequest) {
         if (!isCorrectName(adminRegisterRequest.name) || !isCorrectPassword(adminRegisterRequest.password)) {
+            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
+        }
+    }
+
+    fun validate(adminLoginRequest: AdminLoginRequest){
+        if (!isCorrectName(adminLoginRequest.name) || !isCorrectPassword(adminLoginRequest.password)) {
             throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
         }
     }
