@@ -1,4 +1,4 @@
-package com.wap.wabi.auth.jwt
+package com.wap.wabi.auth.admin.service.jwt
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts

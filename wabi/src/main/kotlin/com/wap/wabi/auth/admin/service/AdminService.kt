@@ -4,7 +4,7 @@ import com.wap.wabi.auth.admin.payload.request.AdminLoginRequest
 import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
 import com.wap.wabi.auth.admin.payload.response.AdminLoginResponse
 import com.wap.wabi.auth.admin.repository.AdminRepository
-import com.wap.wabi.auth.jwt.JwtTokenProvider
+import com.wap.wabi.auth.admin.service.jwt.JwtTokenProvider
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import org.springframework.security.crypto.password.PasswordEncoder
