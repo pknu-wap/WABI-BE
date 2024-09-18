@@ -1,6 +1,7 @@
 package com.wap.wabi.auth.admin.payload.request
 
 import com.wap.wabi.auth.admin.entity.Admin
+import com.wap.wabi.auth.admin.entity.Enum.AdminRole
 import com.wap.wabi.auth.admin.entity.Enum.AdminStatus
 import com.wap.wabi.common.utils.StringUtils.Companion.checkLength
 import com.wap.wabi.common.utils.StringUtils.Companion.hasOnlyAllowedSpecialCharacters
@@ -20,6 +21,7 @@ data class AdminRegisterRequest(
             .name(this.name)
             .password(encoder.encode(this.password))
             .email(this.email)
+            .role(AdminRole.USER)
             .status(AdminStatus.ACTIVE)
             .build()
     }

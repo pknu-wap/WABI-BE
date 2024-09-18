@@ -32,7 +32,7 @@ class AdminService(
                 encoder.matches(adminLoginRequest.password, admin.get().password)
             }
             ?: throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
-        val token = tokenProvider.createToken(admin.get().username)
-        return AdminLoginResponse(admin.get().username, token)
+        val token = tokenProvider.createToken("${admin.get().username}:${admin.get().role}")
+        return AdminLoginResponse(admin.get().username, admin.get().role,token)
     }
 }

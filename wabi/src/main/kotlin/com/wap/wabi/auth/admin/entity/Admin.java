@@ -1,5 +1,6 @@
 package com.wap.wabi.auth.admin.entity;
 
+import com.wap.wabi.auth.admin.entity.Enum.AdminRole;
 import com.wap.wabi.auth.admin.entity.Enum.AdminStatus;
 import com.wap.wabi.common.utils.StringUtils;
 import com.wap.wabi.exception.ErrorCode;
@@ -22,6 +23,8 @@ public class Admin implements UserDetails {
     private String password;
     @NotNull
     private String email;
+    @NotNull
+    private AdminRole role;
 
     private AdminStatus status;
 
@@ -32,6 +35,7 @@ public class Admin implements UserDetails {
         this.name = builder.name;
         this.password = builder.password;
         this.email = builder.email;
+        this.role = builder.role;
         this.status = builder.status;
     }
 
@@ -70,10 +74,13 @@ public class Admin implements UserDetails {
         return false;
     }
 
+    public String getRole() { return this.role.toString();}
+
     public static class builder {
         private String name;
         private String password;
         private String email;
+        private AdminRole role;
         private AdminStatus status;
 
         public builder password(String password) {
@@ -92,6 +99,11 @@ public class Admin implements UserDetails {
         }
         public builder email(String email) {
             this.email = email;
+            return this;
+        }
+
+        public builder role(AdminRole role){
+            this.role = role;
             return this;
         }
 
