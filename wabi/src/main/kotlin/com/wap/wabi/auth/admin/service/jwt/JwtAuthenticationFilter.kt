@@ -24,21 +24,29 @@ class JwtAuthenticationFilter(
         filterChain: FilterChain
     ) {
         val token = parseBearerToken(request)
-        val user = parseUserSpecification(token)
-        UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
-            .apply { details = WebAuthenticationDetails(request) }
-            .also { SecurityContextHolder.getContext().authentication = it }
+
+        if (token != null && jwtTokenProvider.validateTokenAndGetSubject(token) != null) {
+            val user = parseUserSpecification(token)
+            UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
+                .apply { details = WebAuthenticationDetails(request) }
+                .also { SecurityContextHolder.getContext().authentication = it }
+        } else {
+            SecurityContextHolder.clearContext()
+        }
 
         filterChain.doFilter(request, response)
     }
 
-    private fun parseBearerToken(request: HttpServletRequest) = request.getHeader(HttpHeaders.AUTHORIZATION)
-        .takeIf { it?.startsWith("Bearer ", true) ?: false }?.substring(7)
+    private fun parseBearerToken(request: HttpServletRequest): String? {
+        return request.getHeader(HttpHeaders.AUTHORIZATION)
+            ?.takeIf { it.startsWith("Bearer ", ignoreCase = true) }
+            ?.substring(7)
+    }
 
-    private fun parseUserSpecification(token: String?) = (
-            token?.takeIf { it.length >= 10 }
-                ?.let { jwtTokenProvider.validateTokenAndGetSubject(it) }
-                ?: "anonymous:anonymous"
-            ).split(":")
-        .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) }
+    private fun parseUserSpecification(token: String): User {
+        val subject =
+            jwtTokenProvider.validateTokenAndGetSubject(token) ?: throw IllegalArgumentException("Invalid token")
+        val (username, role) = subject.split(":")
+        return User(username, "", listOf(SimpleGrantedAuthority(role)))
+    }
 }

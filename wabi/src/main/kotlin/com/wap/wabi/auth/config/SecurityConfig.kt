@@ -30,13 +30,12 @@ class SecurityConfig(
             }
         }.authorizeHttpRequests { authorizeRequests ->
             authorizeRequests
-                .requestMatchers("/auth/admins/register").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
         }.sessionManagement { session ->
-            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 정책을 STATELESS로 설정
-        }.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
+            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        }.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
