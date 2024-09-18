@@ -5,6 +5,7 @@ import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
 import com.wap.wabi.auth.admin.payload.response.AdminLoginResponse
 import com.wap.wabi.auth.admin.repository.AdminRepository
 import com.wap.wabi.auth.admin.service.jwt.JwtTokenProvider
+import com.wap.wabi.auth.admin.util.AdminRegisterValidator
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class AdminService(
     private val adminRepository: AdminRepository,
     private val tokenProvider: JwtTokenProvider,
+    private val adminRegisterValidator: AdminRegisterValidator,
     private val encoder: PasswordEncoder
 ) {
     @Transactional
@@ -22,6 +24,7 @@ class AdminService(
         if (adminRepository.findAdminByName(adminRegisterRequest.name).isPresent) {
             throw RestApiException(ErrorCode.EXIST_ADMIN)
         }
+        adminRegisterValidator.validate(adminRegisterRequest)
         adminRepository.save(adminRegisterRequest.toAdmin(encoder))
     }
 

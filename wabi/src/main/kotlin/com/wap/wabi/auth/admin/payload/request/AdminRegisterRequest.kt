@@ -16,7 +16,6 @@ data class AdminRegisterRequest(
     val email: String
 ) {
     fun toAdmin(encoder: PasswordEncoder): Admin {
-        validate()
         return Admin.builder()
             .name(this.name)
             .password(encoder.encode(this.password))
@@ -24,22 +23,5 @@ data class AdminRegisterRequest(
             .role(AdminRole.USER)
             .status(AdminStatus.ACTIVE)
             .build()
-    }
-    private fun validate() {
-        if (!isCorrectName() || !isCorrectPassword()) {
-            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
-        }
-    }
-
-    private fun isCorrectName(): Boolean {
-        return name.isNotBlank() &&
-                checkLength(name, 4, 10) &&
-                hasOnlySmallLetterOrNumber(name)
-    }
-
-    private fun isCorrectPassword(): Boolean {
-        return password.isNotBlank() &&
-                checkLength(password, 8, 15) &&
-                hasOnlyAllowedSpecialCharacters(password, "~!@#")
     }
 }
