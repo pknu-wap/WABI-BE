@@ -13,8 +13,8 @@ data class EventStudentData(
 ) {
     companion object {
         fun of(eventStudents: List<EventStudent>): List<EventStudentData> {
-            return eventStudents.map { eventStudent ->
-                of(eventStudent)
+            return eventStudents.map {
+                of(it)
             }
         }
 
