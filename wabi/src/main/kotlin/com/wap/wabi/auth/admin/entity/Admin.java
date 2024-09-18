@@ -99,24 +99,4 @@ public class Admin implements UserDetails {
             return new Admin(this);
         }
     }
-
-    @PrePersist
-    @PreUpdate
-    private void validate() {
-        if (!isCorrectName() || !isCorrectPassword()) {
-            throw new RestApiException(ErrorCode.BAD_REQUEST_ADMIN);
-        }
-    }
-
-    private boolean isCorrectName() {
-        return !name.isBlank() &&
-                StringUtils.checkLength(name, 4, 10) &&
-                StringUtils.hasOnlySmallLetterOrNumber(name);
-    }
-
-    private boolean isCorrectPassword() {
-        return !password.isBlank() &&
-                StringUtils.checkLength(password, 8, 15) &&
-                StringUtils.hasOnlyAllowedSpecialCharacters(password, "~!@#");
-    }
 }
