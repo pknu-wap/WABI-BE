@@ -19,6 +19,7 @@ class StringUtils {
         @JvmStatic
         fun hasOnlyAllowedSpecialCharacters(input: String, specialCharacters: String): Boolean {
             val allowedPattern = "^[a-zA-Z0-9${Pattern.quote(specialCharacters)}]*$".toRegex()
+
             val containsSpecialChar = input.any { it in specialCharacters }
 
             return allowedPattern.matches(input) && containsSpecialChar
