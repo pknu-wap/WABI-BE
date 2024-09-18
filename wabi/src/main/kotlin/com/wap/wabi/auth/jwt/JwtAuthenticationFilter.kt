@@ -1,4 +1,4 @@
-package com.wap.wabi.auth.admin.service.jwt
+package com.wap.wabi.auth.jwt
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

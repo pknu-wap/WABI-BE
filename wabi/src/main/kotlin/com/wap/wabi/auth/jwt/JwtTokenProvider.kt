@@ -1,4 +1,4 @@
-package com.wap.wabi.auth.admin.service.jwt
+package com.wap.wabi.auth.jwt
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -15,7 +15,7 @@ import java.util.*
 import javax.crypto.spec.SecretKeySpec
 import kotlin.collections.HashMap
 @PropertySource("classpath:jwt.yml")
-@Service
+@Component
 class JwtTokenProvider(
     @Value("\${secret-key}")
     private val secretKey: String,
