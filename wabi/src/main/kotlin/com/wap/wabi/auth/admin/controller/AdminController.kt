@@ -1,5 +1,6 @@
 package com.wap.wabi.auth.admin.controller
 
+import com.wap.wabi.auth.admin.payload.request.AdminLoginRequest
 import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
 import com.wap.wabi.auth.admin.service.AdminService
 import com.wap.wabi.common.payload.response.Response
@@ -19,6 +20,12 @@ class AdminController(
     fun registerAdmin(@RequestBody request: AdminRegisterRequest): ResponseEntity<Response> {
         adminService.registerAdmin(request)
         val response = Response.ok(message = "success register admin")
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+    @PostMapping("login")
+    fun loginAdmin(@RequestBody request: AdminLoginRequest) : ResponseEntity<Response>{
+        val loginResult = adminService.loginAdmin(request)
+        val response = Response.ok(data =  loginResult, message = "success login admin")
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
