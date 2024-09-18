@@ -33,6 +33,9 @@ class AdminService(
             }
             ?: throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
         val token = tokenProvider.createToken("${admin.get().username}:${admin.get().role}")
-        return AdminLoginResponse(admin.get().username, admin.get().role,token)
+        return AdminLoginResponse(
+            name = admin.get().username,
+            role = admin.get().role,
+            token = token)
     }
 }
