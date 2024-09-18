@@ -17,12 +17,6 @@ class StringUtils {
         }
 
         @JvmStatic
-        fun hasOnlyAlphabetOrNumber(input: String): Boolean {
-            val pattern = "^[a-zA-Z0-9]*$".toRegex()
-            return pattern.matches(input)
-        }
-
-        @JvmStatic
         fun hasOnlyAllowedSpecialCharacters(input: String, specialCharacters: String): Boolean {
             val allowedPattern = "^[a-zA-Z0-9${Pattern.quote(specialCharacters)}]*$".toRegex()
             val containsSpecialChar = input.any { it in specialCharacters }
