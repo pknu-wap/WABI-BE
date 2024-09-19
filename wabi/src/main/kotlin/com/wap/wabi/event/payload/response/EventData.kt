@@ -11,10 +11,11 @@ data class EventData(
     val eventStudentMaxCount: Int,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
-    val bands: List<BandShortData>
+    val bands: List<BandShortData>,
+    val checkInStatusCount: CheckInStatusCount
 ) {
     companion object {
-        fun of(event: Event, eventBands: List<EventBand>): EventData {
+        fun of(event: Event, eventBands: List<EventBand>, checkInStatusCount: CheckInStatusCount): EventData {
             val bands = eventBands.map { it.band }
             return EventData(
                 eventId = event.id,
@@ -22,7 +23,8 @@ data class EventData(
                 eventStudentMaxCount = event.eventStudentMaxCount,
                 startAt = event.startAt,
                 endAt = event.endAt,
-                bands = BandShortData.of(bands)
+                bands = BandShortData.of(bands),
+                checkInStatusCount = checkInStatusCount
             )
         }
     }

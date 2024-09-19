@@ -133,7 +133,7 @@ class EventService(
 
         val eventBands = eventBandRepository.findAllByEvent(event)
 
-        return EventData.of(event, eventBands)
+        return EventData.of(event, eventBands, getCheckInStatus(eventId))
     }
 
     fun getEvents(adminId: Long): List<EventData> {
@@ -142,7 +142,7 @@ class EventService(
         val eventDatas: MutableList<EventData> = ArrayList()
         events.forEach { event ->
             val eventBands = eventBandRepository.findAllByEvent(event)
-            eventDatas.add(EventData.of(event, eventBands))
+            eventDatas.add(EventData.of(event, eventBands, getCheckInStatus(event.id)))
         }
 
         return eventDatas

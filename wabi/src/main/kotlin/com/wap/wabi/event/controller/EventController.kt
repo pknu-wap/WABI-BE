@@ -38,13 +38,6 @@ class EventController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    @GetMapping("/{eventId}/status")
-    @Operation(summary = "이벤트 체크인 인원수 조회", description = "체크인한 인원수와 체크인 안한 인원수 조회")
-    fun getCheckStatus(@PathVariable("eventId") eventId: Long): ResponseEntity<Response> {
-        val response = Response.ok(data = eventService.getCheckInStatus(eventId = eventId))
-        return ResponseEntity(response, HttpStatus.OK)
-    }
-
     @PostMapping("/check-in")
     @Operation(summary = "체크인")
     fun checkIn(@RequestBody checkInRequest: CheckInRequest): ResponseEntity<Response> {
