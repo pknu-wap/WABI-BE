@@ -4,7 +4,6 @@ import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.band.payload.request.EnrollRequest
 import com.wap.wabi.band.repository.BandRepository
-import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
 import com.wap.wabi.student.fixture.StudentFixture
@@ -14,12 +13,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import java.time.LocalDate
-import java.util.*
+import java.util.Optional
 
 @Transactional
 @SpringBootTest
