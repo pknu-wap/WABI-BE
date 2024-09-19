@@ -1,7 +1,6 @@
 package com.wap.wabi.band.entity;
 
 import com.wap.wabi.band.payload.request.BandUpdateRequest;
-import com.wap.wabi.event.payload.request.EventUpdateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
