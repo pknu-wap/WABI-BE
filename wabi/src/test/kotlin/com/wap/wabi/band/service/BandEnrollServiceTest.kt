@@ -59,8 +59,7 @@ class BandEnrollServiceTest {
             tel = tel,
             academicStatus = academicStatus
         )
-        val bandStudentDtos: MutableList<BandStudentDto> = mutableListOf()
-        bandStudentDtos.add(bandStudentDto)
+        val bandStudentDtos: MutableList<BandStudentDto> = mutableListOf(bandStudentDto)
         val enrollRequest = EnrollRequest(
             bandStudentDtos
         )
