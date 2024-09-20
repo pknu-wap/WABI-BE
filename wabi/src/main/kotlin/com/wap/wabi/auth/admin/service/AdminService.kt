@@ -21,25 +21,25 @@ class AdminService(
 ) {
     @Transactional
     fun registerAdmin(adminRegisterRequest: AdminRegisterRequest) {
-        adminValidator.validate(adminRegisterRequest)
+        adminValidator.validateRegister(adminRegisterRequest)
         if (adminRepository.findAdminByName(adminRegisterRequest.name).isPresent) {
-            throw RestApiException(ErrorCode.EXIST_ADMIN)
+            throw RestApiException(ErrorCode.BAD_REQUEST_EXIST_ADMIN)
         }
         adminRepository.save(adminRegisterRequest.toAdmin(encoder))
     }
 
     @Transactional
     fun loginAdmin(adminLoginRequest: AdminLoginRequest): AdminLoginResponse {
-        adminValidator.validate(adminLoginRequest)
+        adminValidator.validateLogin(adminLoginRequest)
         val admin = adminRepository.findAdminByName(adminLoginRequest.name)
             ?.takeIf { admin ->
                 encoder.matches(adminLoginRequest.password, admin.get().password)
             }
-            ?: throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
+            ?: throw RestApiException(ErrorCode.BAD_REQUEST_NOT_EXIST_ADMIN)
         val token = tokenProvider.createToken("${admin.get().username}:${admin.get().role}")
         return AdminLoginResponse(
             name = admin.get().username,
             role = admin.get().role,
             token = token)
     }
-}
+    }

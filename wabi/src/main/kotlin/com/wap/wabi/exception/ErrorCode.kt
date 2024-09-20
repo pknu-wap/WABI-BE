@@ -16,6 +16,8 @@ enum class ErrorCode(
     BAD_REQUEST_ADMIN_ID(HttpStatus.BAD_REQUEST, "400-31","아이디가 형식에 맞지 않습니다."),
     BAD_REQUEST_ADMIN_PASSWORD(HttpStatus.BAD_REQUEST,"400-32","비밀번호가 형식에 맞지 않습니다."),
     BAD_REQUEST_ADMIN_NAME(HttpStatus.BAD_REQUEST,"400-33","이름이 형식에 맞지 않습니다."),
+    BAD_REQUEST_EXIST_ADMIN(HttpStatus.BAD_REQUEST, "400-34","이미 존재하는 어드민입니다."),
+    BAD_REQUEST_NOT_EXIST_ADMIN(HttpStatus.BAD_REQUEST, "400-35","이미 존재하는 어드민입니다."),
 
     UNAUTHORIZED_REQUEST(HttpStatus.UNAUTHORIZED, "401", "Unauthorized."),
     UNAUTHORIZED_CHECK_IN(HttpStatus.UNAUTHORIZED, "401-1", "이벤트에 참여할 수 없는 학생입니다."),
@@ -33,5 +35,5 @@ enum class ErrorCode(
 
     //EVENT관련
     ALREADY_CHECK_IN(HttpStatus.BAD_REQUEST, "600-1", "이미 체크인 했습니다."),
-    EXIST_ADMIN(HttpStatus.BAD_REQUEST, "600-2","이미 존재하는 어드민입니다.")
+
 }

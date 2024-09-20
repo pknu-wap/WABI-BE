@@ -24,10 +24,6 @@ class SecurityConfig(
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { csrfConfig ->
             csrfConfig.disable()
-        }.headers { headerConfig ->
-            headerConfig.frameOptions { frameOptionsConfig ->
-                frameOptionsConfig.disable()
-            }
         }.authorizeHttpRequests { authorizeRequests ->
             authorizeRequests
                 .requestMatchers("/auth/**").permitAll()

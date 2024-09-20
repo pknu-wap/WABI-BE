@@ -57,7 +57,7 @@ class AdminServiceTest {
                     adminService.registerAdmin(adminRegisterRequest)
                 }
                 //Then
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_NAME)
             }
 
             @ParameterizedTest
@@ -80,7 +80,7 @@ class AdminServiceTest {
                     adminService.registerAdmin(adminRegisterRequest)
                 }
                 //Then
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_NAME)
             }
 
             @Test
@@ -90,7 +90,7 @@ class AdminServiceTest {
                 val exception = assertThrows<RestApiException> {
                     adminService.registerAdmin(adminRegisterRequest)
                 }
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.EXIST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_EXIST_ADMIN)
             }
         }
 
@@ -114,7 +114,7 @@ class AdminServiceTest {
                     adminService.registerAdmin(adminRegisterRequest)
                 }
                 //Then
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
             }
 
             @ParameterizedTest
@@ -125,7 +125,7 @@ class AdminServiceTest {
                     adminService.registerAdmin(adminRegisterRequest)
                 }
                 //Then
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
             }
 
             @ParameterizedTest
@@ -136,7 +136,7 @@ class AdminServiceTest {
                     adminService.registerAdmin(adminRegisterRequest)
                 }
                 //Then
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
             }
         }
     }
@@ -179,7 +179,7 @@ class AdminServiceTest {
                     adminService.loginAdmin(adminLoginRequest)
                 }
 
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_NAME)
             }
             @ParameterizedTest
             @ValueSource(strings = ["","abc", "123456789ab"])
@@ -190,7 +190,7 @@ class AdminServiceTest {
                     adminService.loginAdmin(adminLoginRequest)
                 }
 
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_NAME)
             }
         }
 
@@ -218,7 +218,7 @@ class AdminServiceTest {
                     adminService.loginAdmin(adminLoginRequest)
                 }
 
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
             }
 
             @ParameterizedTest
@@ -243,7 +243,7 @@ class AdminServiceTest {
                     adminService.loginAdmin(adminLoginRequest)
                 }
 
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
             }
 
             @ParameterizedTest
@@ -255,7 +255,7 @@ class AdminServiceTest {
                     adminService.loginAdmin(adminLoginRequest)
                 }
 
-                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN)
+                assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
             }
 
         }

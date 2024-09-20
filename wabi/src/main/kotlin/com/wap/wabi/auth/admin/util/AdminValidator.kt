@@ -9,15 +9,19 @@ import org.springframework.stereotype.Component
 
 @Component
 class AdminValidator {
-    fun validate(adminRegisterRequest: AdminRegisterRequest) {
-        if (!isCorrectName(adminRegisterRequest.name) || !isCorrectPassword(adminRegisterRequest.password)) {
-            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
-        }
+    fun validateRegister(adminRegisterRequest: AdminRegisterRequest) {
+        validateCommon(adminRegisterRequest.name, adminRegisterRequest.password)
     }
 
-    fun validate(adminLoginRequest: AdminLoginRequest){
-        if (!isCorrectName(adminLoginRequest.name) || !isCorrectPassword(adminLoginRequest.password)) {
-            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN)
+    fun validateLogin(adminLoginRequest: AdminLoginRequest) {
+        validateCommon(adminLoginRequest.name, adminLoginRequest.password)
+    }
+    private fun validateCommon(name: String, password: String) {
+        if (!isCorrectName(name)) {
+            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN_NAME)
+        }
+        if (!isCorrectPassword(password)) {
+            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
         }
     }
 
