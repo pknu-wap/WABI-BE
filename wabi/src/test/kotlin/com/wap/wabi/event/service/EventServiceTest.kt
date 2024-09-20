@@ -61,16 +61,12 @@ class EventServiceTest {
     fun 이벤트를_생성한다() {
         //Given
         val eventName = "Event 1"
-        val startAt = LocalDateTime.now()
-        val endAt = LocalDateTime.now().plusDays(1)
-        val eventStudentMaxCount = 80
-        val bandIds = listOf(1L, 2L, 3L)
         val eventCreateRequest = EventCreateRequest(
             eventName = eventName,
-            startAt = startAt,
-            endAt = endAt,
-            eventStudentMaxCount = eventStudentMaxCount,
-            bandIds = bandIds
+            startAt = LocalDateTime.now(),
+            endAt = LocalDateTime.now().plusDays(1),
+            eventStudentMaxCount = 80,
+            bandIds = listOf(1L, 2L, 3L)
         )
 
         val savedEvent = EventFixture.createEvent(id = 1, name = eventName)
@@ -116,15 +112,12 @@ class EventServiceTest {
         val eventId: Long = 1
         val originalEventName = "Event 1"
         val newEventName = "Event 2"
-        val startAt = LocalDateTime.now()
-        val endAt = LocalDateTime.now().plusDays(1)
-        val eventStudentMaxCount = 80
         val eventUpdateRequest = EventUpdateRequest(
             eventId = eventId,
             eventName = newEventName,
-            startAt = startAt,
-            endAt = endAt,
-            eventStudentMaxCount = eventStudentMaxCount,
+            startAt = LocalDateTime.now(),
+            endAt = LocalDateTime.now().plusDays(1),
+            eventStudentMaxCount = 80,
         )
 
         val savedEvent = EventFixture.createEvent(id = eventId, name = originalEventName)
