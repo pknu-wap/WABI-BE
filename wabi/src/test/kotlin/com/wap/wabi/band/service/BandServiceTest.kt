@@ -87,6 +87,7 @@ class BandServiceTest {
         val bandName = "band 1"
         val bandCreateRequest = BandCreateRequest(
             bandName = bandName,
+            bandMemo = "band memo"
         )
 
         val savedBand = BandFixture.createBand(id = 1, name = bandName)
@@ -106,6 +107,7 @@ class BandServiceTest {
         val bandName = "band 1"
         val bandCreateRequest = BandCreateRequest(
             bandName = bandName,
+            bandMemo = "band memo"
         )
 
         // When

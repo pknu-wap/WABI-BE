@@ -88,16 +88,20 @@ class EventServiceTest {
     @Test
     fun 특정_밴드에_속한_학생들을_이벤트에_참여시킨다() {
         //Given
-        val event1 = EventFixture.createEvent("Event1")
+        val event1 = EventFixture.createEvent(id = 1, name = "Event1")
         val band1 = BandFixture.createBand("Band1")
         val student1 = StudentFixture.createStudent("Student1")
         val student2 = StudentFixture.createStudent("Student2")
         val bandStudent1 = BandStudentFixture.createBandStudent(student = student1, band = band1)
         val bandStudent2 = BandStudentFixture.createBandStudent(student = student2, band = band1)
+        val eventStudent1 = EventStudentFixture.createEventStudent(event1, student1)
+        val eventStudent2 = EventStudentFixture.createEventStudent(event1, student2)
 
         `when`(bandStudentRepository.findAllByBand(any())).thenReturn(listOf(bandStudent1, bandStudent2))
+        `when`(eventStudentRepository.findByStudentAndEvent(student1, event1)).thenReturn(Optional.of(eventStudent1))
+        `when`(eventStudentRepository.findByStudentAndEvent(student2, event1)).thenReturn(Optional.of(eventStudent2))
 
-        val expected = 2
+        val expected = 1L
 
         //When
         val result = eventService.saveEventStudentsFromBand(event = event1, band = band1)
@@ -214,14 +218,13 @@ class EventServiceTest {
     fun 이벤트에_체크인_한다() {
         //Given
         val checkInRequest = CheckInRequest(
-            studentId = "201912050",
-            eventId = 1
+            studentId = "201912050", eventId = 1
         )
 
         val event = EventFixture.createEvent(id = 1, name = "Event 1")
         val band = BandFixture.createBand(id = 1, name = "Band 1")
         val student = StudentFixture.createStudent(id = "201912050", name = "Student1")
-        val eventStudent = EventStudentFixture.createEventStudent(id = 1, event = event, student = student, band = band)
+        val eventStudent = EventStudentFixture.createEventStudent(id = 1, event = event, student = student)
 
         `when`(studentRepository.findById(any())).thenReturn(Optional.of(student))
         `when`(eventRepository.findById(any())).thenReturn(Optional.of(event))
