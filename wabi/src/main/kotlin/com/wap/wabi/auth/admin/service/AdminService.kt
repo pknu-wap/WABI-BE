@@ -21,10 +21,10 @@ class AdminService(
 ) {
     @Transactional
     fun registerAdmin(adminRegisterRequest: AdminRegisterRequest) {
+        adminValidator.validate(adminRegisterRequest)
         if (adminRepository.findAdminByName(adminRegisterRequest.name).isPresent) {
             throw RestApiException(ErrorCode.EXIST_ADMIN)
         }
-        adminValidator.validate(adminRegisterRequest)
         adminRepository.save(adminRegisterRequest.toAdmin(encoder))
     }
 
