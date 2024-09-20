@@ -11,8 +11,10 @@ object StudentFixture {
             .build()
     }
 
-    fun createStudent(name: String, id: Long): Student {
-        val student = createStudent(name)
-        return Reflection.makeIdChangedClone(Student::class.java, student, id)
+    fun createStudent(name: String, id: String): Student {
+        return Student.builder()
+            .id(id)
+            .name(name)
+            .build()
     }
 }
