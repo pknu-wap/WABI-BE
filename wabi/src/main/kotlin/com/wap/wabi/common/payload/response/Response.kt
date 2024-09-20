@@ -9,7 +9,7 @@ data class Response(
     companion object {
         private const val OK_STATUS_CODE = "200"
         private const val OK_MESSAGE = "OK"
-        fun ok(message: String = OK_MESSAGE, data: Any?): Response {
+        fun ok(message: String = OK_MESSAGE, data: Any? = null): Response {
             return Response(
                 statusCode = OK_STATUS_CODE,
                 message = message,
