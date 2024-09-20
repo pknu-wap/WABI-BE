@@ -18,6 +18,7 @@ public class Band {
     private Band(builder builder) {
         this.adminId = builder.adminId;
         this.bandName = builder.bandName;
+        this.bandMemo = builder.bandMemo;
     }
 
     public static class builder {
