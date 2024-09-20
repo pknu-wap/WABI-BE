@@ -7,6 +7,7 @@ import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.entity.Event
 import com.wap.wabi.event.entity.EventBand
 import com.wap.wabi.event.entity.EventStudent
+import com.wap.wabi.event.entity.EventStudentBandName
 import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
@@ -16,6 +17,7 @@ import com.wap.wabi.event.payload.response.EventData
 import com.wap.wabi.event.payload.response.EventStudentData
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
+import com.wap.wabi.event.repository.EventStudentBandNameRepository
 import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
@@ -30,22 +32,29 @@ class EventService(
     private val studentRepository: StudentRepository,
     private val eventBandRepository: EventBandRepository,
     private val bandRepository: BandRepository,
-    private val bandStudentRepository: BandStudentRepository
+    private val bandStudentRepository: BandStudentRepository,
+    private val eventStudentBandNameRepository: EventStudentBandNameRepository
 ) {
     @Transactional
     fun getCheckInTable(eventId: Long, filter: CheckInTableFilter): List<EventStudentData> {
         val event = eventRepository.findById(eventId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
-        val eventStudentData = when (filter) {
-            CheckInTableFilter.ALL -> EventStudentData.of(eventStudentRepository.findAllByEvent(event))
-            else -> EventStudentData.of(
-                eventStudentRepository.findAllByEventAndStatus(
-                    event,
-                    EventStudentStatus.valueOf(filter.toString())
-                )
+        val eventStudents: List<EventStudent>
+        if (filter == CheckInTableFilter.ALL) {
+            eventStudents = eventStudentRepository.findAllByEvent(event)
+        } else {
+            eventStudents = eventStudentRepository.findAllByEventAndStatus(
+                event,
+                EventStudentStatus.valueOf(filter.toString())
             )
         }
-        return eventStudentData
+
+        val eventStudentDatas = eventStudents.map { eventStudent ->
+            val eventStudentBandNames = eventStudentBandNameRepository.findAllByEventStudent(eventStudent)
+            EventStudentData.of(eventStudent, eventStudentBandNames)
+        }
+
+        return eventStudentDatas
     }
 
     @Transactional
@@ -95,18 +104,29 @@ class EventService(
     }
 
     @Transactional
-    fun saveEventStudentsFromBand(event: Event, band: Band): Int {
-        val eventStudents = bandStudentRepository.findAllByBand(band).map { bandStudent ->
-            EventStudent.builder()
-                .event(event)
-                .student(bandStudent.student)
-                .band(band)
-                .club(bandStudent.club)
-                .build()
-        }
-        eventStudentRepository.saveAll(eventStudents)
+    fun saveEventStudentsFromBand(event: Event, band: Band): Long {
+        bandStudentRepository.findAllByBand(band).forEach { bandStudent ->
+            val eventStudent: EventStudent
+            val eventStudentOptional = eventStudentRepository.findByStudentAndEvent(bandStudent.student, event)
+            if (eventStudentOptional.isEmpty) {
+                val newEventStudent = EventStudent.builder()
+                    .event(event)
+                    .student(bandStudent.student)
+                    .build()
 
-        return eventStudents.size
+                eventStudent = eventStudentRepository.save(newEventStudent)
+            } else {
+                eventStudent = eventStudentOptional.get()
+            }
+
+            val eventStudentBandName = EventStudentBandName.builder()
+                .eventStudent(eventStudent)
+                .bandName(band.bandName)
+                .build()
+
+            eventStudentBandNameRepository.save(eventStudentBandName)
+        }
+        return event.id
     }
 
     @Transactional

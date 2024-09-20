@@ -1,9 +1,16 @@
 package com.wap.wabi.event.entity;
 
-import com.wap.wabi.band.entity.Band;
 import com.wap.wabi.event.entity.Enum.EventStudentStatus;
 import com.wap.wabi.student.entity.Student;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,9 +26,6 @@ public class EventStudent {
     private Event event;
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Band band;
-    private String club;
     @Enumerated(EnumType.STRING)
     private EventStudentStatus status;
     @LastModifiedDate
@@ -31,8 +35,6 @@ public class EventStudent {
     private EventStudent(builder builder) {
         this.event = builder.event;
         this.student = builder.student;
-        this.band = builder.band;
-        this.club = builder.club;
         this.status = builder.status;
         this.updatedAt = builder.updatedAt;
         this.checkedInAt = builder.checkedInAt;
@@ -41,8 +43,6 @@ public class EventStudent {
     public static class builder {
         private Event event;
         private Student student;
-        private Band band;
-        private String club;
         private EventStudentStatus status = EventStudentStatus.NOT_CHECK_IN;
         private LocalDateTime updatedAt = LocalDateTime.now();
         private LocalDateTime checkedInAt = null;
@@ -54,16 +54,6 @@ public class EventStudent {
 
         public builder student(Student student) {
             this.student = student;
-            return this;
-        }
-
-        public builder band(Band band) {
-            this.band = band;
-            return this;
-        }
-
-        public builder club(String club) {
-            this.club = club;
             return this;
         }
 
@@ -98,10 +88,6 @@ public class EventStudent {
 
     public Long getId() {
         return id;
-    }
-
-    public Band getBand() {
-        return band;
     }
 
     public Event getEvent() {
