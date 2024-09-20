@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface BandStudentRepository extends JpaRepository<BandStudent, Long> {
     List<BandStudent> findAllByBand(Band band);
 
-    Optional<BandStudent> findByClubAndStudent(String club, Student student);
+    Optional<BandStudent> findByBandAndStudent(Band band, Student student);
 }
