@@ -14,16 +14,12 @@ data class EventStudentData(
 ) {
     companion object {
         fun of(eventStudent: EventStudent, bandNames: List<EventStudentBandName>): EventStudentData {
-            var totalBandName = ""
-            bandNames.map { bandName ->
-                totalBandName = totalBandName + ", " + bandName.bandName
-            }
             return EventStudentData(
                 eventStudent.student.id,
                 eventStudent.student.name,
                 eventStudent.status,
                 eventStudent.checkedInAt,
-                totalBandName
+                bandNames.joinToString(", ") { it.bandName }
             )
         }
     }
