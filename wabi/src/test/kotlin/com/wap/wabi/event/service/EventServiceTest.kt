@@ -12,6 +12,7 @@ import com.wap.wabi.event.fixture.EventStudentFixture
 import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
+import com.wap.wabi.event.payload.response.CheckInStatusCount
 import com.wap.wabi.event.payload.response.EventData
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
@@ -35,9 +36,6 @@ import java.util.Optional
 @SpringBootTest
 @SuppressWarnings("NonAsciiCharacters")
 class EventServiceTest {
-    @Autowired
-    private lateinit var eventService: EventService
-
     @MockBean
     private lateinit var studentRepository: StudentRepository
 
@@ -55,6 +53,9 @@ class EventServiceTest {
 
     @MockBean
     private lateinit var bandStudentRepository: BandStudentRepository
+
+    @Autowired
+    private lateinit var eventService: EventService
 
     @Test
     fun 이벤트를_생성한다() {
@@ -152,10 +153,13 @@ class EventServiceTest {
         val eventBand3 = EventBandFixture.createEventBnd(event, band3)
         val eventBands = listOf(eventBand1, eventBand2, eventBand3)
 
+        val checkInStatusCount = CheckInStatusCount(checkIn = 20, notCheckIn = 20)
+
         `when`(eventRepository.findById(any())).thenReturn(Optional.of(event))
         `when`(eventBandRepository.findAllByEvent(any())).thenReturn(eventBands)
+        `when`(eventStudentRepository.getEventStudentStatusCount(any(), any())).thenReturn(20)
 
-        val expected = EventData.of(event, eventBands)
+        val expected = EventData.of(event, eventBands, checkInStatusCount)
 
         //When
         val result = eventService.getEvent(adminId = TestConstants.ADMIN_ID, eventId = eventId)
@@ -178,12 +182,18 @@ class EventServiceTest {
         val eventBand3 = EventBandFixture.createEventBnd(event2, band2)
         val eventBand4 = EventBandFixture.createEventBnd(event2, band3)
 
-        val eventData1 = EventData.of(event1, listOf(eventBand1, eventBand2))
-        val eventData2 = EventData.of(event2, listOf(eventBand3, eventBand4))
+        val checkInStatusCount = CheckInStatusCount(checkIn = 20, notCheckIn = 20)
+
+        val eventData1 = EventData.of(event1, listOf(eventBand1, eventBand2), checkInStatusCount)
+        val eventData2 = EventData.of(event2, listOf(eventBand3, eventBand4), checkInStatusCount)
 
         `when`(eventRepository.findAllByAdminId(any())).thenReturn(listOf(event1, event2))
         `when`(eventBandRepository.findAllByEvent(event1)).thenReturn(listOf(eventBand1, eventBand2))
         `when`(eventBandRepository.findAllByEvent(event2)).thenReturn(listOf(eventBand3, eventBand4))
+        `when`(eventStudentRepository.getEventStudentStatusCount(any(), any())).thenReturn(20)
+        `when`(eventRepository.findById(1L)).thenReturn(Optional.of(event1))
+        `when`(eventRepository.findById(2L)).thenReturn(Optional.of(event2))
+        `when`(eventStudentRepository.getEventStudentStatusCount(any(), any())).thenReturn(20)
 
         //When
         val result = eventService.getEvents(TestConstants.ADMIN_ID)
