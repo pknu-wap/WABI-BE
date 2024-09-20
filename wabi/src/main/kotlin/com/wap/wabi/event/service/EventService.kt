@@ -69,6 +69,8 @@ class EventService(
 
     @Transactional
     fun checkIn(checkInRequest: CheckInRequest): EventStudentStatus {
+        //TODO 해당 이벤트에 체크인할 권한이 있는지 검증 필요.
+
         val student = studentRepository.findById(checkInRequest.studentId)
             .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
         val event = eventRepository.findById(checkInRequest.eventId)
