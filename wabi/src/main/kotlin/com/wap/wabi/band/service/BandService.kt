@@ -3,6 +3,7 @@ package com.wap.wabi.band.service
 import com.wap.wabi.band.entity.Band
 import com.wap.wabi.band.payload.request.BandCreateRequest
 import com.wap.wabi.band.payload.request.BandUpdateRequest
+import com.wap.wabi.band.payload.response.BandDetailData
 import com.wap.wabi.band.payload.response.BandStudentData
 import com.wap.wabi.band.payload.response.BandsData
 import com.wap.wabi.band.repository.BandRepository
@@ -84,6 +85,14 @@ class BandService(
         }
 
         band.update(bandUpdateRequest)
+    }
+
+    @Transactional
+    fun getBandDetail(bandId: Long): BandDetailData {
+        val band = bandRepository.findById(bandId)
+            .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
+
+        return BandDetailData.of(band = band)
     }
 
     companion object {

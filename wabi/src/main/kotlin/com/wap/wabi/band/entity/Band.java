@@ -13,6 +13,7 @@ public class Band {
     private Long id;
     private Long adminId;
     private String bandName;
+    private String bandMemo;
 
     private Band(builder builder) {
         this.adminId = builder.adminId;
@@ -22,6 +23,7 @@ public class Band {
     public static class builder {
         private Long adminId;
         private String bandName;
+        private String bandMemo;
 
         public builder adminId(Long adminId) {
             this.adminId = adminId;
@@ -30,6 +32,11 @@ public class Band {
 
         public builder bandName(String bandName) {
             this.bandName = bandName;
+            return this;
+        }
+
+        public builder bandMemo(String bandMemo) {
+            this.bandMemo = bandMemo;
             return this;
         }
 
@@ -51,6 +58,10 @@ public class Band {
 
     public String getBandName() {
         return bandName;
+    }
+
+    public String getBandMemo() {
+        return bandMemo;
     }
 
     public void update(BandUpdateRequest request) {

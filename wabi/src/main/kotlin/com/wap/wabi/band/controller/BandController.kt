@@ -56,7 +56,15 @@ class BandController(
         bandService.updateBand(adminId = adminId, bandUpdateRequest = request)
 
         val response = Response.ok(message = "success update band")
-        
+
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @GetMapping("{bandId}/detail")
+    fun getBandDetail(@PathVariable bandId: Long): ResponseEntity<Response> {
+
+        val response = Response.ok(data = bandService.getBandDetail(bandId = bandId))
+
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
