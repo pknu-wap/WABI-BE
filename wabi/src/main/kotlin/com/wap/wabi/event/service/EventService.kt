@@ -37,6 +37,8 @@ class EventService(
 ) {
     @Transactional
     fun getCheckInTable(eventId: Long, filter: CheckInTableFilter): List<EventStudentData> {
+        //TODO 이벤트 명단 확인을 위한 권한 확인 필요
+
         val event = eventRepository.findById(eventId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
         val eventStudents: List<EventStudent>
