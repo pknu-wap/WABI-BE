@@ -67,5 +67,6 @@ public class Band {
 
     public void update(BandUpdateRequest request) {
         this.bandName = request.getBandName();
+        this.bandMemo = request.getBandMemo();
     }
 }
