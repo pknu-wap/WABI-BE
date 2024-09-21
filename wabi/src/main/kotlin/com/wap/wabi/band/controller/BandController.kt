@@ -5,6 +5,7 @@ import com.wap.wabi.band.payload.request.BandUpdateRequest
 import com.wap.wabi.band.payload.response.BandStudentsData
 import com.wap.wabi.band.service.BandService
 import com.wap.wabi.common.payload.response.Response
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -23,6 +24,9 @@ class BandController(
     private val bandService: BandService
 ) {
     @GetMapping("{bandId}/students")
+    @Operation(
+        summary = "밴드에 속한 학생 명단 조회"
+    )
     fun getBandStudents(@PathVariable bandId: Long): ResponseEntity<Response> {
         val response = Response.ok(data = BandStudentsData(bandService.getBandStudents(bandId = bandId)))
 
@@ -30,6 +34,9 @@ class BandController(
     }
 
     @PostMapping("create")
+    @Operation(
+        summary = "밴드 생성"
+    )
     fun createBand(@RequestParam adminId: Long, @RequestBody request: BandCreateRequest): ResponseEntity<Response> {
         bandService.createBand(adminId = adminId, bandCreateRequest = request)
 
@@ -38,6 +45,9 @@ class BandController(
     }
 
     @DeleteMapping("{bandId}")
+    @Operation(
+        summary = "밴드 삭제"
+    )
     fun deleteBand(@RequestParam adminId: Long, @PathVariable bandId: Long): ResponseEntity<Response> {
         bandService.deleteBand(adminId = adminId, bandId = bandId)
 
@@ -46,12 +56,18 @@ class BandController(
     }
 
     @GetMapping("list")
+    @Operation(
+        summary = "해당 계정의 밴드 목록을 불러옵니다."
+    )
     fun getBands(@RequestParam adminId: Long): ResponseEntity<Response> {
         val response = Response.ok(data = bandService.getBands(adminId = adminId))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
     @PutMapping("")
+    @Operation(
+        summary = "밴드 수정"
+    )
     fun updateBand(@RequestParam adminId: Long, @RequestBody request: BandUpdateRequest): ResponseEntity<Response> {
         bandService.updateBand(adminId = adminId, bandUpdateRequest = request)
 
@@ -61,6 +77,9 @@ class BandController(
     }
 
     @GetMapping("{bandId}/detail")
+    @Operation(
+        summary = "밴드 상세 정보 조회"
+    )
     fun getBandDetail(@PathVariable bandId: Long): ResponseEntity<Response> {
 
         val response = Response.ok(data = bandService.getBandDetail(bandId = bandId))
