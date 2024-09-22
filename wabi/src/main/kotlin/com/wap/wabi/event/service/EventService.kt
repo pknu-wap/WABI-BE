@@ -81,7 +81,7 @@ class EventService(
             .orElseThrow { RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
 
         if (eventStudent.status.equals(EventStudentStatus.CHECK_IN)) {
-            RestApiException(ErrorCode.ALREADY_CHECK_IN)
+            throw RestApiException(ErrorCode.ALREADY_CHECK_IN)
         }
         return eventStudent.checkIn()
 
