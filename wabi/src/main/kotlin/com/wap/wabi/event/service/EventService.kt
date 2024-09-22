@@ -80,7 +80,7 @@ class EventService(
         val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
             .orElseThrow { RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
 
-        check(eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) { RestApiException(ErrorCode.ALREADY_CHECK_IN) }
+        if (eventStudent.status.equals(EventStudentStatus.NOT_CHECK_IN)) RestApiException(ErrorCode.ALREADY_CHECK_IN)
         return eventStudent.checkIn()
 
     }
@@ -91,7 +91,7 @@ class EventService(
         val savedEvent = eventRepository.save(createdEvent)
 
         val bands = bandRepository.findAllById(eventCreateRequest.bandIds)
-        check(bands.size == eventCreateRequest.bandIds.size) { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
+        if (bands.size == eventCreateRequest.bandIds.size) throw RestApiException(ErrorCode.NOT_FOUND_BAND)
 
         val eventBands = bands.map { band ->
             EventBand.builder()
