@@ -93,7 +93,9 @@ class EventService(
         val savedEvent = eventRepository.save(createdEvent)
 
         val bands = bandRepository.findAllById(eventCreateRequest.bandIds)
-        check(bands.size == eventCreateRequest.bandIds.size) { throw RestApiException(ErrorCode.NOT_FOUND_BAND) }
+        if (bands.size != eventCreateRequest.bandIds.size) {
+            throw RestApiException(ErrorCode.NOT_FOUND_BAND)
+        }
 
         val eventBands = bands.map { band ->
             EventBand.builder()
