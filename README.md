@@ -22,6 +22,11 @@
 <table align="center">
   <tr>
     <td align="center">
+       <img src="https://avatars.githubusercontent.com/u/108349655?v=4" width="120px;"/>   
+        <br />
+        <a href="https://github.com/SeongHoonC" title="Code"><b>SeongHoonC</b></a>
+    </td>
+    <td align="center">
        <img src="https://avatars.githubusercontent.com/u/111286262?v=4" width="120px;"/>   
         <br />
         <a href="https://github.com/JONG-KYEONG" title="Code"><b>JONG-KYEONG</b></a>
@@ -38,11 +43,13 @@
     </td>
   </tr>
   <tr>
+    <td align="center"><b>최성훈</b></td>
     <td align="center"><b>김종경</b></td>
     <td align="center"><b>윤성원</b></td>
     <td align="center"><b>양두영</b></td>
   </tr>
   <tr>
+    <td align="center"><b>PM</b></td>
     <td align="center"><b>BackEnd</b></td>
     <td align="center"><b>BackEnd</b></td>
     <td align="center"><b>BackEnd</b></td>
