@@ -43,10 +43,10 @@
     </td>
   </tr>
   <tr>
-    <td align="center"><b>최성훈</b></td>
-    <td align="center"><b>김종경</b></td>
-    <td align="center"><b>윤성원</b></td>
-    <td align="center"><b>양두영</b></td>
+    <td align="center"><b>베르 (최성훈)</b></td>
+    <td align="center"><b>양갱 (김종경)</b></td>
+    <td align="center"><b>제페론 (윤성원)</b></td>
+    <td align="center"><b>듀 (양두영)</b></td>
   </tr>
   <tr>
     <td align="center"><b>PM</b></td>
