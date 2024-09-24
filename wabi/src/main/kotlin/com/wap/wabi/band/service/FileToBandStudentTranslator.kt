@@ -56,18 +56,20 @@ class FileToBandStudentTranslator(
             }
 
             val bandStudentDto = BandStudentDto(studentId, studentName, headerMap["동아리명"]?.let {
-                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+                nextLine?.get(it)
             }, headerMap["직책"]?.let {
-                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+                nextLine?.get(it)
             }, headerMap["가입일자"]?.let {
                 if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it.trim()) } else null
             }, headerMap["대학"]?.let {
-                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+                nextLine?.get(it)
             }, headerMap["학부(과)"]?.let {
-                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
+                nextLine?.get(it)
             }, headerMap["연락처"]?.let {
-                if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null
-            }, headerMap["학적상태"]?.let { if (it >= 0) nextLine?.get(it)?.takeIf { it.isNotBlank() } else null })
+                nextLine?.get(it)
+            }, headerMap["학적상태"]?.let {
+                nextLine?.get(it)
+            })
             bandStudentDtos.add(bandStudentDto)
         }
 
