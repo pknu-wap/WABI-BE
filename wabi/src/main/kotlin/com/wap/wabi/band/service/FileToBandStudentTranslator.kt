@@ -102,27 +102,21 @@ class FileToBandStudentTranslator(
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
                 continue
             }
-            val clubName = headerMap["동아리명"]?.let {
-                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
-            }
-            if (clubName.isNullOrBlank()) {
-                continue
-            }
 
             val bandStudentDto = BandStudentDto(studentId, studentName, headerMap["동아리명"]?.let {
-                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                getCellValueAsString(row.getCell(it))
             }, headerMap["직책"]?.let {
-                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                getCellValueAsString(row.getCell(it))
             }, headerMap["가입일자"]?.let {
                 getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it.trim()) }
             }, headerMap["대학"]?.let {
-                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                getCellValueAsString(row.getCell(it))
             }, headerMap["학부(과)"]?.let {
-                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                getCellValueAsString(row.getCell(it))
             }, headerMap["연락처"]?.let {
-                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                getCellValueAsString(row.getCell(it))
             }, headerMap["학적상태"]?.let {
-                getCellValueAsString(row.getCell(it))?.takeIf { it.isNotBlank() }
+                getCellValueAsString(row.getCell(it))
             })
 
             bandStudentDtos.add(bandStudentDto)
