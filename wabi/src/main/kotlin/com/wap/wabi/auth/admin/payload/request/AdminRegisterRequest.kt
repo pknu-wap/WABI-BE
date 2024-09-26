@@ -3,11 +3,6 @@ package com.wap.wabi.auth.admin.payload.request
 import com.wap.wabi.auth.admin.entity.Admin
 import com.wap.wabi.auth.admin.entity.Enum.AdminRole
 import com.wap.wabi.auth.admin.entity.Enum.AdminStatus
-import com.wap.wabi.common.utils.StringUtils.Companion.checkLength
-import com.wap.wabi.common.utils.StringUtils.Companion.hasOnlyAllowedSpecialCharacters
-import com.wap.wabi.common.utils.StringUtils.Companion.hasOnlySmallLetterOrNumber
-import com.wap.wabi.exception.ErrorCode
-import com.wap.wabi.exception.RestApiException
 import org.springframework.security.crypto.password.PasswordEncoder
 
 data class AdminRegisterRequest(

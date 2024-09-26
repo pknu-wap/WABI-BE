@@ -1,19 +1,16 @@
 package com.wap.wabi.auth.jwt
 
-import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
-import kotlin.collections.HashMap
 
 @PropertySource("classpath:jwt.yml")
 @Component
