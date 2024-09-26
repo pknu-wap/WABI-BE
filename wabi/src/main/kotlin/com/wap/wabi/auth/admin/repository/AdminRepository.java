@@ -10,6 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
-    @Query("select a from Admin a where a.name = :name")
-    Optional<Admin> findAdminByName(@Param("name") String name);
+    Optional<Admin> findByName(String name);
 }

@@ -22,7 +22,7 @@ class AdminService(
     @Transactional
     fun registerAdmin(adminRegisterRequest: AdminRegisterRequest) {
         adminValidator.validateRegister(adminRegisterRequest)
-        if (adminRepository.findAdminByName(adminRegisterRequest.name).isPresent) {
+        if (adminRepository.findByName(adminRegisterRequest.name).isPresent) {
             throw RestApiException(ErrorCode.BAD_REQUEST_EXIST_ADMIN)
         }
         adminRepository.save(adminRegisterRequest.toAdmin(encoder))
@@ -31,7 +31,7 @@ class AdminService(
     @Transactional
     fun loginAdmin(adminLoginRequest: AdminLoginRequest): AdminLoginResponse {
         adminValidator.validateLogin(adminLoginRequest)
-        val admin = adminRepository.findAdminByName(adminLoginRequest.name)
+        val admin = adminRepository.findByName(adminLoginRequest.name)
             ?.takeIf { admin ->
                 encoder.matches(adminLoginRequest.password, admin.get().password)
             }
