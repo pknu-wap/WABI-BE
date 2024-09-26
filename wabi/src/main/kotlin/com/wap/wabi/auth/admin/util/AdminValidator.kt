@@ -16,6 +16,7 @@ class AdminValidator {
     fun validateLogin(adminLoginRequest: AdminLoginRequest) {
         validateCommon(adminLoginRequest.name, adminLoginRequest.password)
     }
+
     private fun validateCommon(name: String, password: String) {
         if (!isCorrectName(name)) {
             throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN_NAME)
@@ -31,7 +32,7 @@ class AdminValidator {
                 StringUtils.hasOnlySmallLetterOrNumber(name)
     }
 
-    private fun isCorrectPassword(password : String): Boolean {
+    private fun isCorrectPassword(password: String): Boolean {
         return password.isNotBlank() &&
                 StringUtils.checkLength(password, 8, 15) &&
                 StringUtils.hasOnlyAllowedSpecialCharacters(password, "~!@#")

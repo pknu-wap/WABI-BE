@@ -74,7 +74,9 @@ public class Admin implements UserDetails {
         return false;
     }
 
-    public String getRole() { return this.role.toString();}
+    public String getRole() {
+        return this.role.toString();
+    }
 
     public static class builder {
         private String name;
@@ -97,12 +99,13 @@ public class Admin implements UserDetails {
             this.name = name;
             return this;
         }
+
         public builder email(String email) {
             this.email = email;
             return this;
         }
 
-        public builder role(AdminRole role){
+        public builder role(AdminRole role) {
             this.role = role;
             return this;
         }

@@ -14,6 +14,7 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
 import kotlin.collections.HashMap
+
 @PropertySource("classpath:jwt.yml")
 @Component
 class JwtTokenProvider(
@@ -23,9 +24,14 @@ class JwtTokenProvider(
     private val expirationHours: Long,
     @Value("\${issuer}")
     private val issuer: String
-)  {
+) {
     fun createToken(userSpecification: String) = Jwts.builder()
-        .signWith(SecretKeySpec(secretKey.toByteArray(), SignatureAlgorithm.HS512.jcaName)) // HS512 알고리즘을 사용하여 secretKey를 이용해 서명
+        .signWith(
+            SecretKeySpec(
+                secretKey.toByteArray(),
+                SignatureAlgorithm.HS512.jcaName
+            )
+        ) // HS512 알고리즘을 사용하여 secretKey를 이용해 서명
         .setSubject(userSpecification)   // JWT 토큰 제목
         .setIssuer(issuer)    // JWT 토큰 발급자
         .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))    // JWT 토큰 발급 시간

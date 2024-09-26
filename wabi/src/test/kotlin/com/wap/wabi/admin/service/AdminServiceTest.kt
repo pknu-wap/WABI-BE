@@ -84,7 +84,7 @@ class AdminServiceTest {
             }
 
             @Test
-            fun `이미 있는 이름은 가입할 수 없다`(){
+            fun `이미 있는 이름은 가입할 수 없다`() {
                 val adminRegisterRequest = AdminRegisterRequest(CORRECT_NAME, CORRECT_PASSWORD, TEST_EMAIL)
                 adminService.registerAdmin(adminRegisterRequest)
                 val exception = assertThrows<RestApiException> {
@@ -157,6 +157,7 @@ class AdminServiceTest {
                     adminService.loginAdmin(adminLoginRequest)
                 }
             }
+
             @ParameterizedTest
             @ValueSource(strings = ["abcd", "abcde", "123456789a"])
             fun `이름은 최소 4자 이상, 10자 이하여야만 한다`(input: String) {
@@ -181,8 +182,9 @@ class AdminServiceTest {
 
                 assertThat(exception.errorCode).isEqualTo(ErrorCode.BAD_REQUEST_ADMIN_NAME)
             }
+
             @ParameterizedTest
-            @ValueSource(strings = ["","abc", "123456789ab"])
+            @ValueSource(strings = ["", "abc", "123456789ab"])
             fun `이름은 최소 4자 이상, 10자 이하가 아니라면 실패한다`(input: String) {
                 val adminLoginRequest = AdminLoginRequest(input, CORRECT_PASSWORD)
 
@@ -197,7 +199,7 @@ class AdminServiceTest {
         @Nested
         inner class AdminLoginPwdTest {
             @ParameterizedTest
-            @ValueSource(strings = ["1234567@","123456789abcdf@"])
+            @ValueSource(strings = ["1234567@", "123456789abcdf@"])
             fun `비밀번호는 최소 8자 이상, 15자 이하 이어야만 한다`(input: String) {
                 val adminRegisterRequest = AdminRegisterRequest(CORRECT_NAME, input, TEST_EMAIL)
                 adminService.registerAdmin(adminRegisterRequest)
@@ -210,7 +212,7 @@ class AdminServiceTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["123456@","123456789abcdfd@",""])
+            @ValueSource(strings = ["123456@", "123456789abcdfd@", ""])
             fun `비밀번호가 최소 8자 이상, 15자 이하가 아니라면 실패한다`(input: String) {
                 val adminLoginRequest = AdminLoginRequest(CORRECT_NAME, input)
 
@@ -222,7 +224,7 @@ class AdminServiceTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["123456789Za@","123456789!@#"])
+            @ValueSource(strings = ["123456789Za@", "123456789!@#"])
             fun `비밀번호는 알파벳 대소문자(a~z, A~Z), 숫자(0~9), 특수 문자(~!@#)중 하나로 구성한다`(input: String) {
                 val adminRegisterRequest = AdminRegisterRequest(CORRECT_NAME, input, TEST_EMAIL)
                 adminService.registerAdmin(adminRegisterRequest)
@@ -235,7 +237,7 @@ class AdminServiceTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["123456789Za`","123456789@\\ "])
+            @ValueSource(strings = ["123456789Za`", "123456789@\\ "])
             fun `비밀번호에 알파벳 대소문자(a~z, A~Z), 숫자(0~9), 특수 문자(~!@#)중 아닌 문자가 있다면 실패한다`(input: String) {
                 val adminLoginRequest = AdminLoginRequest(CORRECT_NAME, input)
 
@@ -247,7 +249,7 @@ class AdminServiceTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["123456789Za","123456789"])
+            @ValueSource(strings = ["123456789Za", "123456789"])
             fun `비밀번호에 특수문자(~!@#)가 하나라도 없으면 실패한다`(input: String) {
                 val adminLoginRequest = AdminLoginRequest(CORRECT_NAME, input)
 

@@ -22,10 +22,11 @@ class AdminController(
         val response = Response.ok(message = "success register admin")
         return ResponseEntity(response, HttpStatus.OK)
     }
+
     @PostMapping("login")
-    fun loginAdmin(@RequestBody request: AdminLoginRequest) : ResponseEntity<Response>{
+    fun loginAdmin(@RequestBody request: AdminLoginRequest): ResponseEntity<Response> {
         val loginResult = adminService.loginAdmin(request)
-        val response = Response.ok(data =  loginResult, message = "success login admin")
+        val response = Response.ok(data = loginResult, message = "success login admin")
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

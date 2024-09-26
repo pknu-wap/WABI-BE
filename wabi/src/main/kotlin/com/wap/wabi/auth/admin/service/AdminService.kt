@@ -40,6 +40,7 @@ class AdminService(
         return AdminLoginResponse(
             name = admin.get().username,
             role = admin.get().role,
-            token = token)
+            token = token
+        )
     }
-    }
+}
