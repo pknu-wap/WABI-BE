@@ -77,3 +77,8 @@ sourceSets {
         }
     }
 }
+tasks{
+    bootJar {
+        mainClass.set("com.wap.wabi.WabiApplication.kt") // 자신의 메인 클래스 경로로 변경
+    }
+}
