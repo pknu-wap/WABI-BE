@@ -15,11 +15,11 @@ import javax.crypto.spec.SecretKeySpec
 @PropertySource("classpath:jwt.yml")
 @Component
 class JwtTokenProvider(
-    @Value("\${secret-key}")
+    @Value("\${jwt.secret-key}")
     private val secretKey: String,
-    @Value("\${expiration-hours}")
+    @Value("\${jwt.expiration-hours}")
     private val expirationHours: Long,
-    @Value("\${issuer}")
+    @Value("\${jwt.issuer}")
     private val issuer: String
 ) {
     fun createToken(userSpecification: String) = Jwts.builder()
