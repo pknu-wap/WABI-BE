@@ -13,9 +13,9 @@ class WabiApplication {
     fun started() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"))
     }
+}
 
-    fun main(args: Array<String>) {
-        runApplication<WabiApplication>(*args)
-    }
+fun main(args: Array<String>) {
+    runApplication<WabiApplication>(*args)
 }
 
