@@ -77,9 +77,3 @@ sourceSets {
         }
     }
 }
-
-tasks{
-    bootJar {
-        mainClass = "com.wap.wabi.WabiApplication"
-    }
-}

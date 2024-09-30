@@ -12,7 +12,6 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
 
-@PropertySource("classpath:jwt.yml")
 @Component
 class JwtTokenProvider(
     @Value("\${jwt.secret-key}")
