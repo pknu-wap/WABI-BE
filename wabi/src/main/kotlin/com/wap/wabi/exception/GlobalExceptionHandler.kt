@@ -21,6 +21,6 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     // handleExceptionInternal() 메소드를 오버라이딩해 응답 커스터마이징
     private fun handleExceptionInternal(errorCode: ErrorCode): ResponseEntity<Response> {
         return ResponseEntity.status(errorCode.httpStatus)
-            .body(Response(errorCode.code, errorCode.message, data = null))
+            .body(Response(statusCode = errorCode.code, message = errorCode.message))
     }
 }

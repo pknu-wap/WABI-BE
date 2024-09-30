@@ -3,6 +3,7 @@ package com.wap.wabi.band.controller
 import com.wap.wabi.band.payload.request.EnrollRequest
 import com.wap.wabi.band.service.BandEnrollService
 import com.wap.wabi.common.payload.response.Response
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,6 +20,9 @@ class BandEnrollController(
     private val bandEnrollService: BandEnrollService
 ) {
     @PostMapping("{bandId}/members/enrollments/file")
+    @Operation(
+        summary = "밴드 학생 추가(excel, csv)"
+    )
     fun enrollByFile(
         @PathVariable bandId: Long,
         @RequestParam("file") file: MultipartFile
@@ -28,6 +32,10 @@ class BandEnrollController(
     }
 
     @PostMapping("{bandId}/members/enrollments/manual")
+    @Operation(
+        summary = "밴드 학생 추가",
+        description = "밴드에 학생들을 추가 가능합니다."
+    )
     fun enrollByManual(@PathVariable bandId: Long, @RequestBody request: EnrollRequest): ResponseEntity<Response> {
         val response =
             Response.ok(data = "bandId : " + bandEnrollService.enrollBandStudent(bandId = bandId, request = request))

@@ -1,5 +1,6 @@
 package com.wap.wabi.band.service
 
+import com.wap.wabi.band.entity.Band
 import com.wap.wabi.band.entity.BandStudent
 import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.band.payload.request.EnrollRequest
@@ -60,23 +61,14 @@ class BandEnrollService(
                 .academicStatus(bandStudentDto.academicStatus)
                 .build()
 
-            if (!alreadyHasBandStudent(bandStudentDto.club, student) && !containsSameStudentIdAndClub(
-                    bandStudents, bandStudentDto.club, student
-                )
-            ) bandStudents.add(bandStudent)
-
+            if (!alreadyHasSameStudentInBand(student, band)) bandStudents.add(bandStudent)
         }
         bandStudentRepository.saveAll(bandStudents)
 
         return bandId;
     }
 
-    private fun containsSameStudentIdAndClub(list: List<BandStudent>, club: String?, student: Student): Boolean {
-        return list.any { it.club == club && it.student == student }
-    }
-
-    private fun alreadyHasBandStudent(club: String?, student: Student): Boolean {
-        val bandStudent = bandStudentRepository.findByClubAndStudent(club, student)
-        return bandStudent.isPresent
+    private fun alreadyHasSameStudentInBand(student: Student, band: Band): Boolean {
+        return bandStudentRepository.findByBandAndStudent(band, student).isPresent
     }
 }
