@@ -4,6 +4,8 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import java.sql.Timestamp
 import java.time.Instant
@@ -40,4 +42,11 @@ class JwtTokenProvider(
         .parseClaimsJws(token)
         .body
         .subject
+
+    fun getAdminNameByToken(token: String): String {
+        val subject =
+            validateTokenAndGetSubject(token) ?: throw IllegalArgumentException("Invalid token")
+        val (username) = subject.split(":")
+        return username
+    }
 }
