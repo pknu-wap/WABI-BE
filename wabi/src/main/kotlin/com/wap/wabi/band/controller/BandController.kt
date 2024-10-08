@@ -30,7 +30,10 @@ class BandController(
     @Operation(
         summary = "밴드 생성"
     )
-    fun createBand(@RequestHeader("Authorization") token: String, @RequestBody request: BandCreateRequest): ResponseEntity<Response> {
+    fun createBand(
+        @RequestHeader("Authorization") token: String,
+        @RequestBody request: BandCreateRequest
+    ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminNameByToken(token.removePrefix("Bearer "))
         bandService.createBand(adminName = adminName, bandCreateRequest = request)
 
@@ -42,7 +45,10 @@ class BandController(
     @Operation(
         summary = "밴드 삭제"
     )
-    fun deleteBand(@RequestHeader("Authorization") token: String, @PathVariable bandId: Long): ResponseEntity<Response> {
+    fun deleteBand(
+        @RequestHeader("Authorization") token: String,
+        @PathVariable bandId: Long
+    ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminNameByToken(token.removePrefix("Bearer "))
         bandService.deleteBand(adminName = adminName, bandId = bandId)
 
@@ -64,7 +70,10 @@ class BandController(
     @Operation(
         summary = "밴드 수정"
     )
-    fun updateBand(@RequestHeader("Authorization") token: String, @RequestBody request: BandUpdateRequest): ResponseEntity<Response> {
+    fun updateBand(
+        @RequestHeader("Authorization") token: String,
+        @RequestBody request: BandUpdateRequest
+    ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminNameByToken(token.removePrefix("Bearer "))
         bandService.updateBand(adminName = adminName, bandUpdateRequest = request)
 
