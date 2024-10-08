@@ -183,14 +183,14 @@ class EventService(
 
         validateEventOwner(adminId, event)
 
-        val eventStudens = eventStudentRepository.findAllByEvent(event);
+        val eventStudens = eventStudentRepository.findAllByEvent(event)
 
         eventStudens.forEach { eventStudent ->
-            eventStudentBandNameRepository.deleteByEventStudent(eventStudent);
+            eventStudentBandNameRepository.deleteByEventStudent(eventStudent)
         }
 
-        eventStudentRepository.deleteByEvent(event);
-        eventBandRepository.deleteByEvent(event);
+        eventStudentRepository.deleteByEvent(event)
+        eventBandRepository.deleteByEvent(event)
         eventRepository.delete(event)
     }
 

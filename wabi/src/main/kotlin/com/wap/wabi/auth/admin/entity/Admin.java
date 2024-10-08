@@ -40,10 +40,12 @@ public class Admin implements UserDetails {
     public Long getId() {
         return this.id;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
+
     @Override
     public String getPassword() {
         return this.password;
