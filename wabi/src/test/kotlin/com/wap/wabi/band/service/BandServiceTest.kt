@@ -268,6 +268,7 @@ class BandServiceTest {
         val bandUpdateRequest = BandUpdateRequest(
             bandId = bandId,
             bandName = "new band name",
+            bandMemo = "band memo"
         )
 
         `when`(bandRepository.findById(bandId)).thenReturn(Optional.of(savedBand))
@@ -286,6 +287,7 @@ class BandServiceTest {
         val bandUpdateRequest = BandUpdateRequest(
             bandId = invalidBandId,
             bandName = "new band name",
+            bandMemo = "band memo"
         )
 
         `when`(bandRepository.findById(invalidBandId)).thenReturn(Optional.empty())
@@ -307,6 +309,7 @@ class BandServiceTest {
         val bandUpdateRequest = BandUpdateRequest(
             bandId = bandId,
             bandName = "new band name",
+            bandMemo = "band memo"
         )
 
         val savedBand = BandFixture.createBand("Band 1", 1)
@@ -329,6 +332,7 @@ class BandServiceTest {
         val bandUpdateRequest = BandUpdateRequest(
             bandId = bandId,
             bandName = "new band name",
+            bandMemo = "band memo"
         )
         val savedBand = BandFixture.createAnotherUserBand(id = 1, name = "bandName")
 

@@ -68,9 +68,9 @@ class BandService(
             throw RestApiException(ErrorCode.UNAUTHORIZED_BAND)
         }
 
-        val events = eventRepository.findAllByBand(band)
-        events.forEach { event ->
-            deleteEventByBand(event = event)
+        val eventBands = eventBandRepository.findAllByBand(band)
+        eventBands.forEach { eventBand ->
+            deleteEventByBand(event = eventBand.event)
         }
         bandStudentRepository.deleteAllByBand(band)
         bandRepository.delete(band)
