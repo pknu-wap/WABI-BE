@@ -1,5 +1,6 @@
 package com.wap.wabi.band.controller
 
+import com.wap.wabi.auth.jwt.JwtTokenProvider
 import com.wap.wabi.band.payload.request.BandCreateRequest
 import com.wap.wabi.band.payload.request.BandUpdateRequest
 import com.wap.wabi.band.payload.response.BandStudentsData
@@ -8,20 +9,12 @@ import com.wap.wabi.common.payload.response.Response
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/bands/")
 class BandController(
-    private val bandService: BandService
+    private val bandService: BandService, private val jwtTokenProvider: JwtTokenProvider
 ) {
     @GetMapping("{bandId}/students")
     @Operation(
@@ -37,8 +30,9 @@ class BandController(
     @Operation(
         summary = "밴드 생성"
     )
-    fun createBand(@RequestParam adminId: Long, @RequestBody request: BandCreateRequest): ResponseEntity<Response> {
-        bandService.createBand(adminId = adminId, bandCreateRequest = request)
+    fun createBand(@RequestHeader("Authorization") token: String, @RequestBody request: BandCreateRequest): ResponseEntity<Response> {
+        val adminName = jwtTokenProvider.getAdminNameByToken(token.removePrefix("Bearer "))
+        bandService.createBand(adminName = adminName, bandCreateRequest = request)
 
         val response = Response.ok(message = "success create band")
         return ResponseEntity(response, HttpStatus.OK)
@@ -48,8 +42,9 @@ class BandController(
     @Operation(
         summary = "밴드 삭제"
     )
-    fun deleteBand(@RequestParam adminId: Long, @PathVariable bandId: Long): ResponseEntity<Response> {
-        bandService.deleteBand(adminId = adminId, bandId = bandId)
+    fun deleteBand(@RequestHeader("Authorization") token: String, @PathVariable bandId: Long): ResponseEntity<Response> {
+        val adminName = jwtTokenProvider.getAdminNameByToken(token.removePrefix("Bearer "))
+        bandService.deleteBand(adminName = adminName, bandId = bandId)
 
         val response = Response.ok(message = "success delete band")
         return ResponseEntity(response, HttpStatus.OK)
@@ -59,8 +54,9 @@ class BandController(
     @Operation(
         summary = "해당 계정의 밴드 목록을 불러옵니다."
     )
-    fun getBands(@RequestParam adminId: Long): ResponseEntity<Response> {
-        val response = Response.ok(data = bandService.getBands(adminId = adminId))
+    fun getBands(@RequestHeader("Authorization") token: String): ResponseEntity<Response> {
+        val adminName = jwtTokenProvider.getAdminNameByToken(token.removePrefix("Bearer "))
+        val response = Response.ok(data = bandService.getBands(adminName = adminName))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
@@ -68,8 +64,9 @@ class BandController(
     @Operation(
         summary = "밴드 수정"
     )
-    fun updateBand(@RequestParam adminId: Long, @RequestBody request: BandUpdateRequest): ResponseEntity<Response> {
-        bandService.updateBand(adminId = adminId, bandUpdateRequest = request)
+    fun updateBand(@RequestHeader("Authorization") token: String, @RequestBody request: BandUpdateRequest): ResponseEntity<Response> {
+        val adminName = jwtTokenProvider.getAdminNameByToken(token.removePrefix("Bearer "))
+        bandService.updateBand(adminName = adminName, bandUpdateRequest = request)
 
         val response = Response.ok(message = "success update band")
 
