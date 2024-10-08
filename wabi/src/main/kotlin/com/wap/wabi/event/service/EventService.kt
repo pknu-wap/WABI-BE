@@ -176,12 +176,21 @@ class EventService(
         return eventDatas
     }
 
+    @Transactional
     fun deleteEvent(adminId: Long, eventId: Long) {
         val event =
             eventRepository.findById(eventId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_EVENT) }
 
         validateEventOwner(adminId, event)
 
+        val eventStudens = eventStudentRepository.findAllByEvent(event);
+
+        eventStudens.forEach { eventStudent ->
+            eventStudentBandNameRepository.deleteByEventStudent(eventStudent);
+        }
+
+        eventStudentRepository.deleteByEvent(event);
+        eventBandRepository.deleteByEvent(event);
         eventRepository.delete(event)
     }
 

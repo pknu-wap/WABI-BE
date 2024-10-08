@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface EventBandRepository extends JpaRepository<EventBand, Long> {
     List<EventBand> findAllByEvent(Event event);
+
+    void deleteByEvent(Event event);
 }
