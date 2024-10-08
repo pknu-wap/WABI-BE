@@ -14,4 +14,6 @@ public interface BandStudentRepository extends JpaRepository<BandStudent, Long> 
     List<BandStudent> findAllByBand(Band band);
 
     Optional<BandStudent> findByBandAndStudent(Band band, Student student);
+
+    void deleteAllByBand(Band band);
 }

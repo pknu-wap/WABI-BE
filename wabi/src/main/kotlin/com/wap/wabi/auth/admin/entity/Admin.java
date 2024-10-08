@@ -37,6 +37,10 @@ public class Admin implements UserDetails {
         this.status = builder.status;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

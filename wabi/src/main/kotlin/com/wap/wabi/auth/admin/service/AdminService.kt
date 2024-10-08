@@ -43,4 +43,10 @@ class AdminService(
             token = token
         )
     }
+
+    fun getAdminId(adminName: String): Long {
+        val admin = adminRepository.findByName(adminName)
+            ?: throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+        return admin.get().id
+    }
 }

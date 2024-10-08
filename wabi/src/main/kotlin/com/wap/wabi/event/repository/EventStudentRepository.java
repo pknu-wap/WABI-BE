@@ -23,4 +23,6 @@ public interface EventStudentRepository extends JpaRepository<EventStudent, Long
 
     @Query("SELECT COUNT(*) FROM EventStudent es WHERE es.status=:status AND es.event=:event")
     int getEventStudentStatusCount(@Param("event") Event event, @Param("status") EventStudentStatus status);
+
+    void deleteByEvent(Event event);
 }
