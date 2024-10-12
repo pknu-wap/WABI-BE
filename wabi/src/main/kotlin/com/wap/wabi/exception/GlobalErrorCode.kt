@@ -3,7 +3,7 @@ package com.wap.wabi.exception
 import com.wap.wabi.exception.payload.response.ErrorReason
 import org.springframework.http.HttpStatus
 
-enum class ErrorCode(
+enum class GlobalErrorCode(
     val httpStatus: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
     val code: String = "",
     val message: String = ""
@@ -36,16 +36,8 @@ enum class ErrorCode(
     ALREADY_CHECK_IN(HttpStatus.BAD_REQUEST, "600-1", "이미 체크인 했습니다."),
   
     //BANT관련
-    ALREADY_ADD_STUDENT(HttpStatus.BAD_REQUEST, "700-1", "해당 밴드에 이미 학생들이 존재합니다."),
+    ALREADY_ADD_STUDENT(HttpStatus.BAD_REQUEST, "700-1", "해당 밴드에 이미 학생들이 존재합니다.");
 
-    //Auth 관련
-    BAD_REQUEST_ADMIN(HttpStatus.BAD_REQUEST, "800-1","관리자 등록이 형식에 맞지 않습니다."),
-    BAD_REQUEST_ADMIN_PASSWORD(HttpStatus.BAD_REQUEST,"800-2","비밀번호가 형식에 맞지 않습니다."),
-    BAD_REQUEST_ADMIN_NAME(HttpStatus.BAD_REQUEST,"800-3","이름이 형식에 맞지 않습니다."),
-    BAD_REQUEST_EXIST_ADMIN(HttpStatus.BAD_REQUEST, "800-4","이미 존재하는 어드민입니다."),
-    BAD_REQUEST_NOT_EXIST_ADMIN(HttpStatus.BAD_REQUEST, "800-5","이미 존재하는 어드민입니다."),
-    UNAUTHORIZED_ADMIN(HttpStatus.UNAUTHORIZED, "804-1","올바르지 않은 어드민입니다."),
-    UNAUTHORIZED_ADMIN_TOKEN(HttpStatus.UNAUTHORIZED,"804-2","만료된 어드민 정보입니다.");
     override fun getErrorReason(): ErrorReason {
         return ErrorReason(httpStatus, code, message)
     }

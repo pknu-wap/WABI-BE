@@ -2,7 +2,7 @@ package com.wap.wabi.band.service
 
 import com.opencsv.CSVReader
 import com.wap.wabi.band.payload.BandStudentDto
-import com.wap.wabi.exception.ErrorCode
+import com.wap.wabi.exception.GlobalErrorCode
 import com.wap.wabi.exception.RestApiException
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
@@ -18,11 +18,11 @@ import java.time.LocalDate
 class FileToBandStudentTranslator(
 ) {
     fun translateFileToDto(file: MultipartFile): List<BandStudentDto> {
-        val originalFilename = file.originalFilename ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_TYPE)
+        val originalFilename = file.originalFilename ?: throw RestApiException(GlobalErrorCode.BAD_REQUEST_FILE_TYPE)
         return when {
             originalFilename.endsWith(".csv") -> processCsvFile(file)
             originalFilename.endsWith(".xlsx") || originalFilename.endsWith(".xls") -> processExcelFile(file)
-            else -> throw RestApiException(ErrorCode.BAD_REQUEST_FILE_TYPE)
+            else -> throw RestApiException(GlobalErrorCode.BAD_REQUEST_FILE_TYPE)
         }
 
     }
@@ -41,9 +41,9 @@ class FileToBandStudentTranslator(
 
         for (nextLine in reader) {
             val studentId =
-                nextLine!![headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUMN)]
+                nextLine!![headerMap["학번"] ?: throw RestApiException(GlobalErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUMN)]
             val studentName =
-                nextLine!![headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)]
+                nextLine!![headerMap["성명"] ?: throw RestApiException(GlobalErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)]
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
                 continue
             }
@@ -93,12 +93,12 @@ class FileToBandStudentTranslator(
 
             val studentId = getCellValueAsString(
                 row.getCell(
-                    headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUMN)
+                    headerMap["학번"] ?: throw RestApiException(GlobalErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUMN)
                 )
             )
             val studentName = getCellValueAsString(
                 row.getCell(
-                    headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)
+                    headerMap["성명"] ?: throw RestApiException(GlobalErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)
                 )
             )
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {

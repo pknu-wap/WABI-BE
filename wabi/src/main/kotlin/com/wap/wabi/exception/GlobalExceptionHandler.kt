@@ -14,13 +14,13 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
      */
     @ExceptionHandler(RestApiException::class)
     protected fun handleCustomException(ex: RestApiException): ResponseEntity<Response> {
-        val errorCode = ex.errorCode
+        val errorCode = ex.globalErrorCode
         return handleExceptionInternal(errorCode)
     }
 
     // handleExceptionInternal() 메소드를 오버라이딩해 응답 커스터마이징
-    private fun handleExceptionInternal(errorCode: ErrorCode): ResponseEntity<Response> {
-        return ResponseEntity.status(errorCode.httpStatus)
-            .body(Response(statusCode = errorCode.code, message = errorCode.message))
+    private fun handleExceptionInternal(globalErrorCode: GlobalErrorCode): ResponseEntity<Response> {
+        return ResponseEntity.status(globalErrorCode.httpStatus)
+            .body(Response(statusCode = globalErrorCode.code, message = globalErrorCode.message))
     }
 }

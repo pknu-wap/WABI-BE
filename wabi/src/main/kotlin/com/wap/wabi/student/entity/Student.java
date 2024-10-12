@@ -1,6 +1,6 @@
 package com.wap.wabi.student.entity;
 
-import com.wap.wabi.exception.ErrorCode;
+import com.wap.wabi.exception.GlobalErrorCode;
 import com.wap.wabi.exception.RestApiException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -55,7 +55,7 @@ public class Student {
     @PreUpdate
     private void validate() {
         if (id.isBlank()) {
-            throw new RestApiException(ErrorCode.BAD_REQUEST_STUDENT_ID);
+            throw new RestApiException(GlobalErrorCode.BAD_REQUEST_STUDENT_ID);
         }
     }
 }

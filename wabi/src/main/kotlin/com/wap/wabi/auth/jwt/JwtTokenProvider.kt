@@ -1,13 +1,9 @@
 package com.wap.wabi.auth.jwt
 
-import com.wap.wabi.exception.ErrorCode
-import com.wap.wabi.exception.RestApiException
+import com.wap.wabi.auth.admin.exception.AdminExpireTokenException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.PropertySource
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import java.sql.Timestamp
 import java.time.Instant
@@ -46,7 +42,7 @@ class JwtTokenProvider(
             .body
 
         return if (isTokenExpired(claims.expiration)) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_ADMIN_TOKEN)
+            throw AdminExpireTokenException.EXCEPTION
         } else {
             claims.subject
         }

@@ -1,12 +1,12 @@
 package com.wap.wabi.auth.admin.controller
 
+import com.wap.wabi.auth.admin.exception.AdminErrorCode
 import com.wap.wabi.auth.admin.payload.request.AdminLoginRequest
 import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
 import com.wap.wabi.auth.admin.service.AdminService
 import com.wap.wabi.auth.admin.view.AdminSwaggerView
 import com.wap.wabi.common.payload.response.Response
 import com.wap.wabi.exception.ApiErrorCodeExample
-import com.wap.wabi.exception.ErrorCode
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.RestController
 class AdminController(
     private val adminService: AdminService
 ) {
-    /*
-    * TODO: SWAGGER에 CUSTOM ERROR CODE 추가
-     */
     @PostMapping("register")
     @Operation(
         summary = AdminSwaggerView.ADMIN_REGISTER_SUMMARY,
@@ -35,7 +32,7 @@ class AdminController(
     }
 
     @PostMapping("login")
-    @ApiErrorCodeExample(ErrorCode::class)
+    @ApiErrorCodeExample(AdminErrorCode::class)
     @Operation(
         summary = AdminSwaggerView.ADMIN_LOGIN_SUMMARY,
         description = AdminSwaggerView.ADMIN_NAME_AND_PWD_ROLE_DESCRIPTION

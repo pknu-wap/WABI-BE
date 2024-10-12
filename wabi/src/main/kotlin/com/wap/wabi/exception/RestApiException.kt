@@ -1,4 +1,4 @@
 package com.wap.wabi.exception
 
 
-class RestApiException(val errorCode: ErrorCode) : RuntimeException()
+class RestApiException(val globalErrorCode: GlobalErrorCode) : RuntimeException()

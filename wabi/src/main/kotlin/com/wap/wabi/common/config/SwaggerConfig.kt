@@ -2,7 +2,6 @@ package com.wap.wabi.common.config
 
 import com.wap.wabi.exception.ApiErrorCodeExample
 import com.wap.wabi.exception.BaseErrorCode
-import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.payload.response.ErrorReason
 import com.wap.wabi.exception.payload.response.ErrorResponse
 import io.swagger.v3.oas.models.Components

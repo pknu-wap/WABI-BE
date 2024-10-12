@@ -14,7 +14,7 @@ import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentBandNameRepository
 import com.wap.wabi.event.repository.EventStudentRepository
-import com.wap.wabi.exception.ErrorCode
+import com.wap.wabi.exception.GlobalErrorCode
 import com.wap.wabi.exception.RestApiException
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -31,7 +31,7 @@ class BandService(
 ) {
     @Transactional
     fun getBandStudents(bandId: Long): List<BandStudentData> {
-        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
+        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(GlobalErrorCode.NOT_FOUND_BAND) }
 
         val bandStudents = bandStudentRepository.findAllByBand(band)
 
@@ -43,7 +43,7 @@ class BandService(
         val admin = adminRepository.findById(adminId)
 
         if (admin.isEmpty) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+            throw RestApiException(GlobalErrorCode.UNAUTHORIZED_REQUEST)
         }
 
         val createBand = bandCreateRequest.toBand(admin.get().id)
@@ -53,19 +53,19 @@ class BandService(
 
     @Transactional
     fun deleteBand(adminId: Long, bandId: Long) {
-        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
+        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(GlobalErrorCode.NOT_FOUND_BAND) }
         val admin = adminRepository.findById(adminId)
 
         if (admin.isEmpty) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+            throw RestApiException(GlobalErrorCode.UNAUTHORIZED_REQUEST)
         }
 
         if (bandStudentRepository.findAllByBand(band).isNotEmpty()) {
-            throw RestApiException(ErrorCode.ALREADY_ADD_STUDENT)
+            throw RestApiException(GlobalErrorCode.ALREADY_ADD_STUDENT)
         }
 
         if (band.adminId != admin.get().id) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_BAND)
+            throw RestApiException(GlobalErrorCode.UNAUTHORIZED_BAND)
         }
 
         val eventBands = eventBandRepository.findAllByBand(band)
@@ -93,7 +93,7 @@ class BandService(
         val admin = adminRepository.findById(adminId)
 
         if (admin.isEmpty) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+            throw RestApiException(GlobalErrorCode.UNAUTHORIZED_REQUEST)
         }
 
         val bands: List<Band> = bandRepository.findAllByAdminId(admin.get().id)
@@ -108,15 +108,15 @@ class BandService(
     @Transactional
     fun updateBand(adminId: Long, bandUpdateRequest: BandUpdateRequest) {
         val band = bandRepository.findById(bandUpdateRequest.bandId)
-            .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
+            .orElseThrow { RestApiException(GlobalErrorCode.NOT_FOUND_BAND) }
         val admin = adminRepository.findById(adminId)
 
         if (admin.isEmpty) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+            throw RestApiException(GlobalErrorCode.UNAUTHORIZED_REQUEST)
         }
 
         if (band.adminId != admin.get().id) {
-            throw RestApiException(ErrorCode.UNAUTHORIZED_BAND)
+            throw RestApiException(GlobalErrorCode.UNAUTHORIZED_BAND)
         }
 
         band.update(bandUpdateRequest)
@@ -125,7 +125,7 @@ class BandService(
     @Transactional
     fun getBandDetail(bandId: Long): BandDetailData {
         val band = bandRepository.findById(bandId)
-            .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
+            .orElseThrow { RestApiException(GlobalErrorCode.NOT_FOUND_BAND) }
 
         return BandDetailData.of(band = band)
     }

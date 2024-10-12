@@ -1,10 +1,10 @@
 package com.wap.wabi.auth.admin.util
 
+import com.wap.wabi.auth.admin.exception.AdminInvalidNameException
+import com.wap.wabi.auth.admin.exception.AdminInvalidPwdException
 import com.wap.wabi.auth.admin.payload.request.AdminLoginRequest
 import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
 import com.wap.wabi.common.utils.StringUtils
-import com.wap.wabi.exception.ErrorCode
-import com.wap.wabi.exception.RestApiException
 import org.springframework.stereotype.Component
 
 @Component
@@ -19,10 +19,10 @@ class AdminValidator {
 
     private fun validateCommon(name: String, password: String) {
         if (!isCorrectName(name)) {
-            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN_NAME)
+            throw AdminInvalidNameException.EXCEPTION
         }
         if (!isCorrectPassword(password)) {
-            throw RestApiException(ErrorCode.BAD_REQUEST_ADMIN_PASSWORD)
+            throw AdminInvalidPwdException.EXCEPTION
         }
     }
 

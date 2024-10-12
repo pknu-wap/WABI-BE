@@ -1,13 +1,13 @@
 package com.wap.wabi.auth.admin.service
 
+import com.wap.wabi.auth.admin.exception.AdminExistException
+import com.wap.wabi.auth.admin.exception.AdminNotExistException
 import com.wap.wabi.auth.admin.payload.request.AdminLoginRequest
 import com.wap.wabi.auth.admin.payload.request.AdminRegisterRequest
 import com.wap.wabi.auth.admin.payload.response.AdminLoginResponse
 import com.wap.wabi.auth.admin.repository.AdminRepository
 import com.wap.wabi.auth.jwt.JwtTokenProvider
 import com.wap.wabi.auth.admin.util.AdminValidator
-import com.wap.wabi.exception.ErrorCode
-import com.wap.wabi.exception.RestApiException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,7 +23,7 @@ class AdminService(
     fun registerAdmin(adminRegisterRequest: AdminRegisterRequest) {
         adminValidator.validateRegister(adminRegisterRequest)
         if (adminRepository.findByName(adminRegisterRequest.name).isPresent) {
-            throw RestApiException(ErrorCode.BAD_REQUEST_EXIST_ADMIN)
+            throw AdminExistException.EXCEPTION
         }
         adminRepository.save(adminRegisterRequest.toAdmin(encoder))
     }
@@ -35,7 +35,7 @@ class AdminService(
             ?.takeIf { admin ->
                 encoder.matches(adminLoginRequest.password, admin.get().password)
             }
-            ?: throw RestApiException(ErrorCode.BAD_REQUEST_NOT_EXIST_ADMIN)
+            ?: throw AdminNotExistException.EXCEPTION
         val token = tokenProvider.createToken("${admin.get().username}:${admin.get().role}")
         return AdminLoginResponse(
             name = admin.get().username,
@@ -46,7 +46,7 @@ class AdminService(
 
     fun getAdminId(adminName: String): Long {
         val admin = adminRepository.findByName(adminName)
-            ?: throw RestApiException(ErrorCode.UNAUTHORIZED_REQUEST)
+            ?: throw AdminNotExistException.EXCEPTION
         return admin.get().id
     }
 }
