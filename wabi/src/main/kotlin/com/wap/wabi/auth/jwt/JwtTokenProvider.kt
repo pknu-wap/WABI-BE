@@ -1,5 +1,7 @@
 package com.wap.wabi.auth.jwt
 
+import com.wap.wabi.exception.ErrorCode
+import com.wap.wabi.exception.RestApiException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
@@ -36,17 +38,28 @@ class JwtTokenProvider(
         .setExpiration(Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))    // JWT 토큰의 만료시간 설정
         .compact()!!    // JWT 토큰 생성
 
-    fun validateTokenAndGetSubject(token: String): String? = Jwts.parserBuilder()
-        .setSigningKey(secretKey.toByteArray())
-        .build()
-        .parseClaimsJws(token)
-        .body
-        .subject
+    fun validateTokenAndGetSubject(token: String): String? {
+        val claims = Jwts.parserBuilder()
+            .setSigningKey(secretKey.toByteArray())
+            .build()
+            .parseClaimsJws(token)
+            .body
+
+        return if (isTokenExpired(claims.expiration)) {
+            throw RestApiException(ErrorCode.UNAUTHORIZED_ADMIN_TOKEN)
+        } else {
+            claims.subject
+        }
+    }
 
     fun getAdminNameByToken(token: String): String {
         val subject =
             validateTokenAndGetSubject(token) ?: throw IllegalArgumentException("Invalid token")
         val (username) = subject.split(":")
         return username
+    }
+
+    private fun isTokenExpired(expirationDate: Date): Boolean {
+        return expirationDate.before(Date())
     }
 }
