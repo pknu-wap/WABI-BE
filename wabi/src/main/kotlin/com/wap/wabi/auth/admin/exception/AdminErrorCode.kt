@@ -14,7 +14,7 @@ enum class AdminErrorCode(
     BAD_REQUEST_ADMIN_NAME(HttpStatus.BAD_REQUEST,"Admin_400_2","이름이 형식에 맞지 않습니다."),
     BAD_REQUEST_EXIST_ADMIN(HttpStatus.BAD_REQUEST, "Admin_400_3","이미 존재하는 어드민입니다."),
     BAD_REQUEST_NOT_EXIST_ADMIN(HttpStatus.BAD_REQUEST, "Admin_400_4","이미 존재하는 어드민입니다."),
-    UNAUTHORIZED_ADMIN_EXPIRE_TOKEN(HttpStatus.UNAUTHORIZED,"Admin_400_5","만료된 어드민 정보입니다.");
+    UNAUTHORIZED_ADMIN_EXPIRE_TOKEN(HttpStatus.UNAUTHORIZED,"Admin_401_1","만료된 어드민 정보입니다.");
 
     override fun getErrorReason(): ErrorReason {
         return ErrorReason(httpStatus, code, message)
