@@ -66,10 +66,10 @@ class SwaggerConfig {
         val errorCodes: Array<out BaseErrorCode>? = type.java.enumConstants
         // 400, 401, 404 등 에러코드의 상태코드들로 리스트로 모읍니다.
         // 400 같은 상태코드에 여러 에러코드들이 있을 수 있습니다.
-        val statusWithExampleHolders: Map<Int, List<ExampleHolder>> = errorCodes?.map { baseErrorCode ->
+        val statusWithSwaggerExampleHolders: Map<Int, List<SwaggerExampleHolder>> = errorCodes?.map { baseErrorCode ->
             try {
                 val errorReason = baseErrorCode.getErrorReason()
-                ExampleHolder(
+                SwaggerExampleHolder(
                     holder = getSwaggerExample("test", errorReason),
                     code = errorReason?.status?.value().toString(),
                     name = errorReason?.code ?: "Unknown"
@@ -80,7 +80,7 @@ class SwaggerConfig {
         }?.groupBy { it.code.toInt() } ?: emptyMap()
 
         // response 객체들을 responses에 넣습니다.
-        addExamplesToResponses(responses, statusWithExampleHolders)
+        addExamplesToResponses(responses, statusWithSwaggerExampleHolders)
     }
 
     private fun getSwaggerExample(value: String, errorReason: ErrorReason): Example {
@@ -93,9 +93,9 @@ class SwaggerConfig {
 
     private fun addExamplesToResponses(
         responses: ApiResponses,
-        statusWithExampleHolders: Map<Int, List<ExampleHolder>>
+        statusWithSwaggerExampleHolders: Map<Int, List<SwaggerExampleHolder>>
     ) {
-        statusWithExampleHolders.forEach { (status, exampleHolders) ->
+        statusWithSwaggerExampleHolders.forEach { (status, exampleHolders) ->
             val content = Content()
             val mediaType = MediaType()
 
