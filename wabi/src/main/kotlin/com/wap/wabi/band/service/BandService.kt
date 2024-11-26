@@ -16,6 +16,7 @@ import com.wap.wabi.event.repository.EventStudentBandNameRepository
 import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
+import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -27,7 +28,8 @@ class BandService(
     private val eventStudentBandNameRepository: EventStudentBandNameRepository,
     private val eventBandRepository: EventBandRepository,
     private val eventRepository: EventRepository,
-    private val eventStudentRepository: EventStudentRepository
+    private val eventStudentRepository: EventStudentRepository,
+    private val studentRepository: StudentRepository
 ) {
     @Transactional
     fun getBandStudents(bandId: Long): List<BandStudentData> {
@@ -129,4 +131,13 @@ class BandService(
 
         return BandDetailData.of(band = band)
     }
+
+    @Transactional
+    fun deleteBandStudent(bandId: Long, studentId: String) {
+        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
+        val student =
+            studentRepository.findById(studentId).orElseThrow() { RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
+        bandStudentRepository.deleteBandStudentByBandAndStudent(band, student)
+    }
+
 }

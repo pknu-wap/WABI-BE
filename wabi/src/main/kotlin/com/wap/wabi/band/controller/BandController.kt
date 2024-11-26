@@ -10,7 +10,15 @@ import com.wap.wabi.common.payload.response.Response
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/bands/")
@@ -98,5 +106,20 @@ class BandController(
         val response = Response.ok(data = bandService.getBandDetail(bandId = bandId))
 
         return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @DeleteMapping("{bandId}/{studentId}")
+    @Operation(
+        summary = "밴드 학생 삭제"
+    )
+    fun deleteBandStudent(
+        @PathVariable bandId: Long,
+        @PathVariable studentId: String
+    ): ResponseEntity<Response> {
+        bandService.deleteBandStudent(bandId = bandId, studentId = studentId)
+
+        val response = Response.ok(message = "success delete band student")
+        return ResponseEntity(response, HttpStatus.OK)
+
     }
 }
