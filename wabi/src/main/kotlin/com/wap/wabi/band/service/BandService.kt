@@ -132,12 +132,4 @@ class BandService(
         return BandDetailData.of(band = band)
     }
 
-    @Transactional
-    fun deleteBandStudent(bandId: Long, studentId: String) {
-        val band = bandRepository.findById(bandId).orElseThrow { RestApiException(ErrorCode.NOT_FOUND_BAND) }
-        val student =
-            studentRepository.findById(studentId).orElseThrow() { RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
-        bandStudentRepository.deleteBandStudentByBandAndStudent(band, student)
-    }
-
 }

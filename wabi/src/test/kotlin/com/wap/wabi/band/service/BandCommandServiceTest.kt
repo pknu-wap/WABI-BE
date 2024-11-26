@@ -2,7 +2,7 @@ package com.wap.wabi.band.service
 
 import com.wap.wabi.band.fixture.BandFixture
 import com.wap.wabi.band.payload.BandStudentDto
-import com.wap.wabi.band.payload.request.EnrollRequest
+import com.wap.wabi.band.payload.request.BandStudentEnrollRequest
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
@@ -23,9 +23,9 @@ import java.util.Optional
 @Transactional
 @SpringBootTest
 @SuppressWarnings("NonAsciiCharacters")
-class BandEnrollServiceTest {
+class BandCommandServiceTest {
     @Autowired
-    private lateinit var bandEnrollService: BandEnrollService
+    private lateinit var bandCommandService: BandCommandService
 
     @MockBean
     private lateinit var bandRepository: BandRepository
@@ -60,7 +60,7 @@ class BandEnrollServiceTest {
             academicStatus = academicStatus
         )
         val bandStudentDtos: MutableList<BandStudentDto> = mutableListOf(bandStudentDto)
-        val enrollRequest = EnrollRequest(
+        val bandStudentEnrollRequest = BandStudentEnrollRequest(
             bandStudentDtos
         )
 
@@ -69,7 +69,7 @@ class BandEnrollServiceTest {
 
         //When & Then
         Assertions.assertDoesNotThrow {
-            bandEnrollService.enrollBandStudent(bandId = bandId, request = enrollRequest)
+            bandCommandService.enrollBandStudent(bandId = bandId, request = bandStudentEnrollRequest)
         }
     }
 
@@ -101,7 +101,7 @@ class BandEnrollServiceTest {
         )
         val bandStudentDtos: MutableList<BandStudentDto> = mutableListOf()
         bandStudentDtos.add(bandStudentDto)
-        val enrollRequest = EnrollRequest(
+        val bandStudentEnrollRequest = BandStudentEnrollRequest(
             bandStudentDtos
         )
 
@@ -110,7 +110,7 @@ class BandEnrollServiceTest {
 
         //When
         val exception = assertThrows<RestApiException> {
-            bandEnrollService.enrollBandStudent(bandId = invalidBandId, request = enrollRequest)
+            bandCommandService.enrollBandStudent(bandId = invalidBandId, request = bandStudentEnrollRequest)
         }
 
         //Then

@@ -1,5 +1,6 @@
 package com.wap.wabi.band.entity;
 
+import com.wap.wabi.band.payload.BandStudentDto;
 import com.wap.wabi.student.entity.Student;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -7,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
@@ -30,6 +32,9 @@ public class BandStudent {
     private String major;
     private String tel;
     private String academicStatus;
+
+    protected BandStudent() {
+    }
 
     private BandStudent(builder builder) {
         this.band = builder.band;
@@ -104,7 +109,14 @@ public class BandStudent {
         }
     }
 
-    protected BandStudent() {
+    public void update(@NotNull BandStudentDto request) {
+        this.club = request.getClub();
+        this.position = request.getPosition();
+        this.joinDate = request.getJoinDate();
+        this.college = request.getCollege();
+        this.major = request.getMajor();
+        this.tel = request.getTel();
+        this.academicStatus = request.getAcademicStatus();
     }
 
     public Long getId() {
