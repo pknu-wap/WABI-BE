@@ -133,7 +133,7 @@ class EventCommandService(
         eventRepository.delete(event)
     }
 
-    fun validateEventOwner(adminId: Long, event: Event): Boolean {
+    private fun validateEventOwner(adminId: Long, event: Event): Boolean {
         if (!event.isOwner(adminId)) throw RestApiException(ErrorCode.UNAUTHORIZED_EVENT)
         return true
     }
