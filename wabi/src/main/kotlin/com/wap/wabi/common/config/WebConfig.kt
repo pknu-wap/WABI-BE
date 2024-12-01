@@ -15,6 +15,7 @@ class WebConfig : WebMvcConfigurer {
                 "http://localhost:8080"
             )
             .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+            .allowedHeaders("*")
             .allowCredentials(true);
     }
 }
