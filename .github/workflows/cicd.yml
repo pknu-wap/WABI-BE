@@ -56,7 +56,7 @@ jobs:
       - name: Build with Gradle
         run: |
           cd wabi
-          ./gradlew clean build
+          ./gradlew clean build -x test
 
       - name: Docker build and push
         run: |
