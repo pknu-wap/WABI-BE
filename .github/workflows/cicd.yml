@@ -38,14 +38,14 @@ jobs:
 
       - name: Set environment values
         run: |
-          touch ./wabi/src/main/resources/env.properties
-          echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" >> ./env.properties
-          echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" >> ./env.properties
-          echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" >> ./env.properties
-          echo "JWT_KEY=${{ secrets.JWT_KEY }}" >> ./env.properties
-          echo "JWT_EXPIRATION_MINUTES=${{ secrets.JWT_EXPIRATION_MINUTES }}" >> ./env.properties
-          echo "JWT_REFRESH_EXPIRATION_HOURS=${{ secrets.JWT_REFRESH_EXPIRATION_HOURS }}" >> ./env.properties
-          echo "JWT_ISSUER=${{ secrets.JWT_ISSUER }}" >> ./env.properties
+          touch ./wabi/src/main/resources/application-prod.properties
+          echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" >> ./application-prod.properties
+          echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" >> ./application-prod.properties
+          echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" >> ./application-prod.properties
+          echo "JWT_KEY=${{ secrets.JWT_KEY }}" >> ./application-prod.properties
+          echo "JWT_EXPIRATION_MINUTES=${{ secrets.JWT_EXPIRATION_MINUTES }}" >> ./application-prod.properties
+          echo "JWT_REFRESH_EXPIRATION_HOURS=${{ secrets.JWT_REFRESH_EXPIRATION_HOURS }}" >> ./application-prod.properties
+          echo "JWT_ISSUER=${{ secrets.JWT_ISSUER }}" >> ./application-prod.properties
 
       - name: Build with Gradle
         run: |
