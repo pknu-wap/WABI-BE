@@ -14,16 +14,6 @@ jobs:
   build:
     # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3306
-          container port: 3306
-          mysql database: ${{ secrets.SPRING_DATASOURCE_NAME }}
-          mysql root password: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -60,6 +50,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          envs: GITHUB_SHA
           script: |
             #!/bin/bash
             ls
