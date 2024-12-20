@@ -39,13 +39,19 @@ jobs:
       - name: Set environment values
         run: |
           cat <<EOL > ./wabi/src/main/resources/application-prod.properties
-          SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-          JWT_KEY=${{ secrets.JWT_KEY }}
-          JWT_EXPIRATION_MINUTES=${{ secrets.JWT_EXPIRATION_MINUTES }}
-          JWT_REFRESH_EXPIRATION_HOURS=${{ secrets.JWT_REFRESH_EXPIRATION_HOURS }}
-          JWT_ISSUER=${{ secrets.JWT_ISSUER }}
+          spring.datasource.url=${{ secrets.SPRING_DATASOURCE_URL }}
+          spring.datasource.username=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          spring.datasource.password=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          jwt.secret-key=${{ secrets.JWT_KEY }}
+          jwt.expiration-minutes=${{ secrets.JWT_EXPIRATION_MINUTES }}
+          jwt.refresh-expiration-hours=${{ secrets.JWT_REFRESH_EXPIRATION_HOURS }}
+          jwt.issuer=${{ secrets.JWT_ISSUER }}
+          spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+          spring.jpa.show-sql=true
+          spring.jpa.hibernate.ddl-auto=create
+          logging.level.org.springframework.security=DEBUG
+          logging.level.org.springframework.web=DEBUG
+          logging.level.org.springframework.http=DEBUG
           EOL
       - name: Build with Gradle
         run: |
