@@ -17,12 +17,12 @@ jobs:
 
     steps:
       - name: Setup MySQL
-          uses: mirromutth/mysql-action@v1.1
-          with:
-            host port: 3306
-            container port: 3306
-            mysql database: 'wabi'
-            mysql root password: ${{ secrets.SPRING_DATASOURCE_NAME }}
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          mysql database: 'wabi'
+          mysql root password: ${{ secrets.SPRING_DATASOURCE_NAME }}
 
       - name: Checkout
         uses: actions/checkout@v3
