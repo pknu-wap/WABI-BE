@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy:
+    if: startsWith(github.event.workflow_run.head_branch, 'Fix/#58')
     runs-on: ubuntu-latest
 
     steps:
