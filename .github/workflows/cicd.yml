@@ -1,4 +1,4 @@
-name: Build
+name: Build and Deploy
 
 on:
   push:
@@ -10,12 +10,20 @@ on:
     types:
       - closed
 
-jobs:
+jobs:            
   build:
     # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
+      - name: Setup MySQL
+          uses: mirromutth/mysql-action@v1.1
+          with:
+            host port: 3306
+            container port: 3306
+            mysql database: 'wabi'
+            mysql root password: ${{ secrets.SPRING_DATASOURCE_NAME }}
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -52,3 +60,33 @@ jobs:
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7}
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using Docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            #!/bin/bash
+            ls
+            cd /
+            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}
+          
+            # Create .env file in the correct directory
+            echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" | sudo tee -a .env > /dev/null
+            echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" | sudo tee -a .env > /dev/null
+            echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" | sudo tee -a .env > /dev/null
+            echo "JWT_KEY=${{ secrets.JWT_KEY }}" | sudo tee -a .env > /dev/null
+            echo "JWT_EXPIRATION_MINUTES=${{ secrets.JWT_EXPIRATION_MINUTES }}" | sudo tee -a .env > /dev/null
+            echo "JWT_REFRESH_EXPIRATION_HOURS=${{ secrets.JWT_REFRESH_EXPIRATION_HOURS }}" | sudo tee -a .env > /dev/null
+            echo "JWT_ISSUER=${{ secrets.JWT_ISSUER }}" | sudo tee -a .env > /dev/null
+            echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" | sudo tee -a .env > /dev/null
+            echo "DOCKERHUB_REPOSITORY=${{ secrets.DOCKERHUB_REPOSITORY }}" | sudo tee -a .env > /dev/null
+
+            sudo docker-compose down
+            sudo docker-compose up -d
