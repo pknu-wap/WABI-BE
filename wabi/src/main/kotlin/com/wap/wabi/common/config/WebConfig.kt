@@ -10,12 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebConfig(private val requestLoggingInterceptor: RequestLoggingInterceptor) : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins(
-                "https://zepelown.site",
-                "https://master--wabicheck.netlify.app/",
-                "http://localhost:3000",
-                "http://localhost:8080"
-            )
+//            .allowedOrigins(
+//                "https://zepelown.site",
+//                "https://master--wabicheck.netlify.app/",
+//                "http://localhost:3000",
+//                "http://localhost:8080"
+//            )
+            .allowedOrigins("*")
             .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
             .allowedHeaders("*")
             .allowCredentials(true);
